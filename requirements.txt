@@ -1,0 +1,5 @@
+genanki
+meaningless
+pytest
+pytest-cov
+pytest-xdist
