@@ -16,6 +16,7 @@ from anki_generator import (
     generate_cards,
     generate_deck,
     make_model,
+    load_verses,
 )
 from parser import parse_lines, format_lines
 from clients import get_passage
@@ -49,6 +50,33 @@ class TestStableId:
         assert isinstance(id1, int)
         assert isinstance(id2, int)
         assert id1 != id2
+
+
+class TestLoadVerses:
+    """Tests for loading verses from text files."""
+
+    def test_load_simple_file(self, tmp_path):
+        """Load verses from a simple text file."""
+        verse_file = tmp_path / "verses.txt"
+        verse_file.write_text("John 3:16\nPsalm 23\nRomans 8:28\n")
+        verses = load_verses(verse_file)
+        assert verses == ["John 3:16", "Psalm 23", "Romans 8:28"]
+
+    def test_ignores_comments_and_blanks(self, tmp_path):
+        """Comments and blank lines are ignored."""
+        verse_file = tmp_path / "verses.txt"
+        verse_file.write_text(
+            "# Header comment\nJohn 3:16\n\n# Another comment\nPsalm 23\n"
+        )
+        verses = load_verses(verse_file)
+        assert verses == ["John 3:16", "Psalm 23"]
+
+    def test_strips_whitespace(self, tmp_path):
+        """Leading/trailing whitespace is stripped."""
+        verse_file = tmp_path / "verses.txt"
+        verse_file.write_text("  John 3:16  \n\tPsalm 23\t\n")
+        verses = load_verses(verse_file)
+        assert verses == ["John 3:16", "Psalm 23"]
 
 
 class TestGenerateCards:
@@ -200,7 +228,14 @@ class TestMakeModel:
         model = make_model(12345)
         field_names = [f["name"] for f in model.fields]
 
-        required_fields = ["Title", "Context", "Prompt", "Answer", "Sequence", "Reference"]
+        required_fields = [
+            "Title",
+            "Context",
+            "Prompt",
+            "Answer",
+            "Sequence",
+            "Reference",
+        ]
         for field in required_fields:
             assert field in field_names, f"Missing required field: {field}"
 

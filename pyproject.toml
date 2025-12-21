@@ -1,0 +1,21 @@
+[tool.black]
+line-length = 88
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "too-few-public-methods",
+    "too-many-arguments",
+    "too-many-positional-arguments",
+    "too-many-locals",
+    "deprecated-module",  # false positive for our parser.py
+    "import-outside-toplevel",
+    "broad-exception-caught",
+    "wrong-import-order",  # false positive: our parser.py vs stdlib parser
+    "line-too-long",  # black handles line length
+]
+
+[tool.pylint.format]
+max-line-length = 88

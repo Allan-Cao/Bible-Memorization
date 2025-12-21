@@ -3,3 +3,5 @@ meaningless
 pytest
 pytest-cov
 pytest-xdist
+black
+pylint

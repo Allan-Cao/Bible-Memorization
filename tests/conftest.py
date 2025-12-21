@@ -9,6 +9,7 @@ from functools import lru_cache
 def _cached_get_passage(verse_ref: str, translation: str = "ESV") -> tuple:
     """Cache passage fetches to avoid repeated network calls."""
     from clients import get_passage
+
     return get_passage(verse_ref, translation)
 
 

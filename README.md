@@ -12,16 +12,10 @@ pip install -r requirements.txt
 
 ## Usage
 
-```python
-from anki_generator import generate_deck
-from verse_lists import NATHAN_LIST, TMS_ALL
-
-generate_deck(
-    verse_list=NATHAN_LIST,
-    deck_name="My Memory Verses",
-    output_file="verses.apkg",
-    translation="ESV",  # ESV, NIV, KJV, NASB, NKJV, NLT, CSB, NET, RSV, NRSV, ASV
-)
+```bash
+python anki_generator.py verses/nathan.txt -o nathan.apkg
+python anki_generator.py verses/tms.txt -o tms.apkg -t NIV
+python anki_generator.py my_verses.txt --split-lines --context 3
 ```
 
 Import the `.apkg` file into Anki.
@@ -39,20 +33,21 @@ This reinforces previously learned lines while introducing new material.
 
 ## Verse Lists
 
-| List | Description |
+See `verses/` folder. Format: one verse per line, `#` for comments.
+
+| File | Description |
 |------|-------------|
-| `OT` | 25 Old Testament passages |
-| `NT` | 18 New Testament passages |
-| `TMS_ALL` | 60 Topical Memory System verses |
-| `NATHAN_LIST` | 34 curated memory verses |
-| `MOHAMMED_LIST` | James + John (full books) |
+| `verses/ot.txt` | 25 Old Testament passages |
+| `verses/nt.txt` | 18 New Testament passages |
+| `verses/tms.txt` | 60 Topical Memory System verses |
+| `verses/nathan.txt` | 34 curated memory verses |
+| `verses/mohammed.txt` | James + John (full books) |
 
 ## Development
 
 ```bash
-# Run tests
-pytest
-
-# Run with coverage
-pytest --cov=. --cov-report=term-missing
+pytest                                    # Run tests
+pytest --cov=. --cov-report=term-missing  # With coverage
+black *.py tests/*.py                     # Format code
+pylint *.py                               # Lint
 ```

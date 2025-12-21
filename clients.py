@@ -9,7 +9,17 @@ from meaningless import WebExtractor
 
 # Supported translations (subset of what meaningless supports)
 SUPPORTED_TRANSLATIONS = [
-    "ESV", "NIV", "NKJV", "NLT", "KJV", "NASB", "CSB", "NET", "RSV", "NRSV", "ASV"
+    "ESV",
+    "NIV",
+    "NKJV",
+    "NLT",
+    "KJV",
+    "NASB",
+    "CSB",
+    "NET",
+    "RSV",
+    "NRSV",
+    "ASV",
 ]
 
 DEFAULT_TRANSLATION = "ESV"
@@ -33,7 +43,7 @@ def parse_verse_reference(ref: str) -> tuple:
 
     # Pattern to match: "Book Chapter:Verse-Verse" or "Book Chapter:Verse" or "Book Chapter"
     # Book can have numbers prefix (1 John, 2 Timothy, etc.)
-    pattern = r'^(.+?)\s+(\d+)(?::(\d+)(?:-(\d+))?)?$'
+    pattern = r"^(.+?)\s+(\d+)(?::(\d+)(?:-(\d+))?)?$"
     match = re.match(pattern, ref)
 
     if not match:

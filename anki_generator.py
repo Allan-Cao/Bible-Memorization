@@ -6,7 +6,9 @@ Sequential line-by-line memorization with overlapping context.
 Each card slides by 1 line, reinforcing previously learned lines.
 """
 
+import argparse
 import hashlib
+from pathlib import Path
 from typing import TypedDict
 
 import genanki
@@ -15,8 +17,20 @@ from clients import get_passage, DEFAULT_TRANSLATION
 from parser import parse_lines, format_lines
 
 
+def load_verses(path: str | Path) -> list[str]:
+    """Load verse references from a text file (one per line, # for comments)."""
+    verses = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#"):
+                verses.append(line)
+    return verses
+
+
 class CardData(TypedDict):
     """Structure for a single flashcard."""
+
     title: str
     context: str
     prompt: str
@@ -27,6 +41,7 @@ class CardData(TypedDict):
 def stable_id(name: str) -> int:
     """Generate stable ID from name (survives Python restarts)."""
     return int(hashlib.md5(name.encode()).hexdigest()[:8], 16)
+
 
 # --- Styling (dark mode) ---
 
@@ -78,11 +93,26 @@ def make_model(model_id: int) -> genanki.Model:
             {"name": "Sequence"},
             {"name": "Reference"},
         ],
-        templates=[{
-            "name": "Recite",
-            "qfmt": '<div class="title">{{Title}}</div>{{#Context}}<div class="context">{{Context}}</div>{{/Context}}<div class="prompt">{{Prompt}}</div>',
-            "afmt": '<div class="title">{{Title}}</div>{{#Context}}<div class="context">{{Context}}</div>{{/Context}}<hr><div class="answer">{{Answer}}</div>',
-        }],
+        templates=[
+            {
+                "name": "Recite",
+                "qfmt": (
+                    '<div class="title">{{Title}}</div>'
+                    "{{#Context}}"
+                    '<div class="context">{{Context}}</div>'
+                    "{{/Context}}"
+                    '<div class="prompt">{{Prompt}}</div>'
+                ),
+                "afmt": (
+                    '<div class="title">{{Title}}</div>'
+                    "{{#Context}}"
+                    '<div class="context">{{Context}}</div>'
+                    "{{/Context}}"
+                    "<hr>"
+                    '<div class="answer">{{Answer}}</div>'
+                ),
+            }
+        ],
         css=CARD_CSS,
     )
 
@@ -107,23 +137,27 @@ def generate_cards(
 
     # Single short passage: one card
     if total <= recite_lines:
-        cards.append({
-            "title": canonical,
-            "context": "",
-            "prompt": f"Recite {canonical}",
-            "answer": format_lines(lines),
-            "sequence": 1,
-        })
+        cards.append(
+            {
+                "title": canonical,
+                "context": "",
+                "prompt": f"Recite {canonical}",
+                "answer": format_lines(lines),
+                "sequence": 1,
+            }
+        )
         return cards
 
     # Card 0: first recite_lines with no context (bootstrap)
-    cards.append({
-        "title": f"{canonical} (1/?)",
-        "context": "",
-        "prompt": f"[...{recite_lines} lines]",
-        "answer": format_lines(lines[0:recite_lines]),
-        "sequence": 1,
-    })
+    cards.append(
+        {
+            "title": f"{canonical} (1/?)",
+            "context": "",
+            "prompt": f"[...{recite_lines} lines]",
+            "answer": format_lines(lines[0:recite_lines]),
+            "sequence": 1,
+        }
+    )
 
     # Subsequent cards: slide by 1 line each
     # ans_start for card k (k>=1): recite_lines + k - 1
@@ -146,13 +180,15 @@ def generate_cards(
         num_ans = len(ans_lines)
         prompt = f"[...{num_ans} line{'s' if num_ans > 1 else ''}]"
 
-        cards.append({
-            "title": f"{canonical} ({k+1}/?)",
-            "context": format_lines(ctx_lines),
-            "prompt": prompt,
-            "answer": format_lines(ans_lines),
-            "sequence": k + 1,
-        })
+        cards.append(
+            {
+                "title": f"{canonical} ({k+1}/?)",
+                "context": format_lines(ctx_lines),
+                "prompt": prompt,
+                "answer": format_lines(ans_lines),
+                "sequence": k + 1,
+            }
+        )
 
         k += 1
 
@@ -247,18 +283,77 @@ def generate_deck(
     return total_cards
 
 
-if __name__ == "__main__":
-    from verse_lists.verse_lists import OT, NT, NATHAN_LIST, MOHAMMED_LIST
+def main():
+    from clients import SUPPORTED_TRANSLATIONS
 
-    # Example: Generate deck with specific translation
-    # Supported translations: ESV, NIV, NKJV, NLT, KJV, NASB, CSB, NET, RSV, NRSV, ASV
-    generate_deck(
-        verse_list=NATHAN_LIST,
-        deck_name="Nathan's Memorization (ESV)",
-        output_file="Nathan_ESV.apkg",
-        context_lines=2,
-        recite_lines=2,
-        translation="ESV",  # Change this to use different translations
-        split_long_lines=True,
-        max_line_length=100,
+    parser = argparse.ArgumentParser(
+        description="Generate Anki flashcards for Bible memorization"
     )
+    parser.add_argument(
+        "file",
+        help="Text file with verse references (one per line)",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        default="output.apkg",
+        help="Output .apkg file (default: output.apkg)",
+    )
+    parser.add_argument(
+        "-n",
+        "--name",
+        help="Deck name (default: derived from filename)",
+    )
+    parser.add_argument(
+        "-t",
+        "--translation",
+        default="ESV",
+        choices=SUPPORTED_TRANSLATIONS,
+        help="Bible translation (default: ESV)",
+    )
+    parser.add_argument(
+        "--context",
+        type=int,
+        default=2,
+        help="Context lines to show (default: 2)",
+    )
+    parser.add_argument(
+        "--recite",
+        type=int,
+        default=2,
+        help="Lines to recite per card (default: 2)",
+    )
+    parser.add_argument(
+        "--split-lines",
+        action="store_true",
+        help="Split long lines at sentence boundaries",
+    )
+    parser.add_argument(
+        "--max-length",
+        type=int,
+        default=100,
+        help="Max line length when splitting (default: 100)",
+    )
+
+    args = parser.parse_args()
+
+    verses = load_verses(args.file)
+    if not verses:
+        parser.error(f"No verses found in {args.file}")
+
+    deck_name = args.name or Path(args.file).stem
+
+    generate_deck(
+        verse_list=verses,
+        deck_name=deck_name,
+        output_file=args.output,
+        translation=args.translation,
+        context_lines=args.context,
+        recite_lines=args.recite,
+        split_long_lines=args.split_lines,
+        max_line_length=args.max_length,
+    )
+
+
+if __name__ == "__main__":
+    main()

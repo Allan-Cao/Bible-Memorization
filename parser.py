@@ -10,7 +10,9 @@ import re
 SUPERSCRIPT_DIGITS = "⁰¹²³⁴⁵⁶⁷⁸⁹"
 
 
-def split_long_line(line: str, max_length: int = 100, min_length: int = 30) -> list[str]:
+def split_long_line(
+    line: str, max_length: int = 100, min_length: int = 30
+) -> list[str]:
     """
     Split a long line at sentence boundaries.
 
@@ -26,7 +28,7 @@ def split_long_line(line: str, max_length: int = 100, min_length: int = 30) -> l
         return [line]
 
     # Find sentence boundaries: punctuation followed by space and capital/verse number
-    pattern = r'(?<=[.!?])\s+(?=[A-Z⁰¹²³⁴⁵⁶⁷⁸⁹])'
+    pattern = r"(?<=[.!?])\s+(?=[A-Z⁰¹²³⁴⁵⁶⁷⁸⁹])"
     split_positions = [m.end() for m in re.finditer(pattern, line)]
 
     if not split_positions:
@@ -38,7 +40,6 @@ def split_long_line(line: str, max_length: int = 100, min_length: int = 30) -> l
 
     for pos in split_positions:
         segment = line[start:pos].strip()
-        remaining = line[pos:].strip()
         # Split if current segment is long enough and remainder still needs splitting
         if len(segment) >= min_length and len(line[start:]) > max_length:
             segments.append(segment)
@@ -93,7 +94,7 @@ def parse_lines(
 
         # Split at verse numbers: any whitespace before superscript digits
         # Pattern: split before a verse number (but keep the verse number with its text)
-        verse_split = re.split(r'(?=\s[⁰¹²³⁴⁵⁶⁷⁸⁹]+\s)', raw_chunk)
+        verse_split = re.split(r"(?=\s[⁰¹²³⁴⁵⁶⁷⁸⁹]+\s)", raw_chunk)
 
         for part in verse_split:
             stripped = part.strip()
