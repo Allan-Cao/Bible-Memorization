@@ -21,7 +21,7 @@ def load_verses(path: str | Path) -> list[str]:
     verses = []
     with open(path, encoding="utf-8") as f:
         for line in f:
-            line = line.strip()  # noqa: PLW2901
+            line = line.strip()
             if line and not line.startswith("#"):
                 verses.append(line)
     return verses
@@ -272,7 +272,7 @@ def generate_deck(
 
             print(f"{len(lines)} lines -> {len(cards)} cards")
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - keep going so one bad passage does not abort the deck
             print(f"ERROR: {e}")
 
     genanki.Package(deck).write_to_file(output_file)

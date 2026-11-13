@@ -70,7 +70,7 @@ class TestParseVerseReference:
 
     def test_whitespace_handling(self):
         """Extra whitespace should be handled."""
-        book, chapter, start, end = parse_verse_reference("  John 3:16  ")
+        book, chapter, _start, _end = parse_verse_reference("  John 3:16  ")
         assert book == "John"
         assert chapter == 3
 
@@ -102,7 +102,7 @@ class TestGetPassage:
 
     def test_poetry_formatting(self):
         """Poetry should have newlines for formatting."""
-        canonical, text = get_passage("Psalm 23", "ESV")
+        _canonical, text = get_passage("Psalm 23", "ESV")
         assert "\n" in text  # Poetry has line breaks
 
     def test_different_translation(self):
