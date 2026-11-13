@@ -34,5 +34,5 @@ Always import through the package (`from bible_memorization.parser import ...`).
 
 ## Conventions
 
-- Ruff handles both lint and format (rules in `pyproject.toml`). Use a targeted `# noqa` rather than a behavior change when a lint fix would alter logic.
+- Ruff handles both lint and format, using its built-in default rule set (no `[tool.ruff]` config in `pyproject.toml`). Use a targeted `# noqa` rather than a behavior change when a lint fix would alter logic.
 - Verse lists in `verses/` are plain text: one reference per line, `#` for comments.
