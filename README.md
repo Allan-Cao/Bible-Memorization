@@ -7,15 +7,15 @@ Generates Anki flashcards for Bible memorization using a sliding-window approach
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
 ## Usage
 
 ```bash
-python anki_generator.py verses/nathan.txt -o nathan.apkg
-python anki_generator.py verses/tms.txt -o tms.apkg -t NIV
-python anki_generator.py my_verses.txt --split-lines --context 3
+uv run bible-memorization verses/nathan.txt -o nathan.apkg
+uv run bible-memorization verses/tms.txt -o tms.apkg -t NIV
+uv run bible-memorization my_verses.txt --split-lines --context 3
 ```
 
 Import the `.apkg` file into Anki.
@@ -46,8 +46,7 @@ See `verses/` folder. Format: one verse per line, `#` for comments.
 ## Development
 
 ```bash
-pytest                                    # Run tests
-pytest --cov=. --cov-report=term-missing  # With coverage
-black *.py tests/*.py                     # Format code
-pylint *.py                               # Lint
+uv run pytest -n auto                               # Run tests
+uv run pytest --cov                                 # With coverage
+uv run ruff check --fix . && uv run ruff format .   # Lint + format
 ```

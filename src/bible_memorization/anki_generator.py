@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Bible Memorization Anki Deck Generator
 
@@ -13,8 +12,8 @@ from typing import TypedDict
 
 import genanki
 
-from clients import get_passage, DEFAULT_TRANSLATION
-from parser import parse_lines, format_lines
+from .clients import DEFAULT_TRANSLATION, get_passage
+from .parser import format_lines, parse_lines
 
 
 def load_verses(path: str | Path) -> list[str]:
@@ -22,7 +21,7 @@ def load_verses(path: str | Path) -> list[str]:
     verses = []
     with open(path, encoding="utf-8") as f:
         for line in f:
-            line = line.strip()
+            line = line.strip()  # noqa: PLW2901
             if line and not line.startswith("#"):
                 verses.append(line)
     return verses
@@ -182,7 +181,7 @@ def generate_cards(
 
         cards.append(
             {
-                "title": f"{canonical} ({k+1}/?)",
+                "title": f"{canonical} ({k + 1}/?)",
                 "context": format_lines(ctx_lines),
                 "prompt": prompt,
                 "answer": format_lines(ans_lines),
@@ -284,7 +283,7 @@ def generate_deck(
 
 
 def main():
-    from clients import SUPPORTED_TRANSLATIONS
+    from .clients import SUPPORTED_TRANSLATIONS
 
     parser = argparse.ArgumentParser(
         description="Generate Anki flashcards for Bible memorization"

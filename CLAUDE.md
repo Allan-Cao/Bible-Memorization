@@ -1,85 +1,38 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project Overview
-
-Bible Memorization is a Python tool that generates Anki flashcards using a sliding-window approach with overlapping context for memorizing Bible passages.
+Generates Anki decks (`.apkg`) for Bible memorization. Each card shows a few previous lines as context and asks for the next lines; the window slides one line per card. See README.md for user-facing usage.
 
 ## Commands
 
-### Setup
+Uses [uv](https://docs.astral.sh/uv/). All config lives in `pyproject.toml`.
+
 ```bash
-pip install -r requirements.txt
+uv sync                                      # install deps + dev group into .venv
+uv run bible-memorization verses/tms.txt -o tms.apkg -t NIV
+uv run pytest -n auto                        # tests (parallel)
+uv run pytest --cov                          # coverage (config in pyproject)
+uv run ruff check --fix . && uv run ruff format .
 ```
 
-### Testing
-```bash
-pytest                                    # Run all tests
-pytest --cov=. --cov-report=term-missing  # With coverage
-pytest -n auto                            # Parallel execution
-pytest tests/test_anki_generator.py::TestGenerateCards::test_sliding_window_progression  # Single test
-pytest -m "not slow and not network"      # Exclude slow/network tests
-```
+## Layout
 
-### Linting
-```bash
-black *.py tests/*.py  # Format code
-pylint *.py            # Lint source files
-```
+`src/bible_memorization/`:
+- `anki_generator.py`: CLI (`main`), `generate_deck`, and the sliding-window `generate_cards`
+- `clients.py`: fetches passages through `meaningless` (scrapes Bible Gateway)
+- `parser.py`: turns raw passage text into lines
 
-### Running
-```bash
-python anki_generator.py verses/nathan.txt                     # Basic usage
-python anki_generator.py verses/tms.txt -o tms.apkg -t NIV     # Custom output and translation
-python anki_generator.py verses/ot.txt --split-lines           # Split long lines
-```
+Always import through the package (`from bible_memorization.parser import ...`). A bare `import parser` was ambiguous with the old stdlib module of the same name.
 
-## Architecture
+## Things that will surprise you
 
-### Core Modules
+- **Most tests hit the network.** They scrape Bible Gateway live, with no mocks. `tests/conftest.py` caches fetches per session through `passage_cache`. The `network`/`slow` markers are registered but no test uses them yet, so `-m "not network"` deselects nothing. If tests fail all at once, check connectivity or Bible Gateway markup changes before suspecting the code.
+- **Changing card output resets review history.** Notes are created without an explicit `guid`, so genanki derives each note's guid from all of its fields. Any change to titles, prompts, or line splitting makes Anki see new notes, and existing users lose their progress on those cards.
+- **Deck and model IDs come from the deck name** (`stable_id`, an MD5 prefix). The CLI's default deck name is the input filename stem, so renaming the verse file or passing a different `-n` creates a separate deck in Anki.
+- **Fetch errors are swallowed per passage.** `generate_deck` prints `ERROR: ...` and keeps going, so a bad reference still yields a "successful" deck that is missing that passage.
+- **Parser input format:** `meaningless` returns verse numbers as Unicode superscripts (`¹²³`). The parser splits verses on those. A chunk with 4+ leading spaces is treated as an indented poetry line and normalized to exactly 4 spaces.
+- **Reference parsing** (`parse_verse_reference`) supports only `Book C`, `Book C:V`, and `Book C:V-V`. Cross-chapter ranges such as `John 3:16-4:2` are rejected.
 
-- **anki_generator.py** - Main orchestrator. `generate_deck()` fetches passages and creates .apkg files. `generate_cards()` implements the sliding-window algorithm where each card slides by 1 line, using previous lines as context.
+## Conventions
 
-- **clients.py** - Bible passage retrieval via `meaningless` library (Bible Gateway scraper). `get_passage()` fetches text, supporting ESV, NIV, NKJV, NLT, KJV, NASB, CSB, NET, RSV, NRSV, ASV.
-
-- **parser.py** - Text processing. `parse_lines()` converts raw Bible text (with superscript verse numbers) into line arrays, normalizing poetry indentation. `split_long_line()` breaks long lines at sentence boundaries.
-
-- **verses/** - Verse list text files. Format: one verse reference per line, # for comments.
-
-### Sliding Window Algorithm
-
-For an 8-line passage with context_lines=2, recite_lines=2:
-```
-Card 1: [Context: empty]    → [Recite: lines 1-2]
-Card 2: [Context: line 1]   → [Recite: lines 2-3]
-Card 3: [Context: lines 2-3] → [Recite: lines 3-4]
-...
-```
-Each card reinforces the previous content through progressive overlap.
-
-### Key Design Patterns
-
-- **Stable IDs**: MD5-based deterministic IDs from passage names ensure deck consistency across regenerations
-- **Network Caching**: Test fixtures use LRU-cached Bible passages to minimize API calls
-- **Error Resilience**: Deck generation continues despite individual passage fetch failures
-
-## API Usage
-
-```python
-from anki_generator import generate_deck, load_verses
-
-# Load verses from a text file
-verses = load_verses("my_verses.txt")
-
-generate_deck(
-    verse_list=verses,
-    deck_name="Memory Verses",
-    output_file="verses.apkg",
-    translation="ESV",
-    context_lines=2,
-    recite_lines=2,
-    split_long_lines=True,
-    max_line_length=100,
-)
-```
+- Ruff handles both lint and format (rules in `pyproject.toml`). Use a targeted `# noqa` rather than a behavior change when a lint fix would alter logic.
+- Verse lists in `verses/` are plain text: one reference per line, `#` for comments.

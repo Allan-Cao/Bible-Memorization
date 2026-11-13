@@ -15,8 +15,8 @@ Text files containing verse references for memorization. One verse per line, `#`
 ## Usage
 
 ```bash
-python anki_generator.py verses/tms.txt -o tms_deck.apkg
-python anki_generator.py verses/nathan.txt -t NIV -o nathan_niv.apkg
+uv run bible-memorization verses/tms.txt -o tms_deck.apkg
+uv run bible-memorization verses/nathan.txt -t NIV -o nathan_niv.apkg
 ```
 
 ## Format

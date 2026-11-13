@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for the Anki deck generator module.
 
@@ -10,16 +9,16 @@ Test Philosophy:
 
 import os
 import tempfile
-import pytest
-from anki_generator import (
-    stable_id,
+
+from bible_memorization.anki_generator import (
     generate_cards,
     generate_deck,
-    make_model,
     load_verses,
+    make_model,
+    stable_id,
 )
-from parser import parse_lines, format_lines
-from clients import get_passage
+from bible_memorization.clients import get_passage
+from bible_memorization.parser import parse_lines
 
 
 class TestStableId:

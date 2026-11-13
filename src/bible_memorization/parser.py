@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Parse Bible passage text into lines for memorization.
 Works with text from the meaningless library (Bible Gateway).

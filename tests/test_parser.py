@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Tests for the Bible passage parser module.
 
@@ -9,10 +8,11 @@ Test Philosophy:
 """
 
 import re
-import pytest
-from parser import parse_lines, format_lines, split_long_line
-from clients import get_passage
 
+import pytest
+
+from bible_memorization.clients import get_passage
+from bible_memorization.parser import format_lines, parse_lines, split_long_line
 
 # Superscript digits for verse number detection
 SUPERSCRIPT_DIGITS = "⁰¹²³⁴⁵⁶⁷⁸⁹"

@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 """
 Tests for the Bible passage client module.
 """
 
 import pytest
-from clients import (
-    parse_verse_reference,
-    get_passage,
-    SUPPORTED_TRANSLATIONS,
+
+from bible_memorization.clients import (
     DEFAULT_TRANSLATION,
+    SUPPORTED_TRANSLATIONS,
+    get_passage,
+    parse_verse_reference,
 )
 
 

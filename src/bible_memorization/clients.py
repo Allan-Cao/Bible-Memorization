@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
 """
 Bible passage client using the meaningless library.
 Supports multiple Bible translations via Bible Gateway.
 """
 
 import re
+
 from meaningless import WebExtractor
 
 # Supported translations (subset of what meaningless supports)
