@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Break, Line, Verse } from './model.ts';
-import { autoBreaks, breakAfter, splitUnits, verseWords } from './units.ts';
+import { SOFT_MAX_PART_WORDS, autoBreaks, breakAfter, splitUnits, verseWords } from './units.ts';
 
 const verse = (ref: string, ...lines: (string | Line)[]): Verse => {
 	const [book, chapter, v] = ref.split('.');
@@ -59,6 +59,10 @@ const psalm23_4 = poem(
 	'I will fear no evil,',
 	'for You are with me;',
 	'Your rod and Your staff, they comfort me.'
+);
+const revelation20_4 = verse(
+	'REV.20.4',
+	'Then I saw the thrones, and those seated on them had been given authority to judge. And I saw the souls of those who had been beheaded for their testimony of Jesus and for the word of God, and those who had not worshiped the beast or its image, and had not received its mark on their foreheads or hands. And they came to life and reigned with Christ for a thousand years.'
 );
 const isaiah40_31 = poem(
 	'ISA.40.31',
@@ -154,6 +158,37 @@ describe('autoBreaks', () => {
 		const v = verse('GEN.1.1', `${words(11)}, ${words(9, 11)}, ${words(20, 20)}`);
 		// Commas after 11 and 20 words: 20 / 20 beats 11 / 29.
 		expect(autoBreaks(v)).toEqual([{ after: 19, word: 'w19,' }]);
+	});
+
+	it('prefers a weaker break that keeps every part within the soft cap', () => {
+		// The period gives 10 / 40; the comma gives 25 / 25.
+		const v = verse('GEN.1.1', `${words(10)}. ${words(15, 10)}, ${words(25, 25)}`);
+		expect(SOFT_MAX_PART_WORDS).toBe(35);
+		expect(parts(v).map((p) => p.split(' ').length)).toEqual([25, 25]);
+	});
+
+	it('still prefers strength over evenness among splits within the soft cap', () => {
+		// The period gives 28 / 32; the comma gives 30 / 30.
+		const v = verse('GEN.1.1', `${words(28)}. ${words(2, 28)}, ${words(30, 30)}`);
+		expect(parts(v).map((p) => p.split(' ').length)).toEqual([28, 32]);
+	});
+
+	it('falls back to the strongest split when none keeps within the soft cap', () => {
+		// The period gives 10 / 40, the comma 12 / 38: both over 35, so the period wins.
+		const v = verse('GEN.1.1', `${words(10)}. ${words(2, 10)}, ${words(38, 12)}`);
+		expect(parts(v).map((p) => p.split(' ').length)).toEqual([10, 40]);
+	});
+
+	it('uses one more part when only that keeps every part within the soft cap', () => {
+		// 52 words want 2 parts, but 12 / 40 and 40 / 12 are over 35; 12 / 28 / 12 is not.
+		const v = verse('GEN.1.1', `${words(12)}, ${words(28, 12)}, ${words(12, 40)}`);
+		expect(parts(v).map((p) => p.split(' ').length)).toEqual([12, 28, 12]);
+	});
+
+	it('keeps every part of Revelation 20:4 within the soft cap', () => {
+		const sizes = parts(revelation20_4).map((p) => p.split(' ').length);
+		expect(sizes).toHaveLength(3);
+		expect(Math.max(...sizes)).toBeLessThanOrEqual(SOFT_MAX_PART_WORDS);
 	});
 
 	it('does not split a long verse with no punctuation', () => {

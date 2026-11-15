@@ -9,20 +9,20 @@ GUID           bm1:golden:bsb:REV.20.4:0
 
 ── 2. Revelation 20:4 (2/3) ────────────────────────────────────────────
 Lead-in    4 │ Then I saw the thrones, and those seated on them had been given authority to judge.
-Answer       │ And I saw the souls of those who had been beheaded for their testimony of Jesus and for the word of God, and those who had not worshiped the beast or its image, and had not received its mark on their foreheads or hands.
-Hint         │ A I s t s o t w h b b f t t o J a f t w o G, a t w h n w t b o i i, a h n r i m o t f o h.
+Answer       │ And I saw the souls of those who had been beheaded for their testimony of Jesus and for the word of God, and those who had not worshiped the beast or its image,
+Hint         │ A I s t s o t w h b b f t t o J a f t w o G, a t w h n w t b o i i,
 Info           Revelation 20:4-6 · BSB
 GUID           bm1:golden:bsb:REV.20.4:1
 
 ── 3. Revelation 20:4 (3/3) ────────────────────────────────────────────
-Lead-in      │ And I saw the souls of those who had been beheaded for their testimony of Jesus and for the word of God, and those who had not worshiped the beast or its image, and had not received its mark on their foreheads or hands.
-Answer       │ And they came to life and reigned with Christ for a thousand years.
-Hint         │ A t c t l a r w C f a t y.
+Lead-in      │ And I saw the souls of those who had been beheaded for their testimony of Jesus and for the word of God, and those who had not worshiped the beast or its image,
+Answer       │ and had not received its mark on their foreheads or hands. And they came to life and reigned with Christ for a thousand years.
+Hint         │ a h n r i m o t f o h. A t c t l a r w C f a t y.
 Info           Revelation 20:4-6 · BSB
 GUID           bm1:golden:bsb:REV.20.4:2
 
 ── 4. Revelation 20:5 ──────────────────────────────────────────────────
-Lead-in      │ And they came to life and reigned with Christ for a thousand years.
+Lead-in      │ and had not received its mark on their foreheads or hands. And they came to life and reigned with Christ for a thousand years.
 Answer     5 │ The rest of the dead did not come back to life until the thousand years were complete. This is the first resurrection.
 Hint         │ T r o t d d n c b t l u t t y w c. T i t f r.
 Info           Revelation 20:4-6 · BSB

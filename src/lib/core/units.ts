@@ -1,6 +1,7 @@
 /**
  * Splits a verse into the units that cards ask for. Most verses are one unit; only long verses
- * are split, into 2 or 3 parts, at their strongest punctuation, unless the user saved breaks.
+ * are split, into 2 or 3 parts of at most SOFT_MAX_PART_WORDS where possible, at their strongest
+ * punctuation, unless the user saved breaks.
  *
  * Words are the lines' texts split on whitespace, numbered from 0 across the whole verse.
  * Selah lines are not counted, never start a unit, and stay with the unit before them.
@@ -14,6 +15,15 @@ export const MAX_WORDS = 30;
 export const MAX_PARTS = 3;
 /** Every part of a split verse has at least this many words, so no card asks for a fragment. */
 export const MIN_PART_WORDS = 10;
+/**
+ * A split whose parts all stay at or under this many words beats any split that has a longer
+ * part, even at weaker punctuation: a 10 / 40 split at a period is worse to learn than 25 / 25
+ * at a comma. If no split into the usual number of parts stays under it, one more part is
+ * tried (within MAX_PARTS); failing that, the strongest split is used anyway.
+ * 35 was best on the whole text: lower caps are out of reach more often, so more verses fall
+ * back to a long part; higher caps keep more 36-45 word parts.
+ */
+export const SOFT_MAX_PART_WORDS = 35;
 
 interface Word {
 	text: string;
@@ -65,31 +75,50 @@ export function autoBreaks(verse: Verse): Break[] {
 		if (s > 0) candidates.push({ after, strength: s });
 	}
 
-	for (let parts = Math.min(MAX_PARTS, Math.ceil(words.length / MAX_WORDS)); parts > 1; parts--) {
-		const best = bestSplit(candidates, parts - 1, words.length);
-		if (best) return best.map(({ after }) => ({ after, word: words[after].text }));
+	const split = (parts: number) => bestSplit(candidates, parts - 1, words.length);
+	const target = Math.min(MAX_PARTS, Math.ceil(words.length / MAX_WORDS));
+	let best = split(target);
+	// One more part, within MAX_PARTS, when only that keeps every part within the soft cap.
+	if (!best?.fits && target < MAX_PARTS) {
+		const more = split(target + 1);
+		if (more?.fits) best = more;
 	}
-	return [];
+	// Fewer parts when the target number has no valid split.
+	for (let parts = target - 1; !best && parts > 1; parts--) best = split(parts);
+	return best ? best.breaks.map(({ after }) => ({ after, word: words[after].text })) : [];
 }
 
-/** Highest total strength, then closest to even (smallest sum of squared part sizes). */
-function bestSplit(candidates: Candidate[], count: number, total: number): Candidate[] | null {
+/**
+ * Every part at least MIN_PART_WORDS. Then, in order: all parts within SOFT_MAX_PART_WORDS,
+ * highest total strength, closest to even (smallest sum of squared part sizes).
+ */
+function bestSplit(
+	candidates: Candidate[],
+	count: number,
+	total: number
+): { breaks: Candidate[]; fits: boolean } | null {
 	let best: Candidate[] | null = null;
-	let bestStrength = 0;
-	let bestSpread = Infinity;
+	let bestScore: number[] = [];
 	for (const combo of combinations(candidates, count)) {
 		const sizes = partSizes(
 			combo.map((c) => c.after),
 			total
 		);
 		if (sizes.some((size) => size < MIN_PART_WORDS)) continue;
-		const strength = combo.reduce((sum, c) => sum + c.strength, 0);
-		const spread = sizes.reduce((sum, size) => sum + size * size, 0);
-		if (strength > bestStrength || (strength === bestStrength && spread < bestSpread)) {
-			[best, bestStrength, bestSpread] = [combo, strength, spread];
-		}
+		const score = [
+			sizes.every((size) => size <= SOFT_MAX_PART_WORDS) ? 1 : 0,
+			combo.reduce((sum, c) => sum + c.strength, 0),
+			-sizes.reduce((sum, size) => sum + size * size, 0)
+		];
+		if (!best || isBetter(score, bestScore)) [best, bestScore] = [combo, score];
 	}
-	return best;
+	return best && { breaks: best, fits: bestScore[0] === 1 };
+}
+
+/** Compares scores position by position; the first difference decides. */
+function isBetter(a: number[], b: number[]): boolean {
+	const i = a.findIndex((x, j) => x !== b[j]);
+	return i >= 0 && a[i] > b[i];
 }
 
 /** Every way to pick `count` items, keeping their order. */
