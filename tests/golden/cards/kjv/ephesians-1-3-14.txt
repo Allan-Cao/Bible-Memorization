@@ -1,0 +1,99 @@
+Ephesians 1:3-14 (KJV)
+
+── 1. Ephesians 1:3 ────────────────────────────────────────────────────
+Lead-in        (none)
+Answer     3 │ Blessed be the God and Father of our Lord Jesus Christ, who hath blessed us with all spiritual blessings in heavenly places in Christ:
+Hint         │ B b t G a F o o L J C, w h b u w a s b i h p i C:
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.3:0
+
+── 2. Ephesians 1:4 ────────────────────────────────────────────────────
+Lead-in    3 │ Blessed be the God and Father of our Lord Jesus Christ, who hath blessed us with all spiritual blessings in heavenly places in Christ:
+Answer     4 │ According as he hath chosen us in him before the foundation of the world, that we should be holy and without blame before him in love:
+Hint         │ A a h h c u i h b t f o t w, t w s b h a w b b h i l:
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.4:0
+
+── 3. Ephesians 1:5 ────────────────────────────────────────────────────
+Lead-in    4 │ According as he hath chosen us in him before the foundation of the world, that we should be holy and without blame before him in love:
+Answer     5 │ Having predestinated us unto the adoption of children by Jesus Christ to himself, according to the good pleasure of his will,
+Hint         │ H p u u t a o c b J C t h, a t t g p o h w,
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.5:0
+
+── 4. Ephesians 1:6 ────────────────────────────────────────────────────
+Lead-in    5 │ Having predestinated us unto the adoption of children by Jesus Christ to himself, according to the good pleasure of his will,
+Answer     6 │ To the praise of the glory of his grace, wherein he hath made us accepted in the beloved.
+Hint         │ T t p o t g o h g, w h h m u a i t b.
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.6:0
+
+── 5. Ephesians 1:7 ────────────────────────────────────────────────────
+Lead-in    6 │ To the praise of the glory of his grace, wherein he hath made us accepted in the beloved.
+Answer     7 │ In whom we have redemption through his blood, the forgiveness of sins, according to the riches of his grace;
+Hint         │ I w w h r t h b, t f o s, a t t r o h g;
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.7:0
+
+── 6. Ephesians 1:8 ────────────────────────────────────────────────────
+Lead-in    7 │ In whom we have redemption through his blood, the forgiveness of sins, according to the riches of his grace;
+Answer     8 │ Wherein he hath abounded toward us in all wisdom and prudence;
+Hint         │ W h h a t u i a w a p;
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.8:0
+
+── 7. Ephesians 1:9 ────────────────────────────────────────────────────
+Lead-in    8 │ Wherein he hath abounded toward us in all wisdom and prudence;
+Answer     9 │ Having made known unto us the mystery of his will, according to his good pleasure which he hath purposed in himself:
+Hint         │ H m k u u t m o h w, a t h g p w h h p i h:
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.9:0
+
+── 8. Ephesians 1:10 (1/2) ─────────────────────────────────────────────
+Lead-in    9 │ Having made known unto us the mystery of his will, according to his good pleasure which he hath purposed in himself:
+Answer    10 │ That in the dispensation of the fulness of times he might gather together in one all things in Christ,
+Hint         │ T i t d o t f o t h m g t i o a t i C,
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.10:0
+
+── 9. Ephesians 1:10 (2/2) ─────────────────────────────────────────────
+Lead-in   10 │ That in the dispensation of the fulness of times he might gather together in one all things in Christ,
+Answer       │ both which are in heaven, and which are on earth; even in him:
+Hint         │ b w a i h, a w a o e; e i h:
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.10:1
+
+── 10. Ephesians 1:11 ──────────────────────────────────────────────────
+Lead-in      │ both which are in heaven, and which are on earth; even in him:
+Answer    11 │ In whom also we have obtained an inheritance, being predestinated according to the purpose of him who worketh all things after the counsel of his own will:
+Hint         │ I w a w h o a i, b p a t t p o h w w a t a t c o h o w:
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.11:0
+
+── 11. Ephesians 1:12 ──────────────────────────────────────────────────
+Lead-in   11 │ In whom also we have obtained an inheritance, being predestinated according to the purpose of him who worketh all things after the counsel of his own will:
+Answer    12 │ That we should be to the praise of his glory, who first trusted in Christ.
+Hint         │ T w s b t t p o h g, w f t i C.
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.12:0
+
+── 12. Ephesians 1:13 (1/2) ────────────────────────────────────────────
+Lead-in   12 │ That we should be to the praise of his glory, who first trusted in Christ.
+Answer    13 │ In whom ye also trusted, after that ye heard the word of truth, the gospel of your salvation:
+Hint         │ I w y a t, a t y h t w o t, t g o y s:
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.13:0
+
+── 13. Ephesians 1:13 (2/2) ────────────────────────────────────────────
+Lead-in   13 │ In whom ye also trusted, after that ye heard the word of truth, the gospel of your salvation:
+Answer       │ in whom also after that ye believed, ye were sealed with that holy Spirit of promise,
+Hint         │ i w a a t y b, y w s w t h S o p,
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.13:1
+
+── 14. Ephesians 1:14 ──────────────────────────────────────────────────
+Lead-in      │ in whom also after that ye believed, ye were sealed with that holy Spirit of promise,
+Answer    14 │ Which is the earnest of our inheritance until the redemption of the purchased possession, unto the praise of his glory.
+Hint         │ W i t e o o i u t r o t p p, u t p o h g.
+Info           Ephesians 1:3-14 · KJV
+GUID           bm1:golden:kjv:EPH.1.14:0

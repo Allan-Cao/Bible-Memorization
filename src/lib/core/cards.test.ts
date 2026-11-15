@@ -178,20 +178,6 @@ const hebrews1 = passage(
 	]
 );
 
-const isaiah40 = passage(
-	'Isaiah 40:31',
-	'ISA',
-	[[40, 31, 31]],
-	[
-		poem('ISA', 40, 31, [
-			'But those who wait upon the LORD will renew their strength;',
-			'they will mount up with wings like eagles;',
-			'they will run and not grow weary,',
-			'they will walk and not faint.'
-		])
-	]
-);
-
 const john14 = passage(
 	'John 14:1-3, 6',
 	'JHN',
@@ -251,25 +237,6 @@ function text(html: string): string {
 			return gap + indent + body;
 		})
 		.join('\n');
-}
-
-/** A note as the owner reads it in the golden files. */
-function describeNote(note: NoteSpec): string {
-	const block = (label: string, html: string) => {
-		const body = text(html) || '(none)';
-		return body
-			.split('\n')
-			.map((line, i) => (i === 0 ? label.padEnd(10) : ' '.repeat(10)) + line)
-			.join('\n');
-	};
-	return [
-		`── ${note.order + 1}. ${note.fields.Reference} `.padEnd(72, '─'),
-		block('Lead-in', note.fields.Context),
-		block('Answer', note.fields.Answer),
-		block('Hint', note.fields.Hint),
-		`${'Info'.padEnd(10)}${note.fields.Info}`,
-		`${'GUID'.padEnd(10)}${note.guid}`
-	].join('\n');
 }
 
 // ---- Tests ----------------------------------------------------------------------------------
@@ -544,26 +511,5 @@ describe('makeNotes: GUID stability', () => {
 		const def = deck({ breaks: { [key]: [breakAfter(john3_17, 13)] } });
 		expect(guidOf(def, [john3], key, 0)).toBe(base);
 		expect(guidOf(def, [john3], key, 1)).toBe('bm1:k3x9:bsb:JHN.3.17:1');
-	});
-});
-
-describe('golden files', () => {
-	const golden: [string, Passage][] = [
-		['psalm-23', psalm23],
-		['romans-8-38-39', romans8],
-		['john-3-16-17', john3],
-		['proverbs-3-5-6', proverbs3],
-		['hebrews-1-2-4', hebrews1],
-		['isaiah-40-31', isaiah40],
-		['john-14-1-3-6', john14]
-	];
-
-	it.each(golden)('%s', async (name, p) => {
-		const body = notes(deck({ id: 'golden' }), [p])
-			.map(describeNote)
-			.join('\n\n');
-		await expect(`${p.ref.label} (BSB)\n\n${body}\n`).toMatchFileSnapshot(
-			`../../../tests/golden/cards/${name}.txt`
-		);
 	});
 });

@@ -1,0 +1,29 @@
+Psalm 51:1-4 (KJV)
+
+── 1. Psalm 51:1 ───────────────────────────────────────────────────────
+Lead-in      │ To the chief Musician, A Psalm of David, when Nathan the prophet came unto him, after he had gone in to Bath-sheba.
+Answer     1 │ Have mercy upon me, O God, according to thy lovingkindness: according unto the multitude of thy tender mercies blot out my transgressions.
+Hint         │ H m u m, O G, a t t l: a u t m o t t m b o m t.
+Info           Psalm 51:1-4 · KJV
+GUID           bm1:golden:kjv:PSA.51.1:0
+
+── 2. Psalm 51:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ Have mercy upon me, O God, according to thy lovingkindness: according unto the multitude of thy tender mercies blot out my transgressions.
+Answer     2 │ Wash me throughly from mine iniquity, and cleanse me from my sin.
+Hint         │ W m t f m i, a c m f m s.
+Info           Psalm 51:1-4 · KJV
+GUID           bm1:golden:kjv:PSA.51.2:0
+
+── 3. Psalm 51:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ Wash me throughly from mine iniquity, and cleanse me from my sin.
+Answer     3 │ For I acknowledge my transgressions: and my sin is ever before me.
+Hint         │ F I a m t: a m s i e b m.
+Info           Psalm 51:1-4 · KJV
+GUID           bm1:golden:kjv:PSA.51.3:0
+
+── 4. Psalm 51:4 ───────────────────────────────────────────────────────
+Lead-in    3 │ For I acknowledge my transgressions: and my sin is ever before me.
+Answer     4 │ Against thee, thee only, have I sinned, and done this evil in thy sight: that thou mightest be justified when thou speakest, and be clear when thou judgest.
+Hint         │ A t, t o, h I s, a d t e i t s: t t m b j w t s, a b c w t j.
+Info           Psalm 51:1-4 · KJV
+GUID           bm1:golden:kjv:PSA.51.4:0

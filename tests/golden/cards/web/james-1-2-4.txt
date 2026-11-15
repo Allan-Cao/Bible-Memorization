@@ -1,0 +1,22 @@
+James 1:2-4 (WEB)
+
+── 1. James 1:2 ────────────────────────────────────────────────────────
+Lead-in        (none)
+Answer     2 │ Count it all joy, my brothers, when you fall into various temptations,
+Hint         │ C i a j, m b, w y f i v t,
+Info           James 1:2-4 · WEB
+GUID           bm1:golden:web:JAS.1.2:0
+
+── 2. James 1:3 ────────────────────────────────────────────────────────
+Lead-in    2 │ Count it all joy, my brothers, when you fall into various temptations,
+Answer     3 │ knowing that the testing of your faith produces endurance.
+Hint         │ k t t t o y f p e.
+Info           James 1:2-4 · WEB
+GUID           bm1:golden:web:JAS.1.3:0
+
+── 3. James 1:4 ────────────────────────────────────────────────────────
+Lead-in    3 │ knowing that the testing of your faith produces endurance.
+Answer     4 │ Let endurance have its perfect work, that you may be perfect and complete, lacking in nothing.
+Hint         │ L e h i p w, t y m b p a c, l i n.
+Info           James 1:2-4 · WEB
+GUID           bm1:golden:web:JAS.1.4:0

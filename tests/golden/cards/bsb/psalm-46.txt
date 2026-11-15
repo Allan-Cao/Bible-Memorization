@@ -1,0 +1,127 @@
+Psalm 46 (BSB)
+
+── 1. Psalm 46:1 ───────────────────────────────────────────────────────
+Lead-in      │ For the choirmaster. Of the sons of Korah. According to Alamoth. A song.
+Answer     1 │ God is our refuge and strength,
+             │     an ever-present help in times of trouble.
+Hint         │ G i o r a s,
+             │     a e-p h i t o t.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.1:0
+
+── 2. Psalm 46:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ God is our refuge and strength,
+             │     an ever-present help in times of trouble.
+Answer     2 │ Therefore we will not fear,
+             │     though the earth is transformed
+             │ and the mountains are toppled
+             │     into the depths of the seas,
+Hint         │ T w w n f,
+             │     t t e i t
+             │ a t m a t
+             │     i t d o t s,
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.2:0
+
+── 3. Psalm 46:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ Therefore we will not fear,
+             │     though the earth is transformed
+             │ and the mountains are toppled
+             │     into the depths of the seas,
+Answer     3 │ though their waters roar and foam
+             │     and the mountains quake in the surge.
+             │ Selah
+Hint         │ t t w r a f
+             │     a t m q i t s.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.3:0
+
+── 4. Psalm 46:4 ───────────────────────────────────────────────────────
+Lead-in    3 │ though their waters roar and foam
+             │     and the mountains quake in the surge.
+             │ Selah
+Answer     4 │ There is a river whose streams delight the city of God,
+             │     the holy place where the Most High dwells.
+Hint         │ T i a r w s d t c o G,
+             │     t h p w t M H d.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.4:0
+
+── 5. Psalm 46:5 ───────────────────────────────────────────────────────
+Lead-in    4 │ There is a river whose streams delight the city of God,
+             │     the holy place where the Most High dwells.
+Answer     5 │ God is within her; she will not be moved.
+             │     God will help her when morning dawns.
+Hint         │ G i w h; s w n b m.
+             │     G w h h w m d.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.5:0
+
+── 6. Psalm 46:6 ───────────────────────────────────────────────────────
+Lead-in    5 │ God is within her; she will not be moved.
+             │     God will help her when morning dawns.
+Answer     6 │ Nations rage, kingdoms crumble;
+             │     the earth melts when He lifts His voice.
+Hint         │ N r, k c;
+             │     t e m w H l H v.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.6:0
+
+── 7. Psalm 46:7 ───────────────────────────────────────────────────────
+Lead-in    6 │ Nations rage, kingdoms crumble;
+             │     the earth melts when He lifts His voice.
+Answer     7 │ The LORD of Hosts is with us;
+             │     the God of Jacob is our fortress.
+             │ Selah
+Hint         │ T L o H i w u;
+             │     t G o J i o f.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.7:0
+
+── 8. Psalm 46:8 ───────────────────────────────────────────────────────
+Lead-in    7 │ The LORD of Hosts is with us;
+             │     the God of Jacob is our fortress.
+             │ Selah
+Answer     8 │ Come, see the works of the LORD,
+             │     who brings devastation upon the earth.
+Hint         │ C, s t w o t L,
+             │     w b d u t e.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.8:0
+
+── 9. Psalm 46:9 ───────────────────────────────────────────────────────
+Lead-in    8 │ Come, see the works of the LORD,
+             │     who brings devastation upon the earth.
+Answer     9 │ He makes wars to cease throughout the earth;
+             │     He breaks the bow and shatters the spear;
+             │     He burns the shields in the fire.
+Hint         │ H m w t c t t e;
+             │     H b t b a s t s;
+             │     H b t s i t f.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.9:0
+
+── 10. Psalm 46:10 ─────────────────────────────────────────────────────
+Lead-in    9 │ He makes wars to cease throughout the earth;
+             │     He breaks the bow and shatters the spear;
+             │     He burns the shields in the fire.
+Answer    10 │ “Be still and know that I am God;
+             │     I will be exalted among the nations,
+             │     I will be exalted over the earth.”
+Hint         │ “B s a k t I a G;
+             │     I w b e a t n,
+             │     I w b e o t e.”
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.10:0
+
+── 11. Psalm 46:11 ─────────────────────────────────────────────────────
+Lead-in   10 │ “Be still and know that I am God;
+             │     I will be exalted among the nations,
+             │     I will be exalted over the earth.”
+Answer    11 │ The LORD of Hosts is with us;
+             │     the God of Jacob is our fortress.
+             │ Selah
+Hint         │ T L o H i w u;
+             │     t G o J i o f.
+Info           Psalm 46 · BSB
+GUID           bm1:golden:bsb:PSA.46.11:0

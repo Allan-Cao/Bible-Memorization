@@ -6,7 +6,7 @@ import initSqlJs from 'sql.js';
 import { describe, expect, it } from 'vitest';
 import { writeApkg } from './anki/apkg.ts';
 import { buildDeck, type LoadBooks } from './build.ts';
-import type { BookId, BookText, DeckDefinition } from './model.ts';
+import type { BookId, BookText, DeckDefinition, NoteSpec, TranslationId } from './model.ts';
 import { verseKey } from './refs.ts';
 import { splitUnits } from './units.ts';
 
@@ -141,5 +141,73 @@ describe('presets end to end', () => {
 		expect(new Set(rows.map(([guid]) => guid)).size).toBe(rows.length);
 		expect(rows.map(([guid]) => guid)).toEqual(build.notes.map((n) => n.guid));
 		expect(rows.map(([, due]) => due)).toEqual(rows.map((_, i) => i));
+	});
+});
+
+// ---------------------------------------------------------------------------------------------
+// Golden cards: real text, built as an export would be, written out for a person to judge.
+
+/**
+ * Field HTML as text. Each printed line sits right of a `│`, so its indent shows: 4 spaces per
+ * level. A verse number stands left of the `│`; a bare `│` line is a paragraph or stanza gap.
+ */
+function lines(html: string): string[] {
+	const out: string[] = [];
+	for (const [, classes, inner] of html.matchAll(/<div class="line([^"]*)">(.*?)<\/div>/g)) {
+		if (out.length > 0 && classes.includes('para')) out.push(`${''.padEnd(4)} │`);
+		const vn = /^<span class="vn">(\d+)<\/span>/.exec(inner);
+		const body = inner
+			.replace(/^<span class="vn">\d+<\/span>/, '')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&quot;/g, '"')
+			.replace(/&amp;/g, '&');
+		const indent = '    '.repeat(Number(/i(\d)/.exec(classes)?.[1] ?? 0));
+		out.push(`${(vn?.[1] ?? '').padStart(4)} │ ${indent}${body}`);
+	}
+	return out;
+}
+
+function describeNote(note: NoteSpec): string {
+	const block = (label: string, html: string) => {
+		const body = lines(html);
+		if (body.length === 0) return `${label.padEnd(15)}(none)`;
+		return body.map((line, i) => (i === 0 ? label : '').padEnd(8) + line).join('\n');
+	};
+	return [
+		`── ${note.order + 1}. ${note.fields.Reference} `.padEnd(72, '─'),
+		block('Lead-in', note.fields.Context),
+		block('Answer', note.fields.Answer),
+		block('Hint', note.fields.Hint),
+		`${'Info'.padEnd(15)}${note.fields.Info}`,
+		`${'GUID'.padEnd(15)}${note.guid}`
+	].join('\n');
+}
+
+const GOLDEN: [file: string, ref: string][] = [
+	['psalm-23', 'Psalm 23'],
+	['romans-8-38-39', 'Romans 8:38-39'],
+	['john-3-16-17', 'John 3:16-17'],
+	['proverbs-3-5-6', 'Proverbs 3:5-6'],
+	['hebrews-1-1-4', 'Hebrews 1:1-4'],
+	['isaiah-40-28-31', 'Isaiah 40:28-31'],
+	['john-14-1-3-6', 'John 14:1-3, 6'],
+	['james-1-2-4', 'James 1:2-4'],
+	['matthew-17-20-22', 'Matthew 17:20-22'],
+	['psalm-51-1-4', 'Psalm 51:1-4'],
+	['psalm-46', 'Psalm 46'],
+	['revelation-20-4-6', 'Revelation 20:4-6'],
+	['ephesians-1-3-14', 'Ephesians 1:3-14']
+];
+
+describe.each(['bsb', 'web', 'kjv'] as TranslationId[])('golden cards: %s', (translation) => {
+	it.each(GOLDEN)('%s', async (file, ref) => {
+		const def = deck({ id: 'golden', translation, list: ref });
+		const { build, errors, passages } = await buildDeck(def, fromDisk, 1_800_000_000);
+		expect(errors).toEqual([]);
+		const body = build.notes.map(describeNote).join('\n\n');
+		await expect(
+			`${passages[0].ref.label} (${translation.toUpperCase()})\n\n${body}\n`
+		).toMatchFileSnapshot(`../../../tests/golden/cards/${translation}/${file}.txt`);
 	});
 });
