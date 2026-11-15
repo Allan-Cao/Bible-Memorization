@@ -98,7 +98,7 @@ export const TEMPLATE_MARKER = '/* template bump check */';
 
 /** The v2 package as a later TEMPLATE_VERSION would write it: newer note type mod, changed CSS. */
 function withBumpedTemplate(bytes: Uint8Array, SQL: SqlJsStatic): Uint8Array {
-	const files = unzipSync(bytes);
+	const files: Record<string, Uint8Array> = unzipSync(bytes);
 	const db = new SQL.Database(files['collection.anki2']);
 	const [[modelsJson]] = db.exec('SELECT models FROM col')[0].values as [[string]];
 	const models = JSON.parse(modelsJson);
