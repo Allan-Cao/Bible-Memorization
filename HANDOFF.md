@@ -16,15 +16,15 @@ The approved plan is at `/home/allan/.claude/plans/could-you-review-the-async-to
 
 ## Done and committed
 
-| Area | Files | State |
-|---|---|---|
-| Scaffold | SvelteKit 3.2, Svelte 5, Tailwind 4.3, Bits UI 2.21, adapter-static | check, lint, test, build pass |
-| Types | `src/lib/core/model.ts` | the contract between modules |
-| References | `books.ts`, `refs.ts`, `list.ts` | strict parsing, normalized labels, line-numbered errors |
-| Bible text | `scripts/build-text.ts`, `static/text/{bsb,web,kjv}/`, `versification.*`, `sources/static.ts` | eBible USFM converted; `npm run build:text` regenerates |
-| Cards | `units.ts`, `render.ts`, `cards.ts`, `translations.ts` | one verse per card; long verses split (30-word threshold, 35-word soft cap, 10-word minimum part) |
-| Anki | `anki/notetype.ts`, `anki/apkg.ts`, `scripts/anki-import-check.py` | verified against Anki 26.09.4's importer |
-| Deck | `deckdef.ts`, `diff.ts`, `build.ts` | definition, share links, export diff, cleanup search, pipeline |
+| Area       | Files                                                                                         | State                                                                                             |
+| ---------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Scaffold   | SvelteKit 3.2, Svelte 5, Tailwind 4.3, Bits UI 2.21, adapter-static                           | check, lint, test, build pass                                                                     |
+| Types      | `src/lib/core/model.ts`                                                                       | the contract between modules                                                                      |
+| References | `books.ts`, `refs.ts`, `list.ts`                                                              | strict parsing, normalized labels, line-numbered errors                                           |
+| Bible text | `scripts/build-text.ts`, `static/text/{bsb,web,kjv}/`, `versification.*`, `sources/static.ts` | eBible USFM converted; `npm run build:text` regenerates                                           |
+| Cards      | `units.ts`, `render.ts`, `cards.ts`, `translations.ts`                                        | one verse per card; long verses split (30-word threshold, 35-word soft cap, 10-word minimum part) |
+| Anki       | `anki/notetype.ts`, `anki/apkg.ts`, `scripts/anki-import-check.py`                            | verified against Anki 26.09.4's importer                                                          |
+| Deck       | `deckdef.ts`, `diff.ts`, `build.ts`                                                           | definition, share links, export diff, cleanup search, pipeline                                    |
 
 Last known full-suite result: 520 tests passing (before the UI work started). Golden files for human review: `tests/golden/text/` and `tests/golden/cards/{bsb,web,kjv}/`.
 
