@@ -26,17 +26,26 @@ The approved plan is at `/home/allan/.claude/plans/could-you-review-the-async-to
 | Anki       | `anki/notetype.ts`, `anki/apkg.ts`, `scripts/anki-import-check.py`                            | verified against Anki 26.09.4's importer                                                          |
 | Deck       | `deckdef.ts`, `diff.ts`, `build.ts`                                                           | definition, share links, export diff, cleanup search, pipeline                                    |
 
-Last known full-suite result: 520 tests passing (before the UI work started). Golden files for human review: `tests/golden/text/` and `tests/golden/cards/{bsb,web,kjv}/`.
+Last reported full-suite result: 537 tests passing. Golden files for human review: `tests/golden/text/` and `tests/golden/cards/{bsb,web,kjv}/`.
 
-## In progress when this note was written
+## UI: built, not yet reviewed
 
-An Opus sub-agent was building the UI (`src/routes/`, `src/lib/ui/`), a size limit on `decodeShare` in `deckdef.ts`, and a Playwright smoke test. It commits per component. **Its result had not come back.** First thing to do:
+An Opus sub-agent finished the UI after this note was first written. Its report said `check`, `lint`, `test` (537 tests), `build` and the Playwright smoke test (`npm run test:e2e`) all passed on the final tree. Nobody has reviewed the UI code or looked at it in a browser yet.
 
-1. `git status` and `git log --oneline` to see what it committed and whether uncommitted work is lying around.
-2. Run `npm run check && npm run lint && npm test && npm run build`. A `deckdef.test.ts` share-link size-limit test was failing mid-way (written test-first); confirm it is green or finish it.
-3. Review the UI against the brief below, and look at its screenshots if present in the session scratchpad `ui/` folder (may be gone after a reboot; retake with the dev server).
+- Routes: `/` (home), `/deck/[id]` (editor), `/open` (shared links and deck files), `/about`.
+- Components in `src/lib/ui/`: `DeckEditor`, `PassagePanel`, `CardPreview`, `BreakEditor`, `ExportDialog`, `ShareDialog`, plus small shared pieces, `storage.ts` and `browser.ts`.
+- New core module `editor.ts` (preview data, `toggleBreak`, `hintLines`).
+- Screenshots were saved in the session scratchpad `ui/` folder (may be gone; retake with `npm run dev`).
 
-UI brief in short: Home (decks, new deck, OT/NT examples from Billy Graham's decision card, open deck file); `/deck/[id]` editor (name, translation Select, list textarea with inline errors, live card preview in Collapsibles, click between words to add/remove a break, Export, Share); Export dialog (download, change summary, cleanup search with copy, rename and ordering warnings); Share dialog (link to `/open#...`, deck file); `/open`; `/about` with text sources. Plain language: no "GUID", "note type" or "revision" in the UI.
+Things to check when reviewing:
+
+1. `editor.ts` `previewDeck` repeats the walk in `cards.ts` `makeNotes` (a test checks they agree on both presets). Consider having one produce the data for the other.
+2. `hintLines` takes apart the output of `firstLetters`; a per-line export from `render.ts` would be cleaner.
+3. The break editor makes every word gap a tab stop (many Tab presses on long verses).
+4. Open/collapsed passages are tracked by position, so inserting a passage changes which are open.
+5. Example decks' headings repeat the deck name; the favicon is still Svelte's.
+6. Individual UI commits were not each verified on their own, only the final tree.
+7. Not verified: import into real Anki, Firefox/Safari, clipboard copy, screen readers.
 
 ## Facts worth knowing (verified against Anki)
 
@@ -49,7 +58,7 @@ UI brief in short: Home (decks, new deck, OT/NT examples from Billy Graham's dec
 
 ## Remaining work
 
-1. Finish and review the UI (above).
+1. Review the UI (above) and try it in a browser.
 2. Manual check: import a real exported deck into Anki desktop and a phone (AnkiDroid/AnkiMobile untested), re-import an update, run the cleanup search, tap the hint.
 3. Ask Allan to read the golden card files and confirm the card design.
 4. README rewrite; delete this file.
