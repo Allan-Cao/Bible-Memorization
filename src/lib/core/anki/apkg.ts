@@ -12,8 +12,8 @@
  */
 import { strToU8, zipSync } from 'fflate';
 import type { Database, SqlJsStatic } from 'sql.js';
-import type { DeckBuild } from '../model.ts';
-import { MODEL_ID, noteTypeJson } from './notetype.ts';
+import type { DeckBuild, NoteSpec } from '../model.ts';
+import { FIELD_NAMES, MODEL_ID, noteTypeJson } from './notetype.ts';
 
 const SCHEMA = `
 CREATE TABLE col (
@@ -148,12 +148,80 @@ function writeCollection(db: Database, build: DeckBuild): void {
 	]);
 }
 
+/** Sort field text: the Reference with any markup removed, as Anki stores it. */
+function sortField(html: string): string {
+	return html
+		.replace(/<[^>]*>/g, '')
+		.replace(/&nbsp;/g, ' ')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&quot;/g, '"')
+		.replace(/&#39;/g, "'")
+		.replace(/&amp;/g, '&')
+		.trim();
+}
+
+function formatTags(tags: string[]): string {
+	for (const tag of tags) {
+		if (tag === '' || /\s/.test(tag)) throw new Error(`Invalid tag ${JSON.stringify(tag)}`);
+	}
+	return tags.length ? ` ${tags.join(' ')} ` : '';
+}
+
+function validate(notes: NoteSpec[]): void {
+	const guids = new Set<string>();
+	const orders = new Set<number>();
+	for (const n of notes) {
+		if (guids.has(n.guid)) throw new Error(`Duplicate guid ${n.guid}`);
+		if (!Number.isSafeInteger(n.order) || n.order < 0) throw new Error(`Invalid order ${n.order}`);
+		if (orders.has(n.order)) throw new Error(`Duplicate order ${n.order}`);
+		guids.add(n.guid);
+		orders.add(n.order);
+	}
+}
+
+/**
+ * Note and card ids are `exportedAt * 1000 + order`: millisecond-style like Anki's own ids,
+ * increasing in order, and the same for the same build. They only need to be unique within the
+ * package; Anki matches notes by guid and gives an incoming note a fresh id if its id is taken.
+ */
+function writeNotes(db: Database, build: DeckBuild): void {
+	validate(build.notes);
+	const t = build.exportedAt;
+	const did = ankiDeckId(build.deckId);
+	const notes = [...build.notes].sort((a, b) => a.order - b.order);
+	const insertNote = db.prepare("INSERT INTO notes VALUES (?, ?, ?, ?, -1, ?, ?, ?, 0, 0, '')");
+	const insertCard = db.prepare(
+		"INSERT INTO cards VALUES (?, ?, ?, 0, ?, -1, 0, 0, ?, 0, 0, 0, 0, 0, 0, 0, 0, '')"
+	);
+	try {
+		for (const n of notes) {
+			const id = t * 1000 + n.order;
+			const flds = FIELD_NAMES.map((name) => n.fields[name]).join('\x1f');
+			insertNote.run([
+				id,
+				n.guid,
+				MODEL_ID,
+				t,
+				formatTags(n.tags),
+				flds,
+				sortField(n.fields.Reference)
+			]);
+			insertCard.run([id, id, did, t, n.order]);
+		}
+	} finally {
+		insertNote.free();
+		insertCard.free();
+	}
+}
+
 export function writeApkg(build: DeckBuild, SQL: SqlJsStatic): Uint8Array {
 	const db = new SQL.Database();
 	let collection: Uint8Array;
 	try {
 		db.run(SCHEMA);
 		writeCollection(db, build);
+		writeNotes(db, build);
 		collection = db.export();
 	} finally {
 		db.close();

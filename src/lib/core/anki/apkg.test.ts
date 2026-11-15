@@ -114,3 +114,145 @@ describe('writeApkg deck', () => {
 		expect(Object.keys(a)).toEqual(Object.keys(b));
 	});
 });
+
+describe('writeApkg notes', () => {
+	const notesOf = (b: DeckBuild) =>
+		rows(open(writeApkg(b, SQL)).db, 'SELECT * FROM notes ORDER BY id');
+
+	it('writes one note per NoteSpec with the guid exactly as given', () => {
+		const notes = notesOf(build());
+		expect(notes.map((n) => n.guid)).toEqual([
+			'bm1:k3f9x2ab:bsb:JHN.3.16:0',
+			'bm1:k3f9x2ab:bsb:JHN.3.17:0',
+			'bm1:k3f9x2ab:bsb:JHN.3.18:0'
+		]);
+		expect(notes.every((n) => n.mid === MODEL_ID)).toBe(true);
+	});
+
+	it('uses the export time as every note modification time', () => {
+		const notes = notesOf(build({ exportedAt: 1_812_345_678 }));
+		expect(notes.map((n) => n.mod)).toEqual([1_812_345_678, 1_812_345_678, 1_812_345_678]);
+	});
+
+	it('writes tags space separated with surrounding spaces', () => {
+		const [n] = notesOf(build({ notes: [note(0, { tags: ['bm::k3f9x2ab::r7', 'Psalm_23'] })] }));
+		expect(n.tags).toBe(' bm::k3f9x2ab::r7 Psalm_23 ');
+	});
+
+	it('writes no tags as an empty string', () => {
+		const [n] = notesOf(build({ notes: [note(0, { tags: [] })] }));
+		expect(n.tags).toBe('');
+	});
+
+	it('rejects tags containing whitespace', () => {
+		expect(() => writeApkg(build({ notes: [note(0, { tags: ['two words'] })] }), SQL)).toThrow(
+			/tag/i
+		);
+	});
+
+	it('rejects duplicate guids', () => {
+		expect(() =>
+			writeApkg(build({ notes: [note(0), note(1, { guid: note(0).guid })] }), SQL)
+		).toThrow(/guid/i);
+	});
+
+	it('stores field HTML unchanged in field order', () => {
+		const fields = {
+			Reference: 'Psalm 23:1',
+			Context: '<div class="line i1 para">&lt;prev&gt; &amp; “quotes”</div>',
+			Answer:
+				'<div class="line"><span class="vn">1</span>The LORD is my shepherd;</div>\n<div class="line i1">I shall not want.</div>',
+			Hint: 'T L i m s; I s n w.',
+			Info: 'BSB <i>notice</i>'
+		};
+		const [n] = notesOf(build({ notes: [note(0, { fields })] }));
+		expect(n.flds).toBe(
+			[fields.Reference, fields.Context, fields.Answer, fields.Hint, fields.Info].join('\x1f')
+		);
+	});
+
+	it('uses Reference as the sort field', () => {
+		const [n] = notesOf(build({ notes: [note(0)] }));
+		expect(n.sfld).toBe('John 3:16');
+	});
+});
+
+describe('writeApkg cards', () => {
+	const cardsOf = (b: DeckBuild) =>
+		rows(open(writeApkg(b, SQL)).db, 'SELECT * FROM cards ORDER BY id');
+
+	it('writes one new card per note in the deck', () => {
+		const { db } = open(writeApkg(build(), SQL));
+		const cards = rows(db, 'SELECT * FROM cards ORDER BY id');
+		const notes = rows(db, 'SELECT id FROM notes ORDER BY id');
+		expect(cards.map((c) => c.nid)).toEqual(notes.map((n) => n.id));
+		for (const c of cards) {
+			expect(c).toMatchObject({
+				did: ankiDeckId('k3f9x2ab'),
+				ord: 0,
+				type: 0,
+				queue: 0,
+				ivl: 0,
+				reps: 0,
+				lapses: 0,
+				odid: 0,
+				mod: 1_800_000_000
+			});
+		}
+	});
+
+	it('sets due to the note order', () => {
+		const notes = [note(0, { order: 5 }), note(1, { order: 0 }), note(2, { order: 2 })];
+		const { db } = open(writeApkg(build({ notes }), SQL));
+		const due = rows(db, 'SELECT n.guid, c.due FROM cards c JOIN notes n ON n.id = c.nid');
+		expect(Object.fromEntries(due.map((r) => [r.guid, r.due]))).toEqual({
+			[notes[0].guid]: 5,
+			[notes[1].guid]: 0,
+			[notes[2].guid]: 2
+		});
+	});
+
+	it('assigns note and card ids increasing in order, whatever the input order', () => {
+		const notes = [note(0, { order: 2 }), note(1, { order: 0 }), note(2, { order: 1 })];
+		const { db } = open(writeApkg(build({ notes }), SQL));
+		const byNote = rows(
+			db,
+			'SELECT n.id AS nid, c.id AS cid, c.due FROM notes n JOIN cards c ON n.id = c.nid ORDER BY n.id'
+		);
+		expect(byNote.map((r) => r.due)).toEqual([0, 1, 2]);
+		const byCard = rows(db, 'SELECT due FROM cards ORDER BY id');
+		expect(byCard.map((r) => r.due)).toEqual([0, 1, 2]);
+	});
+
+	it('derives ids only from export time and order', () => {
+		const a = cardsOf(build({ exportedAt: 1_800_000_000 }));
+		const b = cardsOf(build({ exportedAt: 1_800_000_000, deckName: 'Other' }));
+		const c = cardsOf(build({ exportedAt: 1_800_000_001 }));
+		expect(a.map((r) => [r.id, r.nid])).toEqual(b.map((r) => [r.id, r.nid]));
+		expect(c.map((r) => r.id)).not.toEqual(a.map((r) => r.id));
+		expect(a.every((r) => Number.isSafeInteger(r.id) && (r.id as number) > 1e12)).toBe(true);
+	});
+
+	it('rejects duplicate orders', () => {
+		expect(() => writeApkg(build({ notes: [note(0), note(1, { order: 0 })] }), SQL)).toThrow(
+			/order/i
+		);
+	});
+});
+
+describe('writeApkg determinism', () => {
+	it('gives identical bytes for the same build', () => {
+		expect(writeApkg(build(), SQL)).toEqual(writeApkg(build(), SQL));
+	});
+
+	it('does not depend on the current time', () => {
+		const realNow = Date.now;
+		try {
+			const a = writeApkg(build(), SQL);
+			Date.now = () => realNow() + 86_400_000 * 400;
+			expect(writeApkg(build(), SQL)).toEqual(a);
+		} finally {
+			Date.now = realNow;
+		}
+	});
+});
