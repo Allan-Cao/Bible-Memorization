@@ -12,7 +12,9 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter({ fallback: '200.html' })
+			// 404.html is the app shell: hosts serve it for unknown paths, and static/_redirects
+			// serves it with status 200 for the client-only deck pages.
+			adapter: adapter({ fallback: '404.html' })
 		})
 	],
 	test: {

@@ -9,6 +9,7 @@ Stack: SvelteKit 3, Svelte 5 (runes), TypeScript, Tailwind v4, Bits UI, `@svelte
 ```bash
 npm run dev      # dev server
 npm test         # vitest, single run (not watch)
+npm run test:e2e # Playwright against the static build (Chromium and Firefox)
 npm run check    # svelte-kit sync + svelte-check
 npm run lint     # prettier --check, then eslint
 npm run build    # static build into build/
@@ -28,7 +29,7 @@ Scripts in `scripts/` run with `npx tsx scripts/<name>.ts`.
 
 ## SvelteKit 3 differences from Kit 2 (confirmed in this scaffold)
 
-- No `svelte.config.js`. Kit options are passed to `sveltekit({...})` in `vite.config.ts`; the adapter is set there (`adapter: adapter({ fallback: '200.html' })`).
+- No `svelte.config.js`. Kit options are passed to `sveltekit({...})` in `vite.config.ts`; the adapter is set there (`adapter: adapter({ fallback: '404.html' })`).
 - `$lib` is replaced by `#lib`, a Node subpath import declared in `package.json` `"imports"` (`#lib` and `#lib/*`). Include file extensions: `#lib/foo.js`.
 - tsconfig extends `$app/tsconfig` instead of `./.svelte-kit/tsconfig.json`, with explicit `include` and `"types": ["$app/types", "node"]`.
 - Layout and page props types are imported from `./$types` (`LayoutProps`).
@@ -37,7 +38,9 @@ Scripts in `scripts/` run with `npx tsx scripts/<name>.ts`.
 
 ## Static output
 
-adapter-static builds into `build/` with SPA fallback `200.html`, so client-side routes such as `/deck/[id]` work when not prerendered.
+adapter-static builds into `build/` with the app shell as `404.html`. Client-only routes (`/deck/[id]`) are served from it: `static/_redirects` rewrites `/deck/*` to it with status 200, and any other unknown path gets it with status 404.
+
+Hosting is Cloudflare Workers static assets (`wrangler.jsonc`, no Worker script, so it costs nothing). `static/_headers` caches the hashed files under `/_app/immutable/`. Deploy with `npm run build && npx wrangler deploy`.
 
 ## Conventions
 

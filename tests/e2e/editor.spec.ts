@@ -61,3 +61,15 @@ test('passages stay open or closed when another is added above them', async ({ p
 	await open('Psalm 23:5');
 	await closed('Psalm 23:1');
 });
+
+test('a deck page loads directly, and an unknown address says so', async ({ page }) => {
+	await newDeck(page, 'John 3:16');
+	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
+	await page.reload();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Editor deck');
+	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
+
+	const response = await page.goto('/no-such-page');
+	expect(response?.status()).toBe(404);
+	await expect(page.getByText('Not Found')).toBeVisible();
+});
