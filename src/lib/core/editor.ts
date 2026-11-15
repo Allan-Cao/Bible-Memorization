@@ -10,9 +10,11 @@
 
 import type { BuildResult } from './build.ts';
 import type { Break, DeckDefinition, Line, Unit, Verse } from './model.ts';
+import { parseList } from './list.ts';
 import { inRange, verseKey } from './refs.ts';
 import { firstLetters } from './render.ts';
 import { autoBreaks, breakAfter, splitUnits, verseWords } from './units.ts';
+import { versificationFor } from './versification.ts';
 
 export interface PreviewCard {
 	/** As on the card, e.g. "John 3:16 (1/2)". */
@@ -147,4 +149,10 @@ export function insertedPassages(previous: string[] | null, next: string[]): str
 		if (old.has(label)) lastOld = i;
 	});
 	return next.filter((label, i) => !old.has(label) && i < lastOld);
+}
+
+/** How many passages a deck's list holds, for deck lists. Invalid lines are not counted. */
+export function passageCount(def: DeckDefinition): number {
+	const { groups } = parseList(def.list, versificationFor(def.translation));
+	return groups.reduce((n, g) => n + g.refs.length, 0);
 }

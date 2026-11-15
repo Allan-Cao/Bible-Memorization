@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { buildDeck, type LoadBooks } from './build.ts';
-import { hintLines, insertedPassages, previewDeck, toggleBreak } from './editor.ts';
+import { hintLines, insertedPassages, passageCount, previewDeck, toggleBreak } from './editor.ts';
 import type { BookId, BookText, DeckDefinition, Verse } from './model.ts';
 import { firstLetters, renderLines } from './render.ts';
 import { autoBreaks, verseWords } from './units.ts';
@@ -167,5 +167,11 @@ describe('insertedPassages', () => {
 		expect(insertedPassages(['A', 'B'], ['A', 'B', 'X'])).toEqual([]);
 		expect(insertedPassages(['A', 'B'], ['B', 'X'])).toEqual([]);
 		expect(insertedPassages(null, ['A', 'B'])).toEqual([]);
+	});
+});
+
+describe('passageCount', () => {
+	it('counts the valid references, ignoring headings and mistakes', () => {
+		expect(passageCount(deck({ list: '# A\nJohn 3:16\nNope 1\n\nPsalm 23' }))).toBe(2);
 	});
 });
