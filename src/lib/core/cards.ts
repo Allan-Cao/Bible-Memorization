@@ -59,6 +59,7 @@ export function makeNotes(
 		// The lead-in only runs within one range: "John 14:1-3, 6" gives verse 6 none.
 		let previous: { unit: Unit; range: number } | null = null;
 		for (const verse of passage.verses) {
+			if (verse.omitted) previous = null; // nothing to lead in from across the gap
 			const key = verseKey(verse.ref);
 			const range = rangeIndex(passage.ref.ranges, verse.ref);
 			const isNew = !done.has(key);

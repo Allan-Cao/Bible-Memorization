@@ -424,6 +424,23 @@ describe('makeNotes: lead-in', () => {
 		expect(second).toMatch(/^<div class="line"><span class="vn">1<\/span>The LORD/);
 	});
 
+	it('gives the first unit after an omitted verse no lead-in', () => {
+		const p = passage(
+			'Matthew 17:20-22',
+			'MAT',
+			[[17, 20, 22]],
+			[
+				prose('MAT', 17, 20, 'Because you have so little faith.'),
+				{ ref: { book: 'MAT', chapter: 17, verse: 21 }, lines: [], omitted: true },
+				prose('MAT', 17, 22, 'When they gathered together in Galilee.')
+			]
+		);
+		expect(context([p])).toEqual([
+			['Matthew 17:20', ''],
+			['Matthew 17:22', '']
+		]);
+	});
+
 	it('does not lead in from one passage to the next', () => {
 		expect(context([john3, romans8])[2]).toEqual(['Romans 8:38', '']);
 	});
