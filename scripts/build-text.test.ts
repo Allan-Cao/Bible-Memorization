@@ -76,6 +76,15 @@ describe('parseUsfm: verses and chapters', () => {
 		expect(() => verses('GEN', '\\c 1\n\\p Stray text\n\\v 1 a')).toThrow(/outside/);
 	});
 
+	it('leaves out a verse whose only content is a footnote', () => {
+		// WEB Luke 17:36
+		const vs = verses(
+			'LUK',
+			'\\c 1\n\\p\n\\v 35 the other left.\n\\v 36 \\f + \\fr 17:36 \\ft Some Greek manuscripts add: “Two will be in the field.”\\f*\n\\p\n\\v 37 They answered.'
+		);
+		expect(vs.map((v) => v.v)).toEqual([35, 37]);
+	});
+
 	it('fails on a verse with no text', () => {
 		expect(() => verses('GEN', '\\c 1\n\\p\n\\v 1\n\\v 2 b')).toThrow(/no text/);
 	});
@@ -363,6 +372,13 @@ describe('parseUsfm: removed content', () => {
 		expect(v.lines[0].text).toBe(
 			'As it is written, “But the righteous shall live by faith.” And he only Son, yes.'
 		);
+		// BSB Amos 1:15
+		const dash = verse(
+			'AMO',
+			'\\c 1\n\\q1\n\\v 15 will go into exile \\f + \\fr 1:15 \\ft Possibly Milcom\\f*—',
+			15
+		);
+		expect(dash.lines[0].text).toBe('will go into exile—');
 	});
 
 	it('removes section headings, chapter labels, speakers and colophons', () => {

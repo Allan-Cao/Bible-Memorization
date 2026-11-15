@@ -86,7 +86,7 @@ const CHARACTERS = new Set(['w', 'wj', 'add', 'nd', 'bk', 'it', 'tl', 'qt', 'bd'
 const NOTES = new Set(['f', 'x']);
 
 /** Punctuation that must not follow a space left behind by a removed note. */
-const CLOSING_PUNCTUATION = /^\s*[,.;:!?)\]’”]/;
+const CLOSING_PUNCTUATION = /^\s*[,.;:!?)\]’”—–]/;
 
 export class UsfmError extends Error {}
 
@@ -149,6 +149,7 @@ class Parser {
 	private chars: string[] = [];
 	private note: string | null = null;
 	private afterNote = false;
+	private verseHasNote = false;
 	/** Inside \w after the "|": attributes, dropped up to the next marker. */
 	private attributes = false;
 	private capture: 'title' | 'selah' | null = null;
@@ -225,6 +226,7 @@ class Parser {
 		if (this.note) return; // everything inside a note is dropped
 		if (NOTES.has(name)) {
 			this.note = name;
+			if (this.verse && !this.capture) this.verseHasNote = true;
 			return;
 		}
 		if (name === 'qs') {
@@ -362,8 +364,15 @@ class Parser {
 		this.closeLine();
 	}
 
+	/**
+	 * A verse number followed only by a note (WEB Luke 17:36: "Some Greek manuscripts add...")
+	 * is a verse this translation leaves out, so it is dropped. A verse with nothing is an error.
+	 */
 	private endVerse(): void {
-		if (this.verse && this.verse.lines.length === 0) this.fail('verse has no text');
+		if (!this.verse || this.verse.lines.length > 0) return;
+		if (!this.verseHasNote || this.verse.title !== undefined) this.fail('verse has no text');
+		this.chapters[this.chapters.length - 1].pop();
+		this.verse = null;
 	}
 
 	private chapter(arg: string): void {
@@ -389,6 +398,7 @@ class Parser {
 		const previous = verses[verses.length - 1];
 		if (previous && v <= previous.v) this.fail(`verse ${v} out of order after ${previous.v}`);
 		this.verse = { v, lines: [] };
+		this.verseHasNote = false;
 		if (this.title !== null) {
 			if (v !== 1) this.fail(`psalm title before verse ${v}`);
 			this.verse.title = this.title;
