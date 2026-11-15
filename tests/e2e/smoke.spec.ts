@@ -11,7 +11,7 @@ async function exportDeck(page: Page): Promise<Uint8Array> {
 	return new Uint8Array(await readFile((await file.path())!));
 }
 
-test('make, fix, export, update and share a deck', async ({ page, browser }) => {
+test('make, fix, export, update and share a deck', async ({ page, browser, browserName }) => {
 	await page.goto('/');
 	await page.getByLabel('Name').fill('Smoke deck');
 	await page.getByRole('button', { name: 'Create deck' }).click();
@@ -66,6 +66,13 @@ test('make, fix, export, update and share a deck', async ({ page, browser }) => 
 	const link = page.getByLabel('Link to this deck');
 	await expect(link).toHaveText(/\/open#[A-Za-z0-9_-]+$/);
 	const url = (await link.textContent())!;
+	if (browserName === 'chromium') {
+		// Only Chromium lets a test read the clipboard back.
+		await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+		await page.getByRole('dialog').getByRole('button', { name: 'Copy' }).click();
+		await expect(page.getByRole('dialog').getByRole('button', { name: 'Copied' })).toBeVisible();
+		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(url);
+	}
 	await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
 
 	await page.goto(url);
