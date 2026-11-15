@@ -1,0 +1,29 @@
+John 14:1-3, 6 (BSB)
+
+── 1. John 14:1 ────────────────────────────────────────────────────────
+Lead-in   (none)
+Answer    [1] Do not let your hearts be troubled. You believe in God; believe in Me as well.
+Hint      D n l y h b t. Y b i G; b i M a w.
+Info      John 14:1-3, 6 · BSB
+GUID      bm1:golden:bsb:JHN.14.1:0
+
+── 2. John 14:2 ────────────────────────────────────────────────────────
+Lead-in   [1] Do not let your hearts be troubled. You believe in God; believe in Me as well.
+Answer    [2] In My Father’s house are many rooms. If it were not so, would I have told you that I am going there to prepare a place for you?
+Hint      I M F h a m r. I i w n s, w I h t y t I a g t t p a p f y?
+Info      John 14:1-3, 6 · BSB
+GUID      bm1:golden:bsb:JHN.14.2:0
+
+── 3. John 14:3 ────────────────────────────────────────────────────────
+Lead-in   [2] In My Father’s house are many rooms. If it were not so, would I have told you that I am going there to prepare a place for you?
+Answer    [3] And if I go and prepare a place for you, I will come back and welcome you into My presence, so that you also may be where I am.
+Hint      A i I g a p a p f y, I w c b a w y i M p, s t y a m b w I a.
+Info      John 14:1-3, 6 · BSB
+GUID      bm1:golden:bsb:JHN.14.3:0
+
+── 4. John 14:6 ────────────────────────────────────────────────────────
+Lead-in   (none)
+Answer    [6] Jesus answered, “I am the way and the truth and the life. No one comes to the Father except through Me.
+Hint      J a, “I a t w a t t a t l. N o c t t F e t M.
+Info      John 14:1-3, 6 · BSB
+GUID      bm1:golden:bsb:JHN.14.6:0
