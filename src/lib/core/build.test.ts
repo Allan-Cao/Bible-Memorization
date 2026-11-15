@@ -1,7 +1,14 @@
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
+import { unzipSync } from 'fflate';
+import initSqlJs from 'sql.js';
 import { describe, expect, it } from 'vitest';
+import { writeApkg } from './anki/apkg.ts';
 import { buildDeck, type LoadBooks } from './build.ts';
 import type { BookId, BookText, DeckDefinition } from './model.ts';
+import { verseKey } from './refs.ts';
+import { splitUnits } from './units.ts';
 
 /** Reads the committed text under static/text/, as the app fetches it. */
 const fromDisk: LoadBooks = async (translation, bookIds) => {
@@ -109,5 +116,30 @@ describe('buildDeck', () => {
 		const result = await buildDeck(deck(), fromDisk, 1_800_000_000);
 		expect(result.build.notes).toEqual([]);
 		expect(result.groups).toEqual([]);
+	});
+});
+
+describe('presets end to end', () => {
+	it.each(['nt.txt', 'ot.txt'])('%s builds and writes a package Anki can read', async (file) => {
+		const list = await readFile(new URL(`../../../presets/${file}`, import.meta.url), 'utf8');
+		const { build, errors, passages } = await buildDeck(deck({ list }), fromDisk, 1_800_000_000);
+		expect(errors).toEqual([]);
+
+		// Each verse is asked once, however many passages contain it.
+		const verses = new Map(passages.flatMap((p) => p.verses.map((v) => [verseKey(v.ref), v])));
+		const units = [...verses.values()].reduce((n, v) => n + splitUnits(v).units.length, 0);
+
+		const sqlDist = dirname(createRequire(import.meta.url).resolve('sql.js'));
+		const SQL = await initSqlJs({ locateFile: (f) => join(sqlDist, f) });
+		const db = new SQL.Database(unzipSync(writeApkg(build, SQL))['collection.anki2']);
+		const rows = db.exec(
+			'SELECT n.guid, c.due FROM notes n JOIN cards c ON c.nid = n.id ORDER BY n.id'
+		)[0].values as [string, number][];
+		db.close();
+
+		expect(rows.length).toBe(units);
+		expect(new Set(rows.map(([guid]) => guid)).size).toBe(rows.length);
+		expect(rows.map(([guid]) => guid)).toEqual(build.notes.map((n) => n.guid));
+		expect(rows.map(([, due]) => due)).toEqual(rows.map((_, i) => i));
 	});
 });

@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { BOOKS } from './books.ts';
 import { parseList } from './list.ts';
 import type { Versification } from './model.ts';
+import { versificationFor } from './versification.ts';
 
 const vers: Versification = {
 	JHN: [51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25],
@@ -124,15 +124,14 @@ describe('parseList: duplicates', () => {
 });
 
 describe('preset lists', () => {
-	// Permissive fake: every book gets 150 chapters of 200 verses, so only the syntax is checked.
-	// Switch this to the real versification once it is in the repo.
-	const permissive: Versification = Object.fromEntries(
-		BOOKS.map((b) => [b.id, Array<number>(150).fill(200)])
-	);
-
-	it.each(['ot.txt', 'nt.txt'])('every reference in %s parses', (file) => {
+	it.each(
+		(['bsb', 'web', 'kjv'] as const).flatMap((t) => [
+			['ot.txt', t],
+			['nt.txt', t]
+		])
+	)('every reference in %s parses against %s verse counts', (file, translation) => {
 		const text = readFileSync(new URL(`../../../presets/${file}`, import.meta.url), 'utf8');
-		const { groups, errors } = parseList(text, permissive);
+		const { groups, errors } = parseList(text, versificationFor(translation));
 		expect(errors).toEqual([]);
 		expect(groups.flatMap((g) => g.refs).length).toBeGreaterThan(10);
 	});
