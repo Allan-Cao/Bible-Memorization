@@ -10,6 +10,8 @@ export interface Book {
 	name: string;
 	/** Accepted spellings besides `name`. Numbered books list the "1 John" style only; see findBook. */
 	aliases: string[];
+	/** The book has one chapter, so references and labels leave the chapter out ("Jude 5"). */
+	singleChapter?: true;
 }
 
 // Deliberately absent: 'Jud' (Judges or Jude), 'Ph' (Philippians or Philemon), 'Ez' (Ezra or Ezekiel),
@@ -57,7 +59,7 @@ export const BOOKS: Book[] = [
 	{ id: 'HOS', name: 'Hosea', aliases: ['Hos', 'Ho'] },
 	{ id: 'JOL', name: 'Joel', aliases: ['Joe', 'Jl'] },
 	{ id: 'AMO', name: 'Amos', aliases: ['Am'] },
-	{ id: 'OBA', name: 'Obadiah', aliases: ['Obad', 'Oba', 'Ob'] },
+	{ id: 'OBA', name: 'Obadiah', aliases: ['Obad', 'Oba', 'Ob'], singleChapter: true },
 	{ id: 'JON', name: 'Jonah', aliases: ['Jnh', 'Jon'] },
 	{ id: 'MIC', name: 'Micah', aliases: ['Mic', 'Mc'] },
 	{ id: 'NAM', name: 'Nahum', aliases: ['Nah', 'Na'] },
@@ -83,15 +85,15 @@ export const BOOKS: Book[] = [
 	{ id: '1TI', name: '1 Timothy', aliases: ['1 Tim', '1 Ti'] },
 	{ id: '2TI', name: '2 Timothy', aliases: ['2 Tim', '2 Ti'] },
 	{ id: 'TIT', name: 'Titus', aliases: ['Tit', 'Ti'] },
-	{ id: 'PHM', name: 'Philemon', aliases: ['Philem', 'Phm', 'Pm'] },
+	{ id: 'PHM', name: 'Philemon', aliases: ['Philem', 'Phm', 'Pm'], singleChapter: true },
 	{ id: 'HEB', name: 'Hebrews', aliases: ['Heb'] },
 	{ id: 'JAS', name: 'James', aliases: ['Jas', 'Jm'] },
 	{ id: '1PE', name: '1 Peter', aliases: ['1 Pet', '1 Pe', '1 Pt'] },
 	{ id: '2PE', name: '2 Peter', aliases: ['2 Pet', '2 Pe', '2 Pt'] },
 	{ id: '1JN', name: '1 John', aliases: ['1 Jn', '1 Jhn', '1 Jo'] },
-	{ id: '2JN', name: '2 John', aliases: ['2 Jn', '2 Jhn', '2 Jo'] },
-	{ id: '3JN', name: '3 John', aliases: ['3 Jn', '3 Jhn', '3 Jo'] },
-	{ id: 'JUD', name: 'Jude', aliases: ['Jde'] },
+	{ id: '2JN', name: '2 John', aliases: ['2 Jn', '2 Jhn', '2 Jo'], singleChapter: true },
+	{ id: '3JN', name: '3 John', aliases: ['3 Jn', '3 Jhn', '3 Jo'], singleChapter: true },
+	{ id: 'JUD', name: 'Jude', aliases: ['Jde'], singleChapter: true },
 	{ id: 'REV', name: 'Revelation', aliases: ['Rev', 'Re', 'Revelations', 'The Revelation'] }
 ];
 
@@ -117,4 +119,9 @@ function withDigitPrefix(input: string): string {
 /** Case-insensitive lookup by name or abbreviation. Undefined when unknown. */
 export function findBook(input: string): Book | undefined {
 	return byKey.get(squash(withDigitPrefix(input)));
+}
+
+/** True for the five one-chapter books (Obadiah, Philemon, 2 John, 3 John, Jude). */
+export function isSingleChapter(bookId: string): boolean {
+	return BOOKS.some((book) => book.id === bookId && book.singleChapter);
 }

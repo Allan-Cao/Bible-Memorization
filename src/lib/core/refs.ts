@@ -14,7 +14,7 @@
  * Items keep the order they were typed in.
  */
 
-import { findBook } from './books.ts';
+import { findBook, isSingleChapter } from './books.ts';
 import type { RefRange, Reference, VerseRef, Versification } from './model.ts';
 
 /** C or V, then optionally -C or -V, with an optional :V after either number. */
@@ -73,7 +73,7 @@ function parseItem(
 		// C:V, C:V-V or C:V-C:V
 		[sc, sv] = [a!, b];
 		[ec, ev] = d !== undefined ? [c!, d] : [sc, c ?? b];
-	} else if (first && counts.length > 1) {
+	} else if (first && !isSingleChapter(book)) {
 		// Whole chapters: C or C-C
 		[sc, ec] = [a!, c ?? a!];
 		checkChapter(sc, name, counts);
@@ -152,7 +152,7 @@ function itemLabel(
 	}
 	const verses = start.verse === end.verse ? `${start.verse}` : `${start.verse}-${end.verse}`;
 	const loneFirstVerse = start.verse === 1 && end.verse === 1;
-	const bare = counts.length === 1 ? !(first && loneFirstVerse) : start.chapter === current;
+	const bare = isSingleChapter(start.book) ? !(first && loneFirstVerse) : start.chapter === current;
 	return bare ? verses : `${start.chapter}:${verses}`;
 }
 

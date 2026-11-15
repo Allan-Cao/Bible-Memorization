@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BOOKS, findBook } from './books.ts';
+import { BOOKS, findBook, isSingleChapter } from './books.ts';
 
 describe('BOOKS', () => {
 	it('lists the 66 books in canonical order', () => {
@@ -115,5 +115,18 @@ describe('findBook', () => {
 	it('names Psalms "Psalm" and the Song "Song of Songs"', () => {
 		expect(findBook('ps')?.name).toBe('Psalm');
 		expect(findBook('sos')?.name).toBe('Song of Songs');
+	});
+});
+
+describe('isSingleChapter', () => {
+	it('is true for exactly the five one-chapter books', () => {
+		expect(BOOKS.filter((b) => isSingleChapter(b.id)).map((b) => b.id)).toEqual([
+			'OBA',
+			'PHM',
+			'2JN',
+			'3JN',
+			'JUD'
+		]);
+		expect(isSingleChapter('JHN')).toBe(false);
 	});
 });

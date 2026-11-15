@@ -4,7 +4,7 @@
  * Note identity comes from deck id, translation, verse and unit index, never from text.
  */
 
-import { BOOKS } from './books.ts';
+import { BOOKS, isSingleChapter } from './books.ts';
 import type {
 	DeckDefinition,
 	NoteSpec,
@@ -21,9 +21,6 @@ import { splitUnits } from './units.ts';
 
 const BOOK_NAMES = new Map(BOOKS.map((book) => [book.id, book.name]));
 
-/** Books with one chapter, whose labels leave the chapter out (see refs.ts). */
-const SINGLE_CHAPTER_BOOKS = new Set(['OBA', 'PHM', '2JN', '3JN', 'JUD']);
-
 export function noteGuid(
 	deckId: string,
 	translation: TranslationId,
@@ -36,7 +33,7 @@ export function noteGuid(
 /** "John 3:16"; "Jude 5" but "Jude 1:1", as in refs.ts labels. */
 export function verseLabel(ref: VerseRef): string {
 	const name = BOOK_NAMES.get(ref.book) ?? ref.book;
-	if (SINGLE_CHAPTER_BOOKS.has(ref.book) && ref.verse !== 1) return `${name} ${ref.verse}`;
+	if (isSingleChapter(ref.book) && ref.verse !== 1) return `${name} ${ref.verse}`;
 	return `${name} ${ref.chapter}:${ref.verse}`;
 }
 
