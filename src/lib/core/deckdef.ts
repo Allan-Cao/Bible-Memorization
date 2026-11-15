@@ -9,6 +9,8 @@ import type { Break, DeckDefinition, TranslationId } from './model.ts';
 import { TRANSLATIONS } from './translations.ts';
 
 const DEFAULT_NAME = 'Bible Memorization';
+/** A share link never unpacks to more than this many bytes of JSON, however small the link. */
+export const MAX_SHARE_BYTES = 1_000_000;
 const ID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
 export function newDeck(name: string, translation: TranslationId): DeckDefinition {
@@ -71,16 +73,45 @@ export async function encodeShare(def: DeckDefinition): Promise<string> {
 }
 
 export async function decodeShare(text: string): Promise<DeckDefinition> {
+	let bytes: Uint8Array | null;
 	let json: unknown;
 	try {
 		const binary = atob(text.trim().replace(/-/g, '+').replace(/_/g, '/'));
 		const packed = Uint8Array.from(binary, (c) => c.charCodeAt(0));
-		const bytes = await pipe(packed, new DecompressionStream('deflate-raw'));
-		json = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+		bytes = await inflateAtMost(packed, MAX_SHARE_BYTES);
+		if (bytes) json = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
 	} catch {
 		throw new Error('This link is damaged or incomplete, so the deck could not be read');
 	}
+	if (!bytes) throw new Error('This link holds a deck that is too large to open');
 	return parseDeckDefinition(json);
+}
+
+/** Inflates chunk by chunk and stops as soon as the output passes `max` bytes (returns null). */
+async function inflateAtMost(packed: Uint8Array<ArrayBuffer>, max: number) {
+	const reader = new Blob([packed])
+		.stream()
+		.pipeThrough(new DecompressionStream('deflate-raw'))
+		.getReader();
+	const chunks: Uint8Array[] = [];
+	let size = 0;
+	for (;;) {
+		const { done, value } = await reader.read();
+		if (done) break;
+		size += value.length;
+		if (size > max) {
+			await reader.cancel();
+			return null;
+		}
+		chunks.push(value);
+	}
+	const out = new Uint8Array(size);
+	let at = 0;
+	for (const chunk of chunks) {
+		out.set(chunk, at);
+		at += chunk.length;
+	}
+	return out;
 }
 
 async function pipe(

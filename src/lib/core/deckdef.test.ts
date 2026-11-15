@@ -3,6 +3,7 @@ import {
 	cleanDeckName,
 	decodeShare,
 	encodeShare,
+	MAX_SHARE_BYTES,
 	newDeck,
 	parseDeckDefinition
 } from './deckdef.ts';
@@ -117,6 +118,17 @@ describe('share links', () => {
 		await expect(decodeShare('!!!not base64!!!')).rejects.toThrow(/link/);
 		await expect(decodeShare('AAAA')).rejects.toThrow(/link/);
 		await expect(decodeShare('')).rejects.toThrow(/link/);
+	});
+
+	it('opens a large deck under the size limit', async () => {
+		const list = 'John 3:16\n'.repeat(90_000); // about 900 KB of JSON
+		expect(await decodeShare(await encodeShare({ ...valid, list }))).toMatchObject({ list });
+	});
+
+	it('refuses a link that would unpack to more than the size limit', async () => {
+		const text = await encodeShare({ ...valid, list: 'a'.repeat(MAX_SHARE_BYTES + 1) });
+		expect(text.length).toBeLessThan(5000); // tiny link, huge content
+		await expect(decodeShare(text)).rejects.toThrow(/too large/);
 	});
 
 	it('rejects a link whose content is not a deck', async () => {
