@@ -20,3 +20,6 @@ Thumbs.db
 
 # Generated decks
 *.apkg
+
+# USFM download cache (scripts/build-text.ts)
+/.cache
