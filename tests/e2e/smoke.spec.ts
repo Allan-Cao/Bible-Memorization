@@ -65,7 +65,7 @@ test('make, fix, export, update and share a deck', async ({ page, browser, brows
 	await page.getByRole('button', { name: 'Share' }).click();
 	const link = page.getByLabel('Link to this deck');
 	await expect(link).toHaveText(/\/open#[A-Za-z0-9_-]+$/);
-	const url = (await link.textContent())!;
+	const url = (await link.textContent())!.trim();
 	if (browserName === 'chromium') {
 		// Only Chromium lets a test read the clipboard back.
 		await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);

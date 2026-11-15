@@ -236,6 +236,7 @@
 							<PassagePanel
 								{passage}
 								startOpen={starts[g] + p < 3 || passage.label === built?.added}
+								level={group.heading ? 4 : 3}
 								translation={TRANSLATIONS[def.translation].short}
 								onbreaks={setBreaks}
 							/>

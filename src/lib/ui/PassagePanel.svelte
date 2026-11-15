@@ -11,12 +11,15 @@
 	let {
 		passage,
 		startOpen = false,
+		level,
 		translation,
 		onbreaks
 	}: {
 		passage: PreviewPassage;
 		/** Open at first. After that the panel keeps its own state, whatever is added around it. */
 		startOpen?: boolean;
+		/** Heading level of the passage's name: 4 under a list heading, 3 without one. */
+		level: 3 | 4;
 		/** Short name, for omitted verses. */
 		translation: string;
 		onbreaks: (key: string, breaks: Break[] | undefined) => void;
@@ -28,7 +31,7 @@
 </script>
 
 <Collapsible.Root bind:open>
-	<h4>
+	<svelte:element this={`h${level}`}>
 		<Collapsible.Trigger
 			class="group flex w-full items-baseline justify-between gap-3 rounded-md px-2 py-2 text-left hover:bg-stone-100 dark:hover:bg-stone-900 {focus}"
 		>
@@ -45,7 +48,7 @@
 				{passage.cards === 1 ? 'card' : 'cards'}
 			</span>
 		</Collapsible.Trigger>
-	</h4>
+	</svelte:element>
 	<Collapsible.Content class="space-y-3 pt-2 pb-4 sm:pl-5">
 		{#each passage.verses as item (item.key)}
 			{#if item.verse.omitted}
