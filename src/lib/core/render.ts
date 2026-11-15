@@ -2,6 +2,7 @@
  * Field HTML for cards. Class names are styled by the note type's CSS:
  *   .line  one printed line (block)     .i1 .i2 .i3  indent levels (level 0 has no class)
  *   .para  starts a paragraph or stanza  .vn  verse-number marker   .context  lead-in wrapper
+ *   .selah a Selah line                  .title  a psalm title shown as the lead-in
  */
 
 import type { Line } from './model.ts';
@@ -21,11 +22,17 @@ export function renderLines(lines: Line[], verseNumber?: number): string {
 			const classes = ['line'];
 			if (line.indent) classes.push(`i${line.indent}`);
 			if (line.paragraph && i > 0) classes.push('para');
+			if (line.selah) classes.push('selah');
 			const marker =
 				i === 0 && verseNumber !== undefined ? `<span class="vn">${verseNumber}</span>` : '';
 			return `<div class="${classes.join(' ')}">${marker}${escapeHtml(line.text)}</div>`;
 		})
 		.join('');
+}
+
+/** A psalm title, which stands where the lead-in would be. */
+export function renderTitle(text: string): string {
+	return `<div class="line title">${escapeHtml(text)}</div>`;
 }
 
 /** The first-letter hint, with the same line structure. Selah lines are left out. */

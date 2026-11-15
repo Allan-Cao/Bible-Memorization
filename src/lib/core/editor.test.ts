@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { buildDeck, type LoadBooks } from './build.ts';
 import { insertedPassages, passageCount, previewDeck, toggleBreak } from './editor.ts';
 import type { BookId, BookText, DeckDefinition, Verse } from './model.ts';
-import { renderLines } from './render.ts';
+import { renderLines, renderTitle } from './render.ts';
 import { autoBreaks, verseWords } from './units.ts';
 
 const fromDisk: LoadBooks = async (translation, bookIds) => {
@@ -61,7 +61,11 @@ describe('previewDeck', () => {
 			expect(cards.length).toBe(result.build.notes.length);
 			cards.forEach((card, i) => {
 				const fields = result.build.notes[i].fields;
-				const context = card.lead ? renderLines(card.lead.lines, card.lead.verseNumber) : '';
+				const context = !card.lead
+					? ''
+					: card.lead.title
+						? renderTitle(card.lead.lines[0].text)
+						: renderLines(card.lead.lines, card.lead.verseNumber);
 				const answer = renderLines(card.unit.lines, card.verseNumber);
 				expect([card.reference, context, answer]).toEqual([
 					fields.Reference,

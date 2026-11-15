@@ -17,7 +17,7 @@ import type {
 	VerseRef
 } from './model.ts';
 import { inRange, verseKey, verseLabel } from './refs.ts';
-import { firstLetters, renderLines } from './render.ts';
+import { firstLetters, renderLines, renderTitle } from './render.ts';
 import { TRANSLATIONS } from './translations.ts';
 import { splitUnits } from './units.ts';
 
@@ -130,7 +130,7 @@ export function makeNotes(
 					tags,
 					fields: {
 						Reference: reference,
-						Context: lead ? renderLines(lead.lines, lead.verseNumber) : '',
+						Context: context(lead),
 						Answer: renderLines(unit.lines, firstVerseNumber(unit)),
 						Hint: firstLetters(unit.lines),
 						Info: `${passages[i].ref.label} · ${short}`
@@ -140,4 +140,10 @@ export function makeNotes(
 		}
 	});
 	return { notes, staleBreaks };
+}
+
+function context(lead: Lead | null): string {
+	if (!lead) return '';
+	if (lead.title) return lead.lines.map((line) => renderTitle(line.text)).join('');
+	return renderLines(lead.lines, lead.verseNumber);
 }

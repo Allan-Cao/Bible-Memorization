@@ -38,7 +38,7 @@ describe('note type', () => {
 	});
 
 	it('has a modification time that depends only on the template version', () => {
-		expect(TEMPLATE_VERSION).toBe(1);
+		expect(TEMPLATE_VERSION).toBe(2);
 		expect(Number.isSafeInteger(NOTETYPE_MOD)).toBe(true);
 		expect(noteTypeJson(1).mod).toBe(NOTETYPE_MOD);
 		expect(noteTypeJson(2).mod).toBe(NOTETYPE_MOD);
@@ -92,7 +92,18 @@ describe('note type', () => {
 		});
 
 		it('styles every documented class', () => {
-			for (const cls of ['line', 'i1', 'i2', 'i3', 'para', 'vn', 'context', 'info']) {
+			for (const cls of [
+				'line',
+				'i1',
+				'i2',
+				'i3',
+				'para',
+				'vn',
+				'title',
+				'selah',
+				'context',
+				'info'
+			]) {
 				expect(css).toMatch(new RegExp(`\\.${cls}\\b`));
 			}
 		});

@@ -387,7 +387,7 @@ describe('makeNotes: lead-in', () => {
 
 	it('shows the psalm title when there is no lead-in', () => {
 		const [first, second] = field('Context', deck(), [psalm23]);
-		expect(first).toBe('<div class="line">A Psalm of David.</div>');
+		expect(first).toBe('<div class="line title">A Psalm of David.</div>');
 		expect(second).toMatch(/^<div class="line"><span class="vn">1<\/span>The LORD/);
 	});
 

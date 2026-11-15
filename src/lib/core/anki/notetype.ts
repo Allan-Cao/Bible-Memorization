@@ -10,6 +10,9 @@
  *               (`<div class="line i2">`). Level 0 has no class.
  * - `.para`     added next to `.line` when the line starts a paragraph or stanza (extra space before it).
  * - `.vn`       verse number marker, inline at the start of a line: `<span class="vn">16</span>`.
+ * - `.selah`    added next to `.line` for a Selah line, which is shown but not recited.
+ * - `.title`    added next to `.line` for a psalm title, which stands in the Context field
+ *               where the lead-in would be.
  * - `.context`  the lead-in wrapper. The template already wraps the Context field in
  *               `<div class="context">`, so the Context field itself holds only `.line` elements.
  * - `.info`     small text at the bottom of the back. The template already wraps the Info field in
@@ -36,7 +39,7 @@ export const MODEL_NAME = 'Bible Memorization';
 export const FIELD_NAMES = ['Reference', 'Context', 'Answer', 'Hint', 'Info'] as const;
 
 /** Bump on every change to QFMT, AFMT or CSS. */
-export const TEMPLATE_VERSION = 1;
+export const TEMPLATE_VERSION = 2;
 
 /**
  * The note type's modification time (seconds). Anki's default import option replaces an existing
@@ -61,6 +64,8 @@ const CSS = `.line { display: block; }
 .i3 { padding-left: 4.5em; }
 .para { margin-top: 0.75em; }
 .vn { font-size: 0.6em; vertical-align: super; line-height: 0; opacity: 0.7; padding-right: 0.15em; }
+.title, .selah { font-style: italic; font-size: 0.85em; }
+.selah { opacity: 0.7; }
 .context { opacity: 0.6; margin-top: 0.5em; }
 .hint-wrap { margin-top: 0.75em; }
 .info { font-size: 0.75em; opacity: 0.7; margin-top: 1.5em; }

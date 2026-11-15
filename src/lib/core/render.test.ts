@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import type { Line } from './model.ts';
-import { escapeHtml, firstLetters, hintLines, hintText, renderLines } from './render.ts';
+import {
+	escapeHtml,
+	firstLetters,
+	hintLines,
+	hintText,
+	renderLines,
+	renderTitle
+} from './render.ts';
 
 const line = (text: string, extra: Partial<Line> = {}): Line => ({ text, indent: 0, ...extra });
 
@@ -29,8 +36,10 @@ describe('renderLines', () => {
 		expect(renderLines(lines)).toBe('<div class="line">a</div><div class="line i1 para">b</div>');
 	});
 
-	it('renders Selah like any other line', () => {
-		expect(renderLines([line('Selah', { selah: true })])).toBe('<div class="line">Selah</div>');
+	it('marks a Selah line', () => {
+		expect(renderLines([line('Selah', { selah: true })])).toBe(
+			'<div class="line selah">Selah</div>'
+		);
 	});
 
 	it('escapes <, > and & in text', () => {
@@ -108,5 +117,13 @@ describe('hintLines', () => {
 			{ text: 'w-b <b>', indent: 2 }
 		]);
 		expect(renderLines(hintLines(lines))).toBe(firstLetters(lines));
+	});
+});
+
+describe('renderTitle', () => {
+	it('gives a psalm title as one line marked .title, escaped', () => {
+		expect(renderTitle('A Psalm of David & <sons>.')).toBe(
+			'<div class="line title">A Psalm of David &amp; &lt;sons&gt;.</div>'
+		);
 	});
 });
