@@ -31,14 +31,31 @@
 		return () => clearTimeout(timer);
 	});
 
-	let built = $state<{ result: BuildResult; def: DeckDefinition } | null>(null);
+	let built = $state<{ result: BuildResult; def: DeckDefinition; added: string | null } | null>(
+		null
+	);
 	let buildError = $state('');
+	let labels = new Set<string>(); // of the previous build
 	$effect(() => {
-		const d = { ...$state.snapshot(def), name: '', revision: 0, list };
+		// Only what changes the cards: renaming the deck does not rebuild them.
+		const d: DeckDefinition = {
+			v: 1,
+			id: def.id,
+			name: '',
+			translation: def.translation,
+			list,
+			breaks: $state.snapshot(def.breaks),
+			revision: 0
+		};
 		let current = true;
 		buildDeck(d, loadBooks, 0).then(
 			(result) => {
-				if (current) [built, buildError] = [{ result, def: d }, ''];
+				if (!current) return;
+				// A passage added on its own starts open, wherever it is in the list.
+				const next = result.passages.map((p) => p.ref.label);
+				const fresh = next.filter((label) => !labels.has(label));
+				labels = new Set(next);
+				[built, buildError] = [{ result, def: d, added: fresh.length === 1 ? fresh[0] : null }, ''];
 			},
 			(e) => current && (buildError = message(e))
 		);
@@ -50,7 +67,7 @@
 	const verses = $derived(
 		groups.flatMap((g) => g.passages.flatMap((p) => p.verses)).filter((v) => v.cards.length).length
 	);
-	/** Index of each group's first passage across the deck, so the first few start open. */
+	/** Index of each group's first passage across the deck: the first few passages start open. */
 	const starts = $derived(
 		groups.map((_, i) => groups.slice(0, i).reduce((n, g) => n + g.passages.length, 0))
 	);
@@ -218,7 +235,7 @@
 						{#each group.passages as passage, p (passage.label)}
 							<PassagePanel
 								{passage}
-								open={starts[g] + p < 3}
+								startOpen={starts[g] + p < 3 || passage.label === built?.added}
 								translation={TRANSLATIONS[def.translation].short}
 								onbreaks={setBreaks}
 							/>

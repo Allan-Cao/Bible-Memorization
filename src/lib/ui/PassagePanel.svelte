@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Collapsible, Toggle } from 'bits-ui';
+	import { untrack } from 'svelte';
 	import type { PreviewPassage } from '#lib/core/editor.ts';
 	import type { Break } from '#lib/core/model.ts';
 	import { verseLabel } from '#lib/core/refs.ts';
@@ -9,18 +10,19 @@
 
 	let {
 		passage,
-		open = false,
+		startOpen = false,
 		translation,
 		onbreaks
 	}: {
 		passage: PreviewPassage;
-		/** Open at first. */
-		open?: boolean;
+		/** Open at first. After that the panel keeps its own state, whatever is added around it. */
+		startOpen?: boolean;
 		/** Short name, for omitted verses. */
 		translation: string;
 		onbreaks: (key: string, breaks: Break[] | undefined) => void;
 	} = $props();
 
+	let open = $state(untrack(() => startOpen));
 	/** Key of the verse whose breaks are being adjusted. */
 	let editing = $state<string | null>(null);
 </script>
