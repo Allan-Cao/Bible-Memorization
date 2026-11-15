@@ -33,7 +33,6 @@ GUID           bm1:golden:web:PSA.46.3:0
 ── 4. Psalm 46:4 ───────────────────────────────────────────────────────
 Lead-in    3 │     though its waters roar and are troubled,
              │     though the mountains tremble with their swelling.
-             │ Selah
 Answer     4 │ There is a river, the streams of which make the city of God glad,
              │     the holy place of the tents of the Most High.
 Hint         │ T i a r, t s o w m t c o G g,
@@ -75,7 +74,6 @@ GUID           bm1:golden:web:PSA.46.7:0
 ── 8. Psalm 46:8 ───────────────────────────────────────────────────────
 Lead-in    7 │ The LORD of Armies is with us.
              │     The God of Jacob is our refuge.
-             │ Selah
 Answer     8 │ Come, see the LORD’s works,
              │     what desolations he has made on the earth.
 Hint         │ C, s t L w,

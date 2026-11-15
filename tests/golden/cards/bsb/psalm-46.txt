@@ -39,7 +39,6 @@ GUID           bm1:golden:bsb:PSA.46.3:0
 ── 4. Psalm 46:4 ───────────────────────────────────────────────────────
 Lead-in    3 │ though their waters roar and foam
              │     and the mountains quake in the surge.
-             │ Selah
 Answer     4 │ There is a river whose streams delight the city of God,
              │     the holy place where the Most High dwells.
 Hint         │ T i a r w s d t c o G,
@@ -81,7 +80,6 @@ GUID           bm1:golden:bsb:PSA.46.7:0
 ── 8. Psalm 46:8 ───────────────────────────────────────────────────────
 Lead-in    7 │ The LORD of Hosts is with us;
              │     the God of Jacob is our fortress.
-             │ Selah
 Answer     8 │ Come, see the works of the LORD,
              │     who brings devastation upon the earth.
 Hint         │ C, s t w o t L,

@@ -24,7 +24,6 @@ GUID           bm1:golden:kjv:PSA.46.3:0
 
 ── 4. Psalm 46:4 ───────────────────────────────────────────────────────
 Lead-in    3 │ Though the waters thereof roar and be troubled, though the mountains shake with the swelling thereof.
-             │ Selah
 Answer     4 │ There is a river, the streams whereof shall make glad the city of God, the holy place of the tabernacles of the most High.
 Hint         │ T i a r, t s w s m g t c o G, t h p o t t o t m H.
 Info           Psalm 46 · KJV
@@ -54,7 +53,6 @@ GUID           bm1:golden:kjv:PSA.46.7:0
 
 ── 8. Psalm 46:8 ───────────────────────────────────────────────────────
 Lead-in    7 │ The LORD of hosts is with us; the God of Jacob is our refuge.
-             │ Selah
 Answer     8 │ Come, behold the works of the LORD, what desolations he hath made in the earth.
 Hint         │ C, b t w o t L, w d h h m i t e.
 Info           Psalm 46 · KJV

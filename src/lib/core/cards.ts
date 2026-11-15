@@ -74,7 +74,11 @@ export function makeNotes(
 				let context = '';
 				if (verse.title && unit.index === 0) {
 					context = renderLines([{ text: verse.title, indent: 0 }]);
-				} else if (lead) context = renderUnit(lead);
+				} else if (lead) {
+					// Selah is not worth recalling, so it never leads in.
+					const lines = lead.lines.filter((line) => !line.selah);
+					if (lines.length > 0) context = renderUnit({ ...lead, lines });
+				}
 
 				notes.push({
 					guid: noteGuid(def.id, def.translation, verse.ref, unit.index),

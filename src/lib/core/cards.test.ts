@@ -416,6 +416,27 @@ describe('makeNotes: lead-in', () => {
 		]);
 	});
 
+	it('leaves Selah out of a lead-in, and gives none when only Selah is left', () => {
+		const selah = (text: string): Line => ({ text, indent: 0, selah: true });
+		const p = passage(
+			'Psalm 46:3-5',
+			'PSA',
+			[[46, 3, 5]],
+			[
+				{
+					ref: { book: 'PSA', chapter: 46, verse: 3 },
+					lines: [{ text: 'though its waters roar', indent: 0 }, selah('Selah')]
+				},
+				{ ref: { book: 'PSA', chapter: 46, verse: 4 }, lines: [selah('Selah')] },
+				prose('PSA', 46, 5, 'God is within her.')
+			]
+		);
+		const [, four, five] = notes(deck(), [p]);
+		expect(text(four.fields.Context)).toBe('[3] though its waters roar');
+		expect(text(four.fields.Answer)).toContain('Selah');
+		expect(five.fields.Context).toBe('');
+	});
+
 	it('gives the first unit after an omitted verse no lead-in', () => {
 		const p = passage(
 			'Matthew 17:20-22',
