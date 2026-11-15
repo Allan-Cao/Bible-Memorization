@@ -50,7 +50,12 @@ function rows(db: Database, sql: string): Record<string, unknown>[] {
 	return result.values.map((v) => Object.fromEntries(result.columns.map((c, i) => [c, v[i]])));
 }
 
-function col(db: Database) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Json = any;
+
+function col(
+	db: Database
+): Record<string, unknown> & Record<'models' | 'decks' | 'dconf' | 'conf', Json> {
 	const [row] = rows(db, 'SELECT * FROM col');
 	return {
 		...row,
