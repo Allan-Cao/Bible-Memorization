@@ -154,15 +154,13 @@ function writeCollection(db: Database, build: DeckBuild): void {
 	]);
 }
 
-/** Sort field text: the Reference with any markup removed, as Anki stores it. */
+/** Sort field text: the Reference with any markup removed and escapeHtml undone, as Anki stores it. */
 function sortField(html: string): string {
 	return html
 		.replace(/<[^>]*>/g, '')
-		.replace(/&nbsp;/g, ' ')
 		.replace(/&lt;/g, '<')
 		.replace(/&gt;/g, '>')
 		.replace(/&quot;/g, '"')
-		.replace(/&#39;/g, "'")
 		.replace(/&amp;/g, '&')
 		.trim();
 }

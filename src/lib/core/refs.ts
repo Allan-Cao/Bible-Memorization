@@ -15,7 +15,7 @@
  */
 
 import { BOOKS, findBook, isSingleChapter } from './books.ts';
-import type { RefRange, Reference, VerseRef, Versification } from './model.ts';
+import type { BookId, RefRange, Reference, VerseRef, Versification } from './model.ts';
 
 /** C or V, then optionally -C or -V, with an optional :V after either number. */
 const ITEM = /^(\d+)(?::(\d+))?(?:-(\d+)(?::(\d+))?)?$/;
@@ -152,8 +152,16 @@ function itemLabel(
 	}
 	const verses = start.verse === end.verse ? `${start.verse}` : `${start.verse}-${end.verse}`;
 	const loneFirstVerse = start.verse === 1 && end.verse === 1;
-	const bare = isSingleChapter(start.book) ? !(first && loneFirstVerse) : start.chapter === current;
+	const bare = start.chapter === current || hidesChapter(start.book, first && loneFirstVerse);
 	return bare ? verses : `${start.chapter}:${verses}`;
+}
+
+/**
+ * The single-chapter label rule, for item and verse labels alike: no chapter ("Jude 5"), except
+ * for a lone verse 1 where a chapter would otherwise be written, because "Jude 1" is the whole book.
+ */
+function hidesChapter(book: BookId, loneFirstVerse: boolean): boolean {
+	return isSingleChapter(book) && !loneFirstVerse;
 }
 
 /** "JHN.3.16" */
@@ -182,10 +190,10 @@ export function countVerses(ref: Reference, versification: Versification): numbe
 
 const BOOK_NAMES = new Map(BOOKS.map((book) => [book.id, book.name]));
 
-/** "John 3:16"; "Jude 5" but "Jude 1:1", the same rule as item labels above. */
+/** "John 3:16"; "Jude 5" but "Jude 1:1". */
 export function verseLabel(ref: VerseRef): string {
 	const name = BOOK_NAMES.get(ref.book) ?? ref.book;
-	if (isSingleChapter(ref.book) && ref.verse !== 1) return `${name} ${ref.verse}`;
+	if (hidesChapter(ref.book, ref.verse === 1)) return `${name} ${ref.verse}`;
 	return `${name} ${ref.chapter}:${ref.verse}`;
 }
 
