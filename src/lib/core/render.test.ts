@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Line } from './model.ts';
-import { escapeHtml, firstLetters, renderLines } from './render.ts';
+import { escapeHtml, firstLetters, hintLines, hintText, renderLines } from './render.ts';
 
 const line = (text: string, extra: Partial<Line> = {}): Line => ({ text, indent: 0, ...extra });
 
@@ -86,5 +86,27 @@ describe('firstLetters', () => {
 
 	it('escapes HTML in the hint', () => {
 		expect(firstLetters([line('<b> & so')])).toBe('<div class="line">&lt;b&gt; &amp; s</div>');
+	});
+});
+
+describe('hintText', () => {
+	it('gives the first letters of one line as plain text, not HTML', () => {
+		expect(hintText('“Trust in the LORD & lean,')).toBe('“T i t L & l,');
+		expect(hintText('  well-being   <b> ')).toBe('w-b <b>');
+	});
+});
+
+describe('hintLines', () => {
+	it('gives the hint text line by line, keeping indents and leaving out Selah', () => {
+		const lines = [
+			{ text: '“Trust in the LORD & lean,', indent: 1 as const, paragraph: true as const },
+			{ text: 'Selah', indent: 0 as const, selah: true as const },
+			{ text: 'well-being <b>', indent: 2 as const }
+		];
+		expect(hintLines(lines)).toEqual([
+			{ text: '“T i t L & l,', indent: 1, paragraph: true },
+			{ text: 'w-b <b>', indent: 2 }
+		]);
+		expect(renderLines(hintLines(lines))).toBe(firstLetters(lines));
 	});
 });

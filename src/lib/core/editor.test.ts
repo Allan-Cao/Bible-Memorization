@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { buildDeck, type LoadBooks } from './build.ts';
-import { hintLines, insertedPassages, passageCount, previewDeck, toggleBreak } from './editor.ts';
+import { insertedPassages, passageCount, previewDeck, toggleBreak } from './editor.ts';
 import type { BookId, BookText, DeckDefinition, Verse } from './model.ts';
-import { firstLetters, renderLines } from './render.ts';
+import { renderLines } from './render.ts';
 import { autoBreaks, verseWords } from './units.ts';
 
 const fromDisk: LoadBooks = async (translation, bookIds) => {
@@ -139,21 +139,6 @@ describe('toggleBreak', () => {
 	it('ignores positions that are not between two words', () => {
 		expect(toggleBreak(verse, [], 5)).toEqual([]);
 		expect(toggleBreak(verse, [], -1)).toEqual([]);
-	});
-});
-
-describe('hintLines', () => {
-	it('gives the hint text line by line, keeping indents and leaving out Selah', () => {
-		const lines = [
-			{ text: '“Trust in the LORD & lean,', indent: 1 as const, paragraph: true as const },
-			{ text: 'Selah', indent: 0 as const, selah: true as const },
-			{ text: 'well-being <b>', indent: 2 as const }
-		];
-		expect(hintLines(lines)).toEqual([
-			{ text: '“T i t L & l,', indent: 1, paragraph: true },
-			{ text: 'w-b <b>', indent: 2 }
-		]);
-		expect(renderLines(hintLines(lines))).toBe(firstLetters(lines));
 	});
 });
 

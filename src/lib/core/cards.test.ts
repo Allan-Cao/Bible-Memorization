@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { makeNotes, noteGuid } from './cards.ts';
+import { makeNotes, noteGuid, planCards } from './cards.ts';
 import type { DeckDefinition, Line, NoteSpec, Passage, Verse } from './model.ts';
 import { breakAfter } from './units.ts';
 
@@ -557,5 +557,52 @@ describe('makeNotes: GUID stability', () => {
 		const def = deck({ breaks: { [key]: [breakAfter(john3_17, 13)] } });
 		expect(guidOf(def, [john3], key, 0)).toBe(base);
 		expect(guidOf(def, [john3], key, 1)).toBe('bm1:k3x9:bsb:JHN.3.17:1');
+	});
+});
+
+describe('planCards', () => {
+	const john3_16only = passage('John 3:16', 'JHN', [[3, 16, 16]], [john3_16]);
+
+	it('gives one list of verses per passage, each with the cards it makes', () => {
+		const plan = planCards({}, [psalm23, john3]);
+		expect(plan.map((verses) => verses.length)).toEqual([6, 2]);
+		expect(plan[1].map((v) => [v.key, v.cards.map((c) => c.reference)])).toEqual([
+			['JHN.3.16', ['John 3:16']],
+			['JHN.3.17', ['John 3:17']]
+		]);
+	});
+
+	it('describes the lead-in as lines: a psalm title, or the previous unit with its number', () => {
+		const [psalm] = planCards({}, [psalm23]);
+		expect(psalm[0].cards[0].lead).toEqual({
+			lines: [{ text: 'A Psalm of David.', indent: 0 }],
+			title: true
+		});
+		expect(psalm[1].cards[0].lead).toEqual({
+			lines: psalm23.verses[0].lines,
+			verseNumber: 1,
+			title: false
+		});
+	});
+
+	it('marks a verse asked by an earlier passage as repeated, with no cards', () => {
+		const [, second] = planCards({}, [john3_16only, john3]);
+		expect(second.map((v) => [v.repeated, v.cards.length])).toEqual([
+			[true, 0],
+			[false, 1]
+		]);
+		expect(second[1].cards[0].lead?.verseNumber).toBe(16);
+	});
+
+	it('reports the breaks in use and whether saved ones were stale', () => {
+		const saved = [breakAfter(john3_17, 13)];
+		const [verses] = planCards(
+			{ 'JHN.3.16': [{ after: 13, word: 'Daughter,' }], 'JHN.3.17': saved },
+			[john3]
+		);
+		expect(verses.map((v) => [v.stale, v.breaks])).toEqual([
+			[true, []],
+			[false, saved]
+		]);
 	});
 });

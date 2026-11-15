@@ -276,7 +276,7 @@ describe('splitUnits', () => {
 			lines: [],
 			omitted: true
 		};
-		expect(splitUnits(omitted)).toEqual({ units: [], stale: false });
+		expect(splitUnits(omitted)).toEqual({ units: [], stale: false, breaks: [] });
 	});
 
 	it('respects saved breaks', () => {
@@ -382,5 +382,21 @@ describe('every word appears in exactly one unit, in order', () => {
 			expect(units).toHaveLength(saved.length === 0 ? 1 : saved.length + 1);
 			expect(unitWords(v, saved)).toEqual(verseWords(v));
 		}
+	});
+});
+
+describe('splitUnits: breaks in use', () => {
+	it('returns the automatic breaks when none are saved or the saved ones are stale', () => {
+		expect(splitUnits(hebrews1_3).breaks).toEqual(autoBreaks(hebrews1_3));
+		const stale = [{ after: 3, word: 'nope' }];
+		expect(splitUnits(hebrews1_3, stale).breaks).toEqual(autoBreaks(hebrews1_3));
+	});
+
+	it('returns the saved breaks when they fit, and none for an omitted verse', () => {
+		const saved = [breakAfter(hebrews1_3, 12)];
+		expect(splitUnits(hebrews1_3, saved).breaks).toEqual(saved);
+		expect(splitUnits(hebrews1_3, []).breaks).toEqual([]);
+		const omitted: Verse = { ref: hebrews1_3.ref, lines: [], omitted: true };
+		expect(splitUnits(omitted).breaks).toEqual([]);
 	});
 });

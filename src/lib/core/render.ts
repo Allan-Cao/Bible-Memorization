@@ -30,14 +30,19 @@ export function renderLines(lines: Line[], verseNumber?: number): string {
 
 /** The first-letter hint, with the same line structure. Selah lines are left out. */
 export function firstLetters(lines: Line[]): string {
-	return renderLines(
-		lines
-			.filter((line) => !line.selah)
-			.map((line) => ({
-				...line,
-				text: line.text.split(/\s+/).filter(Boolean).map(hintWord).join(' ')
-			}))
-	);
+	return renderLines(hintLines(lines));
+}
+
+/** The hint as lines rather than HTML, for the editor's preview. */
+export function hintLines(lines: Line[]): Line[] {
+	return lines
+		.filter((line) => !line.selah)
+		.map((line) => ({ ...line, text: hintText(line.text) }));
+}
+
+/** One line of text with each word cut to its first letter. */
+export function hintText(text: string): string {
+	return text.split(/\s+/).filter(Boolean).map(hintWord).join(' ');
 }
 
 /**

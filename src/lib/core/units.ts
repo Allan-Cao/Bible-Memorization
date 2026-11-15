@@ -138,9 +138,13 @@ function partSizes(afters: number[], total: number): number[] {
 /**
  * `saved` undefined: automatic breaks. Empty: one unit. Otherwise the saved breaks, unless any of
  * them no longer matches the text, in which case all are ignored and `stale` is true.
+ * `breaks` are the ones in use.
  */
-export function splitUnits(verse: Verse, saved?: Break[]): { units: Unit[]; stale: boolean } {
-	if (verse.omitted || verse.lines.length === 0) return { units: [], stale: false };
+export function splitUnits(
+	verse: Verse,
+	saved?: Break[]
+): { units: Unit[]; stale: boolean; breaks: Break[] } {
+	if (verse.omitted || verse.lines.length === 0) return { units: [], stale: false, breaks: [] };
 
 	const words = countedWords(verse);
 	const fits = (b: Break) =>
@@ -158,7 +162,7 @@ export function splitUnits(verse: Verse, saved?: Break[]): { units: Unit[]; stal
 		count: parts.length,
 		lines
 	}));
-	return { units, stale };
+	return { units, stale, breaks };
 }
 
 /** Groups the lines into parts, splitting a line in two where a break falls inside it. */
