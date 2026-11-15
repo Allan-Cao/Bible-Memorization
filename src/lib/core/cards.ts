@@ -72,8 +72,9 @@ export function makeNotes(
 
 				const part = unit.count > 1 ? ` (${unit.index + 1}/${unit.count})` : '';
 				let context = '';
-				if (lead) context = renderUnit(lead);
-				else if (verse.title) context = renderLines([{ text: verse.title, indent: 0 }]);
+				if (verse.title && unit.index === 0) {
+					context = renderLines([{ text: verse.title, indent: 0 }]);
+				} else if (lead) context = renderUnit(lead);
 
 				notes.push({
 					guid: noteGuid(def.id, def.translation, verse.ref, unit.index),

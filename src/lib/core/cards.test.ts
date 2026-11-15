@@ -391,6 +391,31 @@ describe('makeNotes: lead-in', () => {
 		expect(second).toMatch(/^<div class="line"><span class="vn">1<\/span>The LORD/);
 	});
 
+	it('shows a psalm title instead of the lead-in from the psalm before', () => {
+		const psalms: Passage = {
+			ref: {
+				label: 'Psalm 2-3',
+				ranges: [
+					{
+						start: { book: 'PSA', chapter: 2, verse: 12 },
+						end: { book: 'PSA', chapter: 3, verse: 2 }
+					}
+				]
+			},
+			translation: 'bsb',
+			verses: [
+				poem('PSA', 2, 12, ['Kiss the Son.']),
+				poem('PSA', 3, 1, ['O LORD, how many are my foes!'], { title: 'A Psalm of David.' }),
+				poem('PSA', 3, 2, ['Many are saying of me,'])
+			]
+		};
+		expect(context([psalms])).toEqual([
+			['Psalm 2:12', ''],
+			['Psalm 3:1', 'A Psalm of David.'],
+			['Psalm 3:2', '[1] O LORD, how many are my foes!']
+		]);
+	});
+
 	it('gives the first unit after an omitted verse no lead-in', () => {
 		const p = passage(
 			'Matthew 17:20-22',
