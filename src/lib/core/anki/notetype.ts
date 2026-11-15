@@ -14,7 +14,8 @@
  *               `<div class="context">`, so the Context field itself holds only `.line` elements.
  * - `.info`     small text at the bottom of the back. The template already wraps the Info field in
  *               `<div class="info">`, so the Info field holds plain inline HTML.
- * - Hint is plain text (first letters). Anki's `{{hint:Hint}}` shows it behind a "Hint" link.
+ * - Hint holds `.line` elements like Answer, with each word cut to its first letter.
+ *   Anki's `{{hint:Hint}}` shows it behind a "Hint" link.
  * - Reference is plain text (e.g. "John 3:16"). It is the sort field, so keep markup out of it.
  * - Never set colours, fonts or sizes inline: cards must inherit Anki's font, colours and night mode.
  *
