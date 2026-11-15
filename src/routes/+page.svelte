@@ -14,7 +14,12 @@
 	import nt from '../../presets/nt.txt?raw';
 
 	let decks = $state<DeckDefinition[]>([]);
-	onMount(() => (decks = listDecks()));
+	/** The page is prerendered: until it is running here, its buttons would do nothing or reload. */
+	let ready = $state(false);
+	onMount(() => {
+		decks = listDecks();
+		ready = true;
+	});
 
 	let name = $state('');
 	let translation = $state<TranslationId>('bsb');
@@ -109,7 +114,7 @@
 				<label for="new-translation" class={label}>Translation</label>
 				<div class="mt-1"><TranslationSelect id="new-translation" bind:value={translation} /></div>
 			</div>
-			<button type="submit" class="{primary} h-10.5">Create deck</button>
+			<button type="submit" class="{primary} h-10.5" disabled={!ready}>Create deck</button>
 		</form>
 	</section>
 
@@ -123,6 +128,7 @@
 			<button
 				type="button"
 				class={button}
+				disabled={!ready}
 				onclick={() => create('Old Testament Memory Verses', ot)}
 			>
 				Old Testament verses
@@ -130,6 +136,7 @@
 			<button
 				type="button"
 				class={button}
+				disabled={!ready}
 				onclick={() => create('New Testament Memory Verses', nt)}
 			>
 				New Testament verses
@@ -144,7 +151,13 @@
 			class="{button} mt-3 cursor-pointer focus-within:outline-2 focus-within:outline-amber-600"
 		>
 			Choose a file…
-			<input type="file" accept=".json,application/json" class="sr-only" onchange={openFile} />
+			<input
+				type="file"
+				accept=".json,application/json"
+				class="sr-only"
+				disabled={!ready}
+				onchange={openFile}
+			/>
 		</label>
 		{#if fileError}<p role="alert" class="mt-2 text-sm text-red-700 dark:text-red-400">
 				{fileError}
