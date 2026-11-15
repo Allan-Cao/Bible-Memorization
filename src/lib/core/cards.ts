@@ -5,6 +5,7 @@
  */
 
 import { BOOKS, isSingleChapter } from './books.ts';
+import { revisionTag } from './diff.ts';
 import type {
 	DeckDefinition,
 	NoteSpec,
@@ -49,7 +50,7 @@ export function makeNotes(
 	const notes: NoteSpec[] = [];
 	const staleBreaks: string[] = [];
 	const done = new Set<string>();
-	const tags = [`bm::${def.id}::r${def.revision}`];
+	const tags = [revisionTag(def)];
 	const short = TRANSLATIONS[def.translation].short;
 
 	for (const passage of passages) {
