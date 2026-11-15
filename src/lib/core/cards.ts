@@ -82,7 +82,7 @@ export function makeNotes(
 					tags,
 					fields: {
 						Reference: verseLabel(verse.ref) + part,
-						Context: context && `<div class="context">${context}</div>`,
+						Context: context,
 						Answer: renderUnit(unit),
 						Hint: firstLetters(unit.lines),
 						Info: `${passage.ref.label} · ${short}`

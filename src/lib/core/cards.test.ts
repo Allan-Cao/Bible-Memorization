@@ -388,10 +388,10 @@ describe('makeNotes: lead-in', () => {
 		]);
 	});
 
-	it('wraps the lead-in in .context, with the verse marker', () => {
+	it('holds only .line elements, with the verse marker (the template adds .context)', () => {
 		const [, second] = field('Context', deck(), [john3]);
 		expect(second).toBe(
-			`<div class="context"><div class="line"><span class="vn">16</span>${john3_16.lines[0].text}</div></div>`
+			`<div class="line"><span class="vn">16</span>${john3_16.lines[0].text}</div>`
 		);
 	});
 
@@ -420,10 +420,8 @@ describe('makeNotes: lead-in', () => {
 
 	it('shows the psalm title when there is no lead-in', () => {
 		const [first, second] = field('Context', deck(), [psalm23]);
-		expect(first).toBe('<div class="context"><div class="line">A Psalm of David.</div></div>');
-		expect(second).toMatch(
-			/^<div class="context"><div class="line"><span class="vn">1<\/span>The LORD/
-		);
+		expect(first).toBe('<div class="line">A Psalm of David.</div>');
+		expect(second).toMatch(/^<div class="line"><span class="vn">1<\/span>The LORD/);
 	});
 
 	it('does not lead in from one passage to the next', () => {
