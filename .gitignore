@@ -23,3 +23,7 @@ Thumbs.db
 
 # USFM download cache (scripts/build-text.ts)
 /.cache
+
+# Playwright
+/test-results
+/playwright-report

@@ -18,10 +18,12 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
+		"test:e2e": "playwright test",
 		"build:text": "tsx scripts/build-text.ts"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
+		"@playwright/test": "^1.65.1",
 		"@sveltejs/adapter-static": "^4.0.0",
 		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/vite-plugin-svelte": "^7.2.0",
