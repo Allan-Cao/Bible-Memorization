@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Bible Memorization is a static web app that builds Anki decks (`.apkg`) for memorizing Scripture. Each card shows a few previous lines as context and asks for the next lines. All logic runs in the browser. There are no server routes.
+Bible Memorization is a static web app that builds Anki decks (`.apkg`) for memorizing Scripture. Each card asks for one verse (long verses are split into parts), with the previous verse shown as a lead-in. All logic runs in the browser. There are no server routes.
 
 Stack: SvelteKit 3, Svelte 5 (runes), TypeScript, Tailwind v4, Bits UI, `@sveltejs/adapter-static`, Vitest, ESLint, Prettier. Package manager is npm.
 
