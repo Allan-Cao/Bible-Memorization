@@ -7,6 +7,12 @@
  * collection has its fields and tags replaced in place, and its cards keep their scheduling.
  * So guids must be stable and every note's `mod` is the export time.
  *
+ * Verified with Anki 26.09 (scripts/anki-import-check.py): Anki matches the deck by name and
+ * gives it its own id, so the numeric deck id written here only has to be unique in the package.
+ * A renamed deck becomes a second deck: existing cards stay where they are, new cards go to the
+ * new name. Existing cards are never touched on import, so an existing new card keeps the `due`
+ * it was first imported with even if its `order` changes in a later export.
+ *
  * The writer is pure: the same build gives the same bytes. It takes the initialized sql.js module
  * so the core never loads WASM itself.
  */
