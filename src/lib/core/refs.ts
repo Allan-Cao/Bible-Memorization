@@ -14,7 +14,7 @@
  * Items keep the order they were typed in.
  */
 
-import { findBook, isSingleChapter } from './books.ts';
+import { BOOKS, findBook, isSingleChapter } from './books.ts';
 import type { RefRange, Reference, VerseRef, Versification } from './model.ts';
 
 /** C or V, then optionally -C or -V, with an optional :V after either number. */
@@ -178,4 +178,19 @@ export function listVerses(ref: Reference, versification: Versification): VerseR
 
 export function countVerses(ref: Reference, versification: Versification): number {
 	return listVerses(ref, versification).length;
+}
+
+const BOOK_NAMES = new Map(BOOKS.map((book) => [book.id, book.name]));
+
+/** "John 3:16"; "Jude 5" but "Jude 1:1", the same rule as item labels above. */
+export function verseLabel(ref: VerseRef): string {
+	const name = BOOK_NAMES.get(ref.book) ?? ref.book;
+	if (isSingleChapter(ref.book) && ref.verse !== 1) return `${name} ${ref.verse}`;
+	return `${name} ${ref.chapter}:${ref.verse}`;
+}
+
+/** Whether the verse lies within the range, ends included. */
+export function inRange(range: RefRange, ref: VerseRef): boolean {
+	const at = (v: VerseRef) => v.chapter * 1000 + v.verse; // verses per chapter stay under 1000
+	return at(range.start) <= at(ref) && at(ref) <= at(range.end);
 }

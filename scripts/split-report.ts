@@ -5,7 +5,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { BOOKS } from '../src/lib/core/books.ts';
-import { verseLabel } from '../src/lib/core/cards.ts';
+import { verseLabel } from '../src/lib/core/refs.ts';
 import type { BookText, Line, TranslationId, Verse } from '../src/lib/core/model.ts';
 import {
 	MAX_WORDS,

@@ -4,23 +4,12 @@
  * Note identity comes from deck id, translation, verse and unit index, never from text.
  */
 
-import { BOOKS, isSingleChapter } from './books.ts';
 import { revisionTag } from './diff.ts';
-import type {
-	DeckDefinition,
-	NoteSpec,
-	Passage,
-	RefRange,
-	TranslationId,
-	Unit,
-	VerseRef
-} from './model.ts';
-import { verseKey } from './refs.ts';
+import type { DeckDefinition, NoteSpec, Passage, TranslationId, Unit, VerseRef } from './model.ts';
+import { inRange, verseKey, verseLabel } from './refs.ts';
 import { firstLetters, renderLines } from './render.ts';
 import { TRANSLATIONS } from './translations.ts';
 import { splitUnits } from './units.ts';
-
-const BOOK_NAMES = new Map(BOOKS.map((book) => [book.id, book.name]));
 
 export function noteGuid(
 	deckId: string,
@@ -29,13 +18,6 @@ export function noteGuid(
 	unitIndex: number
 ): string {
 	return `bm1:${deckId}:${translation}:${verseKey(verse)}:${unitIndex}`;
-}
-
-/** "John 3:16"; "Jude 5" but "Jude 1:1", as in refs.ts labels. */
-export function verseLabel(ref: VerseRef): string {
-	const name = BOOK_NAMES.get(ref.book) ?? ref.book;
-	if (isSingleChapter(ref.book) && ref.verse !== 1) return `${name} ${ref.verse}`;
-	return `${name} ${ref.chapter}:${ref.verse}`;
 }
 
 /**
@@ -59,7 +41,7 @@ export function makeNotes(
 		for (const verse of passage.verses) {
 			if (verse.omitted) previous = null; // nothing to lead in from across the gap
 			const key = verseKey(verse.ref);
-			const range = rangeIndex(passage.ref.ranges, verse.ref);
+			const range = passage.ref.ranges.findIndex((r) => inRange(r, verse.ref));
 			const isNew = !done.has(key);
 			done.add(key);
 			const { units, stale } = splitUnits(verse, def.breaks[key]);
@@ -101,10 +83,4 @@ export function makeNotes(
 /** A unit's lines, with the verse-number marker when it is the first unit of its verse. */
 function renderUnit(unit: Unit): string {
 	return renderLines(unit.lines, unit.index === 0 ? unit.verse.verse : undefined);
-}
-
-/** Which of the passage's ranges holds the verse, or -1. */
-function rangeIndex(ranges: RefRange[], ref: VerseRef): number {
-	const at = (v: VerseRef) => v.chapter * 1000 + v.verse; // verses per chapter stay under 1000
-	return ranges.findIndex((r) => at(r.start) <= at(ref) && at(ref) <= at(r.end));
 }
