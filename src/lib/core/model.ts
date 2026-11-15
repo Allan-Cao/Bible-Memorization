@@ -28,6 +28,12 @@ export interface Reference {
 	ranges: RefRange[];
 }
 
+/**
+ * Verse counts for one translation: book -> number of verses in each chapter.
+ * Index 0 is chapter 1, so the array length is the chapter count.
+ */
+export type Versification = Record<BookId, number[]>;
+
 export interface ListError {
 	/** 1-based line number in the list text. */
 	line: number;
