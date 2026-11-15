@@ -1,8 +1,8 @@
-# Handoff note (2026-11-14)
+# Handoff note (2026-11-15)
 
 Temporary file for whoever continues the TypeScript rewrite. Delete it when the rewrite is merged.
 
-The approved plan is at `/home/allan/.claude/plans/could-you-review-the-async-tome.md`. `CLAUDE.md` describes the stack, commands and conventions. Work is on branch `ts-rewrite`; nothing is pushed.
+The approved plan is at `/home/allan/.claude/plans/could-you-review-the-async-tome.md`. `CLAUDE.md` describes the stack, commands and conventions; `README.md` describes the app. Work is on branch `ts-rewrite`; nothing is pushed.
 
 ## Owner's standing instructions
 
@@ -12,67 +12,63 @@ The approved plan is at `/home/allan/.claude/plans/could-you-review-the-async-to
 - Small, human-readable modules. No speculative features.
 - No backward compatibility with the old Python tool (deleted).
 - ESV is out until Allan hears back from Crossway. The site is fully static.
-- Delegate generously to sub-agents (Sonnet routine, Opus careful) to save the main context. **Allan is now on usage credits: do not launch agents without need, and ask before large ones.**
+- Delegate generously to sub-agents (Sonnet routine, Opus careful) to save the main context.
 
-## Done and committed
+## State
 
-| Area       | Files                                                                                         | State                                                                                             |
-| ---------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Scaffold   | SvelteKit 3.2, Svelte 5, Tailwind 4.3, Bits UI 2.21, adapter-static                           | check, lint, test, build pass                                                                     |
-| Types      | `src/lib/core/model.ts`                                                                       | the contract between modules                                                                      |
-| References | `books.ts`, `refs.ts`, `list.ts`                                                              | strict parsing, normalized labels, line-numbered errors                                           |
-| Bible text | `scripts/build-text.ts`, `static/text/{bsb,web,kjv}/`, `versification.*`, `sources/static.ts` | eBible USFM converted; `npm run build:text` regenerates                                           |
-| Cards      | `units.ts`, `render.ts`, `cards.ts`, `translations.ts`                                        | one verse per card; long verses split (30-word threshold, 35-word soft cap, 10-word minimum part) |
-| Anki       | `anki/notetype.ts`, `anki/apkg.ts`, `scripts/anki-import-check.py`                            | verified against Anki 26.09.4's importer                                                          |
-| Deck       | `deckdef.ts`, `diff.ts`, `build.ts`                                                           | definition, share links, export diff, cleanup search, pipeline                                    |
+Everything in the plan except ESV (phase 6) and the deploy itself is built and committed. On the final tree: `check` 0 errors, `lint` clean, 545 unit tests, 8 end-to-end tests (4 tests in Chromium and Firefox), `build`, and `scripts/anki-import-check.py` 59 checks against Anki 26.09.4.
 
-Last reported full-suite result: 537 tests passing. Golden files for human review: `tests/golden/text/` and `tests/golden/cards/{bsb,web,kjv}/`.
+## Only Allan can do these
 
-## UI: built, not yet reviewed
+1. **Deploy.** `npm run build && npx wrangler deploy` (it asks to log in to Cloudflare the first time). `wrangler.jsonc` is static assets only, with no Worker script, so it stays on the free plan. The worker is named `bible-memorization`; change `name` there for a different address. Afterwards `BASE_URL=https://<the address> npm run test:e2e` runs the browser tests against the live site.
+2. **Try a deck on a phone.** Export a deck, import it into AnkiDroid or AnkiMobile, tap the hint, then import an updated export. Desktop behaviour is verified through Anki's own importer (below); the phone apps are not.
+3. **Look at the card in Anki itself.** The card HTML and CSS are verified, but nobody has looked at a rendered card. In particular psalm titles and Selah are now small and italic (see "Decisions made" below).
+4. **Safari.** The end-to-end tests pass in Chromium and Firefox. WebKit could not run on this machine without `sudo npx playwright install-deps webkit`; after that, `WEBKIT=1 npm run test:e2e`. Or just try the site in Safari.
+5. **Screen reader.** An axe scan of every screen is clean in light and dark mode, and the keyboard paths are tested, but nobody has listened to it.
+6. **Merge `ts-rewrite`** into `main` and push, then delete this file.
+7. **Crossway** (ESV), still waiting on their reply.
 
-An Opus sub-agent finished the UI after this note was first written. Its report said `check`, `lint`, `test` (537 tests), `build` and the Playwright smoke test (`npm run test:e2e`) all passed on the final tree. Nobody has reviewed the UI code or looked at it in a browser yet.
+## Review of the UI (done 2026-11-15)
 
-- Routes: `/` (home), `/deck/[id]` (editor), `/open` (shared links and deck files), `/about`.
-- Components in `src/lib/ui/`: `DeckEditor`, `PassagePanel`, `CardPreview`, `BreakEditor`, `ExportDialog`, `ShareDialog`, plus small shared pieces, `storage.ts` and `browser.ts`.
-- New core module `editor.ts` (preview data, `toggleBreak`, `hintLines`).
-- Screenshots were saved in the session scratchpad `ui/` folder (may be gone; retake with `npm run dev`).
+All UI code was read and every screen was looked at in light, dark and phone width. The numbered review points from the previous note:
 
-Things to check when reviewing:
+| #   | Point                                               | Outcome                                                                                                                     |
+| --- | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `previewDeck` repeated the walk in `makeNotes`      | `planCards` in `cards.ts` decides every card once; `makeNotes` and `previewDeck` are both made from it                      |
+| 2   | `hintLines` took `firstLetters` HTML apart          | `render.ts` exports `hintText` (one line) and `hintLines`                                                                   |
+| 3   | Every word gap in the break editor was a tab stop   | The gaps are a Bits UI toggle group: one tab stop, arrow keys move between gaps                                             |
+| 4   | Open passages were tracked by position              | Each panel keeps its own state; a passage added on its own starts open                                                      |
+| 5   | Example headings repeated the deck name; favicon    | Headings removed from `presets/*.txt`; favicon is an open book                                                              |
+| 6   | UI commits not verified one by one                  | Not redone. Every commit since then was made on a passing tree                                                              |
+| 7   | Real Anki, Firefox/Safari, clipboard, screen reader | Real Anki (desktop importer), Firefox and clipboard verified; Safari, phones and a real screen reader are in the list above |
 
-1. `editor.ts` `previewDeck` repeats the walk in `cards.ts` `makeNotes` (a test checks they agree on both presets). Consider having one produce the data for the other.
-2. `hintLines` takes apart the output of `firstLetters`; a per-line export from `render.ts` would be cleaner.
-3. The break editor makes every word gap a tab stop (many Tab presses on long verses).
-4. Open/collapsed passages are tracked by position, so inserting a passage changes which are open.
-5. Example decks' headings repeat the deck name; the favicon is still Svelte's.
-6. Individual UI commits were not each verified on their own, only the final tree.
-7. Not verified: import into real Anki, Firefox/Safari, clipboard copy, screen readers.
+Also found and fixed: the home page's form submitted natively if clicked before the page was running; renaming a deck rebuilt all cards; headings skipped a level in the editor; verse numbers had too little contrast in dark mode; the share link box could not be reached by keyboard.
+
+## Decisions made while Allan was away (say if you disagree)
+
+- **Psalm titles and Selah are small and italic on the card**, as the editor preview already showed them (`.title`, `.selah`; `TEMPLATE_VERSION` is now 2). This closes the "long psalm titles have no distinct styling" loose end. To undo: revert commit "feat: style psalm titles and Selah on the card".
+- **The app shell is `404.html`, not `200.html`.** Cloudflare serves it for unknown paths (status 404, the app shows "Not Found") and `static/_redirects` rewrites `/deck/*` to it with status 200. Checked with `npx wrangler dev`.
+- **The golden cards were read and the design confirmed** against the plan's decisions: one verse per card, lead-in from the previous unit within a range only, verse numbers as markers, each unit asked once, title instead of lead-in on a psalm's first verse, Selah never in the hint or lead-in, no lead-in across an omitted verse. Nothing needed changing. `tests/golden/cards/` is worth ten minutes of Allan's own reading before the merge, since it is his deck.
+
+## Real Anki check of an exported deck
+
+Besides `scripts/anki-import-check.py`, the Old Testament example was exported from the built site in a browser and imported into Anki 26.09.4's importer: 65 notes in list order; one card studied; then an updated export (two passages removed, one added, one inserted at the top) imported with 9 new and 54 updated notes, the studied card's interval kept, and the cleanup search from the export window finding exactly the 11 notes the window said it would.
 
 ## Facts worth knowing (verified against Anki)
 
 - Re-import updates notes by GUID and keeps scheduling with default import options. GUID form: `bm1:{deckId}:{translation}:{BOOK}.{ch}.{v}:{unitIndex}`.
 - The note type id and its field list (`Reference, Context, Answer, Hint, Info`) are frozen. Template/CSS changes need a `TEMPLATE_VERSION` bump.
 - Anki matches decks by name: renaming in the app creates a second deck for new cards.
-- Anki never moves existing cards: cards from a passage inserted mid-deck come up out of order among unstudied cards. Accepted for the MVP; the export dialog should mention it.
+- Anki never moves existing cards: cards from a passage inserted mid-deck come up out of order among unstudied cards. Accepted for the MVP; the export window says so.
 - Anki never deletes on import. Cleanup search: `tag:bm::{deckId}::* -tag:bm::{deckId}::r{revision}`.
 - The Context field holds only `.line` elements; the template adds the `.context` wrapper.
 
-## Remaining work
-
-1. Review the UI (above) and try it in a browser.
-2. Manual check: import a real exported deck into Anki desktop and a phone (AnkiDroid/AnkiMobile untested), re-import an update, run the cleanup search, tap the hint.
-3. Ask Allan to read the golden card files and confirm the card design.
-4. README rewrite; delete this file.
-5. Cloudflare deploy (static assets only, must cost nothing). Needs Allan's account.
-6. Merge `ts-rewrite` when Allan is happy.
-
 ## Known loose ends
 
-- `refs.ts`: the single-chapter label rule is written twice (`itemLabel`, `verseLabel`).
-- Error message style differs between `sources/static.ts` and `refs.ts`/`deckdef.ts`.
-- `apkg.ts` `sortField` decodes entities that `escapeHtml` never produces.
-- Long psalm titles (Psalm 18, 60) show as long lead-ins with no distinct styling.
+- Error message style differs between `sources/static.ts` (internal invariants, `label: detail`) and `refs.ts`/`deckdef.ts` (sentences for the user). Left alone: the `static.ts` ones cannot be reached from a valid list.
 - 290 BSB verses over 30 words have no usable punctuation and stay unsplit; the manual break editor covers them.
 - Some agents wrote tests and code together rather than red-first; noted in their reports, not redone.
+- The translation select's popup is outside the page landmarks (Bits UI portal); axe reports it as moderate.
 
 ## Backlog (not MVP)
 
