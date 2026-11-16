@@ -62,6 +62,30 @@ test('passages stay open or closed when another is added above them', async ({ p
 	await closed('Psalm 23:1');
 });
 
+test('the export button waits until an export has finished', async ({ page }) => {
+	await newDeck(page, 'John 3:16');
+	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
+	// Hold back the database code, which the first export fetches, to keep the export running.
+	let release = () => {};
+	const held = new Promise<void>((resolve) => (release = resolve));
+	await page.route('**/*.wasm', async (route) => {
+		await held;
+		await route.continue();
+	});
+
+	const button = page.getByRole('button', { name: 'Export for Anki' });
+	await button.click();
+	const dialog = page.getByRole('dialog');
+	await expect(dialog.getByText('Making your deck…')).toBeVisible();
+	await dialog.getByRole('button', { name: 'Close' }).click();
+	await expect(button).toBeDisabled();
+
+	const download = page.waitForEvent('download');
+	release();
+	await download;
+	await expect(button).toBeEnabled();
+});
+
 test('a deck page loads directly, and an unknown address says so', async ({ page }) => {
 	await newDeck(page, 'John 3:16');
 	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();

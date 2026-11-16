@@ -106,16 +106,22 @@
 	let exportOpen = $state(false);
 	let report = $state<ExportReport | null>(null);
 	let exportError = $state<string | null>(null);
+	/** One export at a time: each needs its own revision and compares with the one before. */
+	let exporting = $state(false);
 	async function runExport() {
+		if (exporting) return;
+		exporting = true;
 		[report, exportError, exportOpen] = [null, null, true];
-		def.revision += 1;
+		const revision = (def.revision += 1);
 		saveDeck($state.snapshot(def));
 		try {
 			report = await exportDeck($state.snapshot(def));
 			exported = loadExport(def.id);
 		} catch (e) {
-			def.revision -= 1;
+			if (def.revision === revision) def.revision -= 1;
 			exportError = message(e);
+		} finally {
+			exporting = false;
 		}
 	}
 
@@ -133,7 +139,7 @@
 				<button
 					type="button"
 					class={primary}
-					disabled={!!blocked}
+					disabled={!!blocked || exporting}
 					aria-describedby="export-blocked"
 					onclick={runExport}
 				>
