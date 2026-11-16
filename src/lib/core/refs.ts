@@ -169,25 +169,6 @@ export function verseKey(ref: VerseRef): string {
 	return `${ref.book}.${ref.chapter}.${ref.verse}`;
 }
 
-/** Every verse of a reference, in the order the ranges were written. */
-export function listVerses(ref: Reference, versification: Versification): VerseRef[] {
-	const verses: VerseRef[] = [];
-	for (const { start, end } of ref.ranges) {
-		const counts = versification[start.book];
-		for (let chapter = start.chapter; chapter <= end.chapter; chapter++) {
-			const from = chapter === start.chapter ? start.verse : 1;
-			const to = chapter === end.chapter ? end.verse : counts[chapter - 1];
-			for (let verse = from; verse <= to; verse++)
-				verses.push({ book: start.book, chapter, verse });
-		}
-	}
-	return verses;
-}
-
-export function countVerses(ref: Reference, versification: Versification): number {
-	return listVerses(ref, versification).length;
-}
-
 const BOOK_NAMES = new Map(BOOKS.map((book) => [book.id, book.name]));
 
 /** "John 3:16"; "Jude 5" but "Jude 1:1". */

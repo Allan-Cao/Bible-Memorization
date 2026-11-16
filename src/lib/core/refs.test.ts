@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Versification } from './model.ts';
-import { countVerses, listVerses, parseReference, verseKey } from './refs.ts';
+import { parseReference, verseKey } from './refs.ts';
 
 // A small table: real counts for the chapters the tests touch, plausible filler elsewhere.
 const psalms = Array<number>(150).fill(10);
@@ -218,37 +218,5 @@ describe('verseKey', () => {
 	it('formats BOOK.chapter.verse', () => {
 		expect(verseKey({ book: 'JHN', chapter: 3, verse: 16 })).toBe('JHN.3.16');
 		expect(verseKey({ book: '1JN', chapter: 1, verse: 9 })).toBe('1JN.1.9');
-	});
-});
-
-describe('listVerses and countVerses', () => {
-	it('lists a single verse', () => {
-		expect(listVerses(parseReference('John 3:16', vers), vers).map(verseKey)).toEqual(['JHN.3.16']);
-	});
-
-	it('lists a whole chapter in order', () => {
-		const keys = listVerses(parseReference('Psalm 117', vers), vers).map(verseKey);
-		expect(keys).toEqual(['PSA.117.1', 'PSA.117.2']);
-	});
-
-	it('lists across chapter boundaries', () => {
-		const keys = listVerses(parseReference('John 3:35-4:2', vers), vers).map(verseKey);
-		expect(keys).toEqual(['JHN.3.35', 'JHN.3.36', 'JHN.4.1', 'JHN.4.2']);
-	});
-
-	it('lists a comma list in the order written', () => {
-		const keys = listVerses(parseReference('John 14:6, 1-2', vers), vers).map(verseKey);
-		expect(keys).toEqual(['JHN.14.6', 'JHN.14.1', 'JHN.14.2']);
-	});
-
-	it.each([
-		['John 3:16', 1],
-		['Psalm 23', 6],
-		['Psalm 1-2', 18],
-		['John 3:16-4:2', 23],
-		['John 14:1-3, 6, 13-17', 9],
-		['Jude 1', 25]
-	])('counts %j as %i verses', (input, n) => {
-		expect(countVerses(parseReference(input, vers), vers)).toBe(n);
 	});
 });
