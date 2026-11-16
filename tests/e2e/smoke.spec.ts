@@ -7,7 +7,9 @@ async function exportDeck(page: Page): Promise<Uint8Array> {
 	const download: Promise<Download> = page.waitForEvent('download');
 	await page.getByRole('button', { name: 'Export for Anki' }).click();
 	const file = await download;
-	expect(file.suggestedFilename()).toBe('Smoke deck.apkg');
+	// Playwright's WebKit turns spaces in the suggested name into underscores, even for a bare
+	// <a download="Smoke deck.apkg">, so compare with spaces and underscores treated alike.
+	expect(file.suggestedFilename().replaceAll('_', ' ')).toBe('Smoke deck.apkg');
 	return new Uint8Array(await readFile((await file.path())!));
 }
 
