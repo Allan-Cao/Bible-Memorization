@@ -2,30 +2,7 @@
 
 Bible Memorization is a static web app that builds Anki decks (`.apkg`) for memorizing Scripture. Each card asks for one verse (long verses are split into parts), with the previous verse shown as a lead-in. All logic runs in the browser. There are no server routes.
 
-Stack: SvelteKit 3, Svelte 5 (runes), TypeScript, Tailwind v4, Bits UI, `@sveltejs/adapter-static`, Vitest, ESLint, Prettier. Package manager is npm.
-
-## Commands
-
-```bash
-npm run dev      # dev server
-npm test         # vitest, single run (not watch)
-npm run test:e2e # Playwright against the static build (Chromium and Firefox)
-npm run check    # svelte-kit sync + svelte-check
-npm run lint     # prettier --check, then eslint
-npm run build    # static build into build/
-npm run format   # prettier --write
-```
-
 Scripts in `scripts/` run with `npx tsx scripts/<name>.ts`.
-
-## Layout
-
-- `src/lib/core/`: framework-free logic and shared types (`model.ts`)
-- `src/lib/ui/`: Svelte components (create as needed)
-- `src/routes/`: pages. `+layout.ts` sets `prerender = true`
-- `scripts/`: build scripts
-- `static/text/`: generated Bible text
-- `presets/`: example verse lists
 
 ## SvelteKit 3 differences from Kit 2 (confirmed in this scaffold)
 
