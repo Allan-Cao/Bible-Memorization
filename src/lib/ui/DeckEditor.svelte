@@ -14,7 +14,7 @@
 	import ExportDialog from './ExportDialog.svelte';
 	import PassagePanel from './PassagePanel.svelte';
 	import ShareDialog from './ShareDialog.svelte';
-	import { loadDeck, loadExport, saveDeck, watchDeck } from './storage.ts';
+	import { deckStored, loadDeck, loadExport, saveDeck, watchDeck } from './storage.ts';
 	import { button, field, label, muted, notice, primary } from './styles.ts';
 	import TranslationSelect from './TranslationSelect.svelte';
 
@@ -23,10 +23,13 @@
 	// The editor keeps its own copy; the page remounts it for another deck.
 	const def = $state(untrack(() => structuredClone(initial)));
 	let exported = $state(loadExport(def.id));
+	/** The browser refused to store the deck, so it lasts only as long as this page. */
+	let unsaved = $state(false);
 	$effect(() => {
 		const snapshot = $state.snapshot(def);
 		// Saving what is stored already would send a change taken from another tab back to it.
 		if (JSON.stringify(snapshot) !== JSON.stringify(loadDeck(def.id))) saveDeck(snapshot);
+		unsaved = !deckStored(def.id);
 	});
 	// Another tab may change or delete the deck: take its version rather than save over it.
 	$effect(() =>
@@ -165,6 +168,13 @@
 			<p id="export-blocked" class="text-right text-sm {muted}">{blocked}</p>
 		</div>
 	</div>
+
+	{#if unsaved}
+		<p class="{notice} mt-4">
+			This browser did not let the page save this deck, so it is lost when the page is closed or
+			reloaded. To keep it, choose Share and then “Download deck file”.
+		</p>
+	{/if}
 
 	<div class="mt-6 grid gap-10 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
 		<section aria-label="Deck" class="space-y-5 lg:sticky lg:top-4 lg:self-start">

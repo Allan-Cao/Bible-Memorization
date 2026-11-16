@@ -122,6 +122,17 @@ test('a deck open in two tabs follows the changes made in the other', async ({ p
 	await expect(page.getByText('You have no decks yet.')).toBeVisible();
 });
 
+test('a deck the browser will not store comes with a warning', async ({ page }) => {
+	await page.addInitScript(() => {
+		Storage.prototype.setItem = () => {
+			throw new DOMException('The quota has been exceeded.', 'QuotaExceededError');
+		};
+	});
+	await newDeck(page, 'John 3:16');
+	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
+	await expect(page.getByText('This browser did not let the page save this deck')).toBeVisible();
+});
+
 test('a deck page loads directly, and an unknown address says so', async ({ page }) => {
 	await newDeck(page, 'John 3:16');
 	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();

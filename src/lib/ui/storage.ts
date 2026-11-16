@@ -1,6 +1,6 @@
 /**
- * Decks and export snapshots in localStorage. Every access is guarded: when storage is blocked,
- * an in-memory copy keeps the app working for the visit.
+ * Decks and export snapshots in localStorage. Every access is guarded: when storage is blocked
+ * or full, an in-memory copy keeps the app working for the visit.
  */
 import { parseDeckDefinition } from '#lib/core/deckdef.ts';
 import type { DeckDefinition, TranslationId } from '#lib/core/model.ts';
@@ -16,16 +16,16 @@ export interface ExportSnapshot {
 
 const DECK = 'bm.deck.';
 const EXPORT = 'bm.export.';
+/** Values whose last write did not reach localStorage: newer than what is stored there. */
 const memory = new Map<string, string>();
 
 function read(key: string): unknown {
-	let text: string | null | undefined;
+	let text = memory.get(key) ?? null;
 	try {
-		text = localStorage.getItem(key);
+		text ??= localStorage.getItem(key);
 	} catch {
-		// fall back to memory
+		// memory only
 	}
-	text ??= memory.get(key) ?? null;
 	try {
 		return text === null ? null : JSON.parse(text);
 	} catch {
@@ -35,11 +35,11 @@ function read(key: string): unknown {
 
 function write(key: string, value: unknown): void {
 	const text = JSON.stringify(value);
-	memory.set(key, text);
 	try {
 		localStorage.setItem(key, text);
+		memory.delete(key);
 	} catch {
-		// kept in memory only
+		memory.set(key, text); // kept for this visit only
 	}
 }
 
@@ -78,8 +78,23 @@ export function listDecks(): DeckDefinition[] {
 		.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+let persistAsked = false;
+
 export function saveDeck(def: DeckDefinition): void {
 	write(DECK + def.id, def);
+	if (persistAsked || !deckStored(def.id)) return;
+	persistAsked = true;
+	// Safari can clear storage written by a page after seven days without a visit, unless the
+	// browser agrees to keep it.
+	navigator.storage
+		?.persisted?.()
+		.then((done) => done || navigator.storage.persist())
+		.catch(() => {});
+}
+
+/** Whether the deck's last save reached localStorage, rather than living only in this page. */
+export function deckStored(id: string): boolean {
+	return !memory.has(DECK + id);
 }
 
 export function deleteDeck(id: string): void {
