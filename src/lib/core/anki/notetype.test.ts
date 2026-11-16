@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import type { NoteFields } from '../model.ts';
 import {
@@ -12,7 +13,7 @@ import {
 describe('note type', () => {
 	it('has a fixed numeric id and name', () => {
 		expect(Number.isSafeInteger(MODEL_ID)).toBe(true);
-		expect(MODEL_ID).toBeGreaterThan(1);
+		expect(MODEL_ID).toBe(1_794_614_401); // frozen forever: changing it stops existing decks updating in place
 		expect(MODEL_NAME).toBe('Bible Memorization');
 		const json = noteTypeJson(123);
 		expect(json.id).toBe(MODEL_ID);
@@ -43,6 +44,21 @@ describe('note type', () => {
 		expect(NOTETYPE_MOD).toBe(1_794_808_514);
 		expect(noteTypeJson(1).mod).toBe(NOTETYPE_MOD);
 		expect(noteTypeJson(2).mod).toBe(NOTETYPE_MOD);
+	});
+
+	it('pins the template and CSS to the version and mod time', () => {
+		// If this fails, you changed the question template, answer template or CSS. Then
+		// TEMPLATE_VERSION and NOTETYPE_MOD (`date +%s`) must change too, or the update never
+		// reaches users. Update all three values below together.
+		const json = noteTypeJson(1);
+		const hash = createHash('sha256')
+			.update(JSON.stringify([json.tmpls[0].qfmt, json.tmpls[0].afmt, json.css]))
+			.digest('hex');
+		expect({ hash, version: TEMPLATE_VERSION, mod: NOTETYPE_MOD }).toEqual({
+			hash: '31d257e7c8f5ecb611aa377853c50bcbf6f9295116420f26e324ac4efc91cbef',
+			version: 2,
+			mod: 1_794_808_514
+		});
 	});
 
 	describe('template', () => {
