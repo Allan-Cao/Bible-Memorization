@@ -87,6 +87,21 @@ export function deleteDeck(id: string): void {
 	remove(EXPORT + id);
 }
 
+/**
+ * Calls `onchange` when another tab changes this deck or its export record, after which
+ * `loadDeck` and `loadExport` return the other tab's version. Returns a function to stop.
+ */
+export function watchDeck(id: string, onchange: () => void): () => void {
+	const listener = (e: StorageEvent) => {
+		// A null key means another tab cleared all of storage.
+		if (e.key !== null && e.key !== DECK + id && e.key !== EXPORT + id) return;
+		if (e.key !== null) memory.delete(e.key); // the other tab's version is newer
+		onchange();
+	};
+	addEventListener('storage', listener);
+	return () => removeEventListener('storage', listener);
+}
+
 export function loadExport(id: string): ExportSnapshot | null {
 	const s = read(EXPORT + id) as ExportSnapshot | null;
 	const ok =

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import type { BuildResult } from '#lib/core/build.ts';
 	import { buildDeck } from '#lib/core/build.ts';
 	import { cleanDeckName } from '#lib/core/deckdef.ts';
@@ -12,7 +14,7 @@
 	import ExportDialog from './ExportDialog.svelte';
 	import PassagePanel from './PassagePanel.svelte';
 	import ShareDialog from './ShareDialog.svelte';
-	import { loadExport, saveDeck } from './storage.ts';
+	import { loadDeck, loadExport, saveDeck, watchDeck } from './storage.ts';
 	import { button, field, label, muted, notice, primary } from './styles.ts';
 	import TranslationSelect from './TranslationSelect.svelte';
 
@@ -21,7 +23,20 @@
 	// The editor keeps its own copy; the page remounts it for another deck.
 	const def = $state(untrack(() => structuredClone(initial)));
 	let exported = $state(loadExport(def.id));
-	$effect(() => saveDeck($state.snapshot(def)));
+	$effect(() => {
+		const snapshot = $state.snapshot(def);
+		// Saving what is stored already would send a change taken from another tab back to it.
+		if (JSON.stringify(snapshot) !== JSON.stringify(loadDeck(def.id))) saveDeck(snapshot);
+	});
+	// Another tab may change or delete the deck: take its version rather than save over it.
+	$effect(() =>
+		watchDeck(def.id, () => {
+			const stored = loadDeck(def.id);
+			if (!stored) return goto(resolve('/'), { replaceState: true });
+			Object.assign(def, stored);
+			exported = loadExport(def.id);
+		})
+	);
 
 	// The list is rebuilt a moment after typing stops; breaks and translation apply at once.
 	let list = $state(def.list);
@@ -112,7 +127,8 @@
 		if (exporting) return;
 		exporting = true;
 		[report, exportError, exportOpen] = [null, null, true];
-		const revision = (def.revision += 1);
+		// Another tab may have exported since this one loaded the deck.
+		const revision = (def.revision = Math.max(def.revision, loadDeck(def.id)?.revision ?? 0) + 1);
 		saveDeck($state.snapshot(def));
 		try {
 			report = await exportDeck($state.snapshot(def));

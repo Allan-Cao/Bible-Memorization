@@ -86,6 +86,42 @@ test('the export button waits until an export has finished', async ({ page }) =>
 	await expect(button).toBeEnabled();
 });
 
+test('a deck open in two tabs follows the changes made in the other', async ({ page }) => {
+	await newDeck(page, 'John 3:16');
+	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
+	const other = await page.context().newPage();
+	await other.goto(page.url());
+	await expect(other.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
+
+	// A change in one tab shows in the other and is not undone by its next change.
+	await other.getByLabel('Name').fill('Renamed');
+	await other.getByLabel('Name').pressSequentially(' elsewhere', { delay: 50 }); // spaces are not trimmed away
+	await expect(page.getByLabel('Name')).toHaveValue('Renamed elsewhere');
+	await expect(other.getByLabel('Name')).toHaveValue('Renamed elsewhere');
+	await page.getByLabel('Passages').fill('John 3:16\nJohn 3:17');
+	await expect(other.getByText('2 passages · 2 verses · 2 cards')).toBeVisible();
+	await expect(other.getByLabel('Name')).toHaveValue('Renamed elsewhere');
+
+	// Each export takes a new revision, whichever tab it is made in.
+	const id = page.url().split('/').pop();
+	const revision = () =>
+		page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).revision, `bm.deck.${id}`);
+	for (const tab of [other, page]) {
+		const download = tab.waitForEvent('download');
+		await tab.getByRole('button', { name: 'Export for Anki' }).click();
+		await download;
+		await tab.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
+	}
+	expect(await revision()).toBe(2);
+
+	// A deck deleted in one tab is not saved again by the other, which goes back to the list.
+	await other.goto('/');
+	await other.getByRole('button', { name: 'Delete Renamed elsewhere' }).click();
+	await other.getByRole('alertdialog').getByRole('button', { name: 'Delete' }).click();
+	await expect(page).toHaveURL(/\/$/);
+	await expect(page.getByText('You have no decks yet.')).toBeVisible();
+});
+
 test('a deck page loads directly, and an unknown address says so', async ({ page }) => {
 	await newDeck(page, 'John 3:16');
 	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
