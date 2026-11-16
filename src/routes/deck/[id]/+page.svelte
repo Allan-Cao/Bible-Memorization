@@ -8,8 +8,9 @@
 	const def = $derived(loadDeck(page.params.id ?? ''));
 </script>
 
+<!-- The editor sets the title from the deck name as it is edited. -->
 <svelte:head>
-	<title>{def ? `${def.name} · ` : ''}Bible Memorization</title>
+	{#if !def}<title>Bible Memorization</title>{/if}
 </svelte:head>
 
 {#if def}
