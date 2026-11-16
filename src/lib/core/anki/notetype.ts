@@ -38,15 +38,18 @@ export const MODEL_NAME = 'Bible Memorization';
  */
 export const FIELD_NAMES = ['Reference', 'Context', 'Answer', 'Hint', 'Info'] as const;
 
-/** Bump on every change to QFMT, AFMT or CSS. */
+/** Bump on every change to QFMT, AFMT or CSS, and set NOTETYPE_MOD together with it. */
 export const TEMPLATE_VERSION = 2;
 
 /**
- * The note type's modification time (seconds). Anki's default import option replaces an existing
- * note type only if the incoming one is newer, so this must grow with TEMPLATE_VERSION and must
- * never depend on the export time. Base is 2026-11-14T00:00:00Z; each version adds one second.
+ * The note type's modification time (Unix seconds). Anki's default import option replaces an
+ * existing note type only if the incoming one is newer than the local one, and editing the note
+ * type in Anki sets the local one to the edit time. So this is the time of the latest template
+ * change, a literal that is NOT derived from TEMPLATE_VERSION and never from the export time.
+ * On every template or CSS change, bump TEMPLATE_VERSION and set this to `date +%s`, so the
+ * update overrides any local edit made before it. Version 2: set when first deployed.
  */
-export const NOTETYPE_MOD = 1_794_614_400 + TEMPLATE_VERSION;
+export const NOTETYPE_MOD = 1_794_808_514;
 
 const QFMT = `<div class="reference">{{Reference}}</div>
 {{#Context}}<div class="context">{{Context}}</div>{{/Context}}

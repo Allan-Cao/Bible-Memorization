@@ -39,7 +39,8 @@ describe('note type', () => {
 
 	it('has a modification time that depends only on the template version', () => {
 		expect(TEMPLATE_VERSION).toBe(2);
-		expect(Number.isSafeInteger(NOTETYPE_MOD)).toBe(true);
+		// The Unix time of the latest template change, set by hand with TEMPLATE_VERSION.
+		expect(NOTETYPE_MOD).toBe(1_794_808_514);
 		expect(noteTypeJson(1).mod).toBe(NOTETYPE_MOD);
 		expect(noteTypeJson(2).mod).toBe(NOTETYPE_MOD);
 	});
