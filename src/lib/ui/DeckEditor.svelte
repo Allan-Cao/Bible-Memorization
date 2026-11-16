@@ -5,7 +5,7 @@
 	import type { BuildResult } from '#lib/core/build.ts';
 	import { buildDeck } from '#lib/core/build.ts';
 	import { cleanDeckName } from '#lib/core/deckdef.ts';
-	import { previewDeck } from '#lib/core/editor.ts';
+	import { previewDeck, previewRows } from '#lib/core/editor.ts';
 	import type { Break, DeckDefinition, TranslationId } from '#lib/core/model.ts';
 	import { verseLabel } from '#lib/core/refs.ts';
 	import { TRANSLATIONS } from '#lib/core/translations.ts';
@@ -82,12 +82,10 @@
 
 	const result = $derived(built?.result);
 	const groups = $derived(built ? previewDeck(built.def, built.result) : []);
+	/** One flat list, so a passage's panel stays when a heading moves it into another group. */
+	const rows = $derived(previewRows(groups));
 	const verses = $derived(
 		groups.flatMap((g) => g.passages.flatMap((p) => p.verses)).filter((v) => v.cards.length).length
-	);
-	/** Index of each group's first passage across the deck: the first few passages start open. */
-	const starts = $derived(
-		groups.map((_, i) => groups.slice(0, i).reduce((n, g) => n + g.passages.length, 0))
 	);
 	const stale = $derived(
 		(result?.staleBreaks ?? []).map((key) => {
@@ -254,26 +252,23 @@
 			{#if result && groups.length === 0}
 				<p class="mt-3 {muted}">Cards appear here as you add passages to the list.</p>
 			{/if}
-			<div class="mt-4 space-y-6">
-				{#each groups as group, g (g)}
-					<div>
-						{#if group.heading}
-							<h3
-								class="mb-2 border-b border-stone-200 pb-1 font-serif text-lg font-semibold dark:border-stone-800"
-							>
-								{group.heading}
-							</h3>
-						{/if}
-						{#each group.passages as passage, p (passage.label)}
-							<PassagePanel
-								{passage}
-								startOpen={starts[g] + p < 3 || passage.label === built?.added}
-								level={group.heading ? 4 : 3}
-								translation={TRANSLATIONS[def.translation].short}
-								onbreaks={setBreaks}
-							/>
-						{/each}
-					</div>
+			<div class="mt-4">
+				{#each rows as row (row.key)}
+					{#if row.kind === 'heading'}
+						<h3
+							class="mb-2 border-b border-stone-200 pb-1 font-serif text-lg font-semibold not-first:mt-6 dark:border-stone-800"
+						>
+							{row.heading}
+						</h3>
+					{:else}
+						<PassagePanel
+							passage={row.passage}
+							startOpen={row.index < 3 || row.passage.label === built?.added}
+							level={row.underHeading ? 4 : 3}
+							translation={TRANSLATIONS[def.translation].short}
+							onbreaks={setBreaks}
+						/>
+					{/if}
 				{/each}
 			</div>
 		</section>

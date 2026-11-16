@@ -73,6 +73,37 @@ export function previewDeck(def: DeckDefinition, result: BuildResult): PreviewGr
 	}));
 }
 
+export type PreviewRow =
+	| { kind: 'heading'; key: string; heading: string }
+	| {
+			kind: 'passage';
+			key: string;
+			passage: PreviewPassage;
+			/** Position across the whole deck. */
+			index: number;
+			underHeading: boolean;
+	  };
+
+/**
+ * The groups as one flat list of headings and passages. A passage is keyed by its label, so it
+ * keeps its key when a heading added above it moves it into another group. A heading is keyed
+ * by its group's position, which a label (never starting with `#`) cannot match. An empty
+ * heading (a lone `#`) shows nothing.
+ */
+export function previewRows(groups: PreviewGroup[]): PreviewRow[] {
+	let index = 0;
+	return groups.flatMap((group, g): PreviewRow[] => [
+		...(group.heading ? [{ kind: 'heading' as const, key: `#${g}`, heading: group.heading }] : []),
+		...group.passages.map((passage) => ({
+			kind: 'passage' as const,
+			key: passage.label,
+			passage,
+			index: index++,
+			underHeading: !!group.heading
+		}))
+	]);
+}
+
 /** Adds a break after word `after`, or removes the one there. Kept in word order. */
 export function toggleBreak(verse: Verse, breaks: Break[], after: number): Break[] {
 	if (!Number.isInteger(after) || after < 0 || after >= verseWords(verse).length - 1) return breaks;

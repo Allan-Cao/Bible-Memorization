@@ -62,6 +62,27 @@ test('passages stay open or closed when another is added above them', async ({ p
 	await closed('Psalm 23:1');
 });
 
+test('passages stay open or closed when a heading is added among them', async ({ page }) => {
+	await newDeck(page, 'Psalm 23:1\nPsalm 23:2\nPsalm 23:3\nPsalm 23:4');
+	await expect(page.getByText('4 passages · 4 verses · 4 cards')).toBeVisible();
+	const panel = (label: string) => page.getByRole('button', { name: `${label} 1 card` });
+	const open = (label: string) => expect(panel(label)).toHaveAttribute('aria-expanded', 'true');
+	const closed = (label: string) => expect(panel(label)).toHaveAttribute('aria-expanded', 'false');
+
+	// The first three start open. Close the third and open the last.
+	await panel('Psalm 23:3').click();
+	await panel('Psalm 23:4').click();
+	await closed('Psalm 23:3');
+	await open('Psalm 23:4');
+
+	await page.getByLabel('Passages').fill('Psalm 23:1\nPsalm 23:2\n# Later\nPsalm 23:3\nPsalm 23:4');
+	await expect(page.getByRole('heading', { name: 'Later' })).toBeVisible();
+	await open('Psalm 23:1');
+	await open('Psalm 23:2');
+	await closed('Psalm 23:3');
+	await open('Psalm 23:4');
+});
+
 test('the export button waits until an export has finished', async ({ page }) => {
 	await newDeck(page, 'John 3:16');
 	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();

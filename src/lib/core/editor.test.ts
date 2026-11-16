@@ -1,7 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { buildDeck, type LoadBooks } from './build.ts';
-import { insertedPassages, passageCount, previewDeck, toggleBreak } from './editor.ts';
+import {
+	insertedPassages,
+	passageCount,
+	previewDeck,
+	previewRows,
+	toggleBreak,
+	type PreviewPassage
+} from './editor.ts';
 import type { BookId, BookText, DeckDefinition, Verse } from './model.ts';
 import { renderLines, renderTitle } from './render.ts';
 import { autoBreaks, verseWords } from './units.ts';
@@ -120,6 +127,37 @@ describe('previewDeck', () => {
 		const s = (await preview(deck({ list: 'Romans 8:38-39', breaks: stale }))).groups[0].passages[0]
 			.verses[0];
 		expect([s.saved, s.breaks]).toEqual([false, autoBreaks(s.verse)]);
+	});
+});
+
+describe('previewRows', () => {
+	const passage = (label: string): PreviewPassage => ({ label, verses: [], cards: 0 });
+
+	it('lists headings and passages in order, keyed so a passage keeps its key when regrouped', () => {
+		const rows = previewRows([
+			{ heading: null, passages: [passage('A'), passage('B')] },
+			{ heading: 'Later', passages: [passage('C')] },
+			{ heading: 'Later', passages: [passage('D')] }
+		]);
+		expect(rows.map((r) => r.key)).toEqual(['A', 'B', '#1', 'C', '#2', 'D']);
+		expect(rows).toEqual([
+			{ kind: 'passage', key: 'A', passage: passage('A'), index: 0, underHeading: false },
+			{ kind: 'passage', key: 'B', passage: passage('B'), index: 1, underHeading: false },
+			{ kind: 'heading', key: '#1', heading: 'Later' },
+			{ kind: 'passage', key: 'C', passage: passage('C'), index: 2, underHeading: true },
+			{ kind: 'heading', key: '#2', heading: 'Later' },
+			{ kind: 'passage', key: 'D', passage: passage('D'), index: 3, underHeading: true }
+		]);
+	});
+
+	it('leaves out an empty heading', () => {
+		expect(previewRows([{ heading: '', passages: [passage('A')] }])).toEqual([
+			{ kind: 'passage', key: 'A', passage: passage('A'), index: 0, underHeading: false }
+		]);
+	});
+
+	it('is empty for an empty deck', () => {
+		expect(previewRows([])).toEqual([]);
 	});
 });
 
