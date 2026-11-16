@@ -1,0 +1,15 @@
+Proverbs 3:5-6 (KJV)
+
+── 1. Proverbs 3:5 ─────────────────────────────────────────────────────
+Lead-in        (none)
+Answer     5 │ Trust in the LORD with all thine heart; and lean not unto thine own understanding.
+Hint         │ T i t L w a t h; a l n u t o u.
+Info           Proverbs 3:5-6 · KJV
+GUID           bm1:golden:kjv:PRO.3.5:0
+
+── 2. Proverbs 3:6 ─────────────────────────────────────────────────────
+Lead-in    5 │ Trust in the LORD with all thine heart; and lean not unto thine own understanding.
+Answer     6 │ In all thy ways acknowledge him, and he shall direct thy paths.
+Hint         │ I a t w a h, a h s d t p.
+Info           Proverbs 3:5-6 · KJV
+GUID           bm1:golden:kjv:PRO.3.6:0

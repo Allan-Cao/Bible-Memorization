@@ -1,0 +1,81 @@
+Psalm 46 (KJV)
+
+── 1. Psalm 46:1 ───────────────────────────────────────────────────────
+Lead-in      │ To the chief Musician for the sons of Korah, A Song upon Alamoth.
+Answer     1 │ God is our refuge and strength, a very present help in trouble.
+Hint         │ G i o r a s, a v p h i t.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.1:0
+
+── 2. Psalm 46:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ God is our refuge and strength, a very present help in trouble.
+Answer     2 │ Therefore will not we fear, though the earth be removed, and though the mountains be carried into the midst of the sea;
+Hint         │ T w n w f, t t e b r, a t t m b c i t m o t s;
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.2:0
+
+── 3. Psalm 46:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ Therefore will not we fear, though the earth be removed, and though the mountains be carried into the midst of the sea;
+Answer     3 │ Though the waters thereof roar and be troubled, though the mountains shake with the swelling thereof.
+             │ Selah
+Hint         │ T t w t r a b t, t t m s w t s t.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.3:0
+
+── 4. Psalm 46:4 ───────────────────────────────────────────────────────
+Lead-in    3 │ Though the waters thereof roar and be troubled, though the mountains shake with the swelling thereof.
+Answer     4 │ There is a river, the streams whereof shall make glad the city of God, the holy place of the tabernacles of the most High.
+Hint         │ T i a r, t s w s m g t c o G, t h p o t t o t m H.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.4:0
+
+── 5. Psalm 46:5 ───────────────────────────────────────────────────────
+Lead-in    4 │ There is a river, the streams whereof shall make glad the city of God, the holy place of the tabernacles of the most High.
+Answer     5 │ God is in the midst of her; she shall not be moved: God shall help her, and that right early.
+Hint         │ G i i t m o h; s s n b m: G s h h, a t r e.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.5:0
+
+── 6. Psalm 46:6 ───────────────────────────────────────────────────────
+Lead-in    5 │ God is in the midst of her; she shall not be moved: God shall help her, and that right early.
+Answer     6 │ The heathen raged, the kingdoms were moved: he uttered his voice, the earth melted.
+Hint         │ T h r, t k w m: h u h v, t e m.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.6:0
+
+── 7. Psalm 46:7 ───────────────────────────────────────────────────────
+Lead-in    6 │ The heathen raged, the kingdoms were moved: he uttered his voice, the earth melted.
+Answer     7 │ The LORD of hosts is with us; the God of Jacob is our refuge.
+             │ Selah
+Hint         │ T L o h i w u; t G o J i o r.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.7:0
+
+── 8. Psalm 46:8 ───────────────────────────────────────────────────────
+Lead-in    7 │ The LORD of hosts is with us; the God of Jacob is our refuge.
+Answer     8 │ Come, behold the works of the LORD, what desolations he hath made in the earth.
+Hint         │ C, b t w o t L, w d h h m i t e.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.8:0
+
+── 9. Psalm 46:9 ───────────────────────────────────────────────────────
+Lead-in    8 │ Come, behold the works of the LORD, what desolations he hath made in the earth.
+Answer     9 │ He maketh wars to cease unto the end of the earth; he breaketh the bow, and cutteth the spear in sunder; he burneth the chariot in the fire.
+Hint         │ H m w t c u t e o t e; h b t b, a c t s i s; h b t c i t f.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.9:0
+
+── 10. Psalm 46:10 ─────────────────────────────────────────────────────
+Lead-in    9 │ He maketh wars to cease unto the end of the earth; he breaketh the bow, and cutteth the spear in sunder; he burneth the chariot in the fire.
+Answer    10 │ Be still, and know that I am God: I will be exalted among the heathen, I will be exalted in the earth.
+Hint         │ B s, a k t I a G: I w b e a t h, I w b e i t e.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.10:0
+
+── 11. Psalm 46:11 ─────────────────────────────────────────────────────
+Lead-in   10 │ Be still, and know that I am God: I will be exalted among the heathen, I will be exalted in the earth.
+Answer    11 │ The LORD of hosts is with us; the God of Jacob is our refuge.
+             │ Selah
+Hint         │ T L o h i w u; t G o J i o r.
+Info           Psalm 46 · KJV
+GUID           bm1:golden:kjv:PSA.46.11:0

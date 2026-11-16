@@ -1,0 +1,50 @@
+Psalm 51:1-4 (BSB)
+
+── 1. Psalm 51:1 ───────────────────────────────────────────────────────
+Lead-in      │ For the choirmaster. A Psalm of David. When Nathan the prophet came to him after his adultery with Bathsheba.
+Answer     1 │ Have mercy on me, O God,
+             │     according to Your loving devotion;
+             │ according to Your great compassion,
+             │     blot out my transgressions.
+Hint         │ H m o m, O G,
+             │     a t Y l d;
+             │ a t Y g c,
+             │     b o m t.
+Info           Psalm 51:1-4 · BSB
+GUID           bm1:golden:bsb:PSA.51.1:0
+
+── 2. Psalm 51:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ Have mercy on me, O God,
+             │     according to Your loving devotion;
+             │ according to Your great compassion,
+             │     blot out my transgressions.
+Answer     2 │ Wash me clean of my iniquity
+             │     and cleanse me from my sin.
+Hint         │ W m c o m i
+             │     a c m f m s.
+Info           Psalm 51:1-4 · BSB
+GUID           bm1:golden:bsb:PSA.51.2:0
+
+── 3. Psalm 51:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ Wash me clean of my iniquity
+             │     and cleanse me from my sin.
+Answer     3 │ For I know my transgressions,
+             │     and my sin is always before me.
+Hint         │ F I k m t,
+             │     a m s i a b m.
+Info           Psalm 51:1-4 · BSB
+GUID           bm1:golden:bsb:PSA.51.3:0
+
+── 4. Psalm 51:4 ───────────────────────────────────────────────────────
+Lead-in    3 │ For I know my transgressions,
+             │     and my sin is always before me.
+Answer     4 │ Against You, You only, have I sinned
+             │     and done what is evil in Your sight,
+             │ so that You may be proved right when You speak
+             │     and blameless when You judge.
+Hint         │ A Y, Y o, h I s
+             │     a d w i e i Y s,
+             │ s t Y m b p r w Y s
+             │     a b w Y j.
+Info           Psalm 51:1-4 · BSB
+GUID           bm1:golden:bsb:PSA.51.4:0

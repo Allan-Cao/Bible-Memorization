@@ -1,0 +1,15 @@
+John 3:16-17 (KJV)
+
+── 1. John 3:16 ────────────────────────────────────────────────────────
+Lead-in        (none)
+Answer    16 │ For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.
+Hint         │ F G s l t w, t h g h o b S, t w b i h s n p, b h e l.
+Info           John 3:16-17 · KJV
+GUID           bm1:golden:kjv:JHN.3.16:0
+
+── 2. John 3:17 ────────────────────────────────────────────────────────
+Lead-in   16 │ For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.
+Answer    17 │ For God sent not his Son into the world to condemn the world; but that the world through him might be saved.
+Hint         │ F G s n h S i t w t c t w; b t t w t h m b s.
+Info           John 3:16-17 · KJV
+GUID           bm1:golden:kjv:JHN.3.17:0

@@ -1,0 +1,79 @@
+Psalm 23 (BSB)
+
+── 1. Psalm 23:1 ───────────────────────────────────────────────────────
+Lead-in      │ A Psalm of David.
+Answer     1 │ The LORD is my shepherd;
+             │     I shall not want.
+Hint         │ T L i m s;
+             │     I s n w.
+Info           Psalm 23 · BSB
+GUID           bm1:golden:bsb:PSA.23.1:0
+
+── 2. Psalm 23:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ The LORD is my shepherd;
+             │     I shall not want.
+Answer     2 │ He makes me lie down in green pastures;
+             │     He leads me beside quiet waters.
+Hint         │ H m m l d i g p;
+             │     H l m b q w.
+Info           Psalm 23 · BSB
+GUID           bm1:golden:bsb:PSA.23.2:0
+
+── 3. Psalm 23:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ He makes me lie down in green pastures;
+             │     He leads me beside quiet waters.
+Answer     3 │ He restores my soul;
+             │     He guides me in the paths of righteousness
+             │     for the sake of His name.
+Hint         │ H r m s;
+             │     H g m i t p o r
+             │     f t s o H n.
+Info           Psalm 23 · BSB
+GUID           bm1:golden:bsb:PSA.23.3:0
+
+── 4. Psalm 23:4 ───────────────────────────────────────────────────────
+Lead-in    3 │ He restores my soul;
+             │     He guides me in the paths of righteousness
+             │     for the sake of His name.
+Answer     4 │ Even though I walk through the valley of the shadow of death,
+             │     I will fear no evil,
+             │ for You are with me;
+             │     Your rod and Your staff, they comfort me.
+Hint         │ E t I w t t v o t s o d,
+             │     I w f n e,
+             │ f Y a w m;
+             │     Y r a Y s, t c m.
+Info           Psalm 23 · BSB
+GUID           bm1:golden:bsb:PSA.23.4:0
+
+── 5. Psalm 23:5 ───────────────────────────────────────────────────────
+Lead-in    4 │ Even though I walk through the valley of the shadow of death,
+             │     I will fear no evil,
+             │ for You are with me;
+             │     Your rod and Your staff, they comfort me.
+Answer     5 │ You prepare a table before me
+             │     in the presence of my enemies.
+             │ You anoint my head with oil;
+             │     my cup overflows.
+Hint         │ Y p a t b m
+             │     i t p o m e.
+             │ Y a m h w o;
+             │     m c o.
+Info           Psalm 23 · BSB
+GUID           bm1:golden:bsb:PSA.23.5:0
+
+── 6. Psalm 23:6 ───────────────────────────────────────────────────────
+Lead-in    5 │ You prepare a table before me
+             │     in the presence of my enemies.
+             │ You anoint my head with oil;
+             │     my cup overflows.
+Answer     6 │ Surely goodness and mercy will follow me
+             │     all the days of my life,
+             │ and I will dwell in the house of the LORD
+             │     forever.
+Hint         │ S g a m w f m
+             │     a t d o m l,
+             │ a I w d i t h o t L
+             │     f.
+Info           Psalm 23 · BSB
+GUID           bm1:golden:bsb:PSA.23.6:0

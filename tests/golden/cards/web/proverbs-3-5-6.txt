@@ -1,0 +1,20 @@
+Proverbs 3:5-6 (WEB)
+
+── 1. Proverbs 3:5 ─────────────────────────────────────────────────────
+Lead-in        (none)
+Answer     5 │ Trust in the LORD with all your heart,
+             │     and don’t lean on your own understanding.
+Hint         │ T i t L w a y h,
+             │     a d l o y o u.
+Info           Proverbs 3:5-6 · WEB
+GUID           bm1:golden:web:PRO.3.5:0
+
+── 2. Proverbs 3:6 ─────────────────────────────────────────────────────
+Lead-in    5 │ Trust in the LORD with all your heart,
+             │     and don’t lean on your own understanding.
+Answer     6 │ In all your ways acknowledge him,
+             │     and he will make your paths straight.
+Hint         │ I a y w a h,
+             │     a h w m y p s.
+Info           Proverbs 3:5-6 · WEB
+GUID           bm1:golden:web:PRO.3.6:0

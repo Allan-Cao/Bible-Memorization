@@ -1,0 +1,50 @@
+Psalm 51:1-4 (WEB)
+
+── 1. Psalm 51:1 ───────────────────────────────────────────────────────
+Lead-in      │ For the Chief Musician. A Psalm by David, when Nathan the prophet came to him, after he had gone in to Bathsheba.
+Answer     1 │ Have mercy on me, God, according to your loving kindness.
+             │     According to the multitude of your tender mercies, blot out my transgressions.
+Hint         │ H m o m, G, a t y l k.
+             │     A t t m o y t m, b o m t.
+Info           Psalm 51:1-4 · WEB
+GUID           bm1:golden:web:PSA.51.1:0
+
+── 2. Psalm 51:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ Have mercy on me, God, according to your loving kindness.
+             │     According to the multitude of your tender mercies, blot out my transgressions.
+Answer     2 │ Wash me thoroughly from my iniquity.
+             │     Cleanse me from my sin.
+Hint         │ W m t f m i.
+             │     C m f m s.
+Info           Psalm 51:1-4 · WEB
+GUID           bm1:golden:web:PSA.51.2:0
+
+── 3. Psalm 51:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ Wash me thoroughly from my iniquity.
+             │     Cleanse me from my sin.
+Answer     3 │ For I know my transgressions.
+             │     My sin is constantly before me.
+Hint         │ F I k m t.
+             │     M s i c b m.
+Info           Psalm 51:1-4 · WEB
+GUID           bm1:golden:web:PSA.51.3:0
+
+── 4. Psalm 51:4 (1/2) ─────────────────────────────────────────────────
+Lead-in    3 │ For I know my transgressions.
+             │     My sin is constantly before me.
+Answer     4 │ Against you, and you only, I have sinned,
+             │     and done that which is evil in your sight,
+Hint         │ A y, a y o, I h s,
+             │     a d t w i e i y s,
+Info           Psalm 51:1-4 · WEB
+GUID           bm1:golden:web:PSA.51.4:0
+
+── 5. Psalm 51:4 (2/2) ─────────────────────────────────────────────────
+Lead-in    4 │ Against you, and you only, I have sinned,
+             │     and done that which is evil in your sight,
+Answer       │ so you may be proved right when you speak,
+             │     and justified when you judge.
+Hint         │ s y m b p r w y s,
+             │     a j w y j.
+Info           Psalm 51:1-4 · WEB
+GUID           bm1:golden:web:PSA.51.4:1

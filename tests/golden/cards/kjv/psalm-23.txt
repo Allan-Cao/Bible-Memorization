@@ -1,0 +1,43 @@
+Psalm 23 (KJV)
+
+── 1. Psalm 23:1 ───────────────────────────────────────────────────────
+Lead-in      │ A Psalm of David.
+Answer     1 │ The LORD is my shepherd; I shall not want.
+Hint         │ T L i m s; I s n w.
+Info           Psalm 23 · KJV
+GUID           bm1:golden:kjv:PSA.23.1:0
+
+── 2. Psalm 23:2 ───────────────────────────────────────────────────────
+Lead-in    1 │ The LORD is my shepherd; I shall not want.
+Answer     2 │ He maketh me to lie down in green pastures: he leadeth me beside the still waters.
+Hint         │ H m m t l d i g p: h l m b t s w.
+Info           Psalm 23 · KJV
+GUID           bm1:golden:kjv:PSA.23.2:0
+
+── 3. Psalm 23:3 ───────────────────────────────────────────────────────
+Lead-in    2 │ He maketh me to lie down in green pastures: he leadeth me beside the still waters.
+Answer     3 │ He restoreth my soul: he leadeth me in the paths of righteousness for his name’s sake.
+Hint         │ H r m s: h l m i t p o r f h n s.
+Info           Psalm 23 · KJV
+GUID           bm1:golden:kjv:PSA.23.3:0
+
+── 4. Psalm 23:4 ───────────────────────────────────────────────────────
+Lead-in    3 │ He restoreth my soul: he leadeth me in the paths of righteousness for his name’s sake.
+Answer     4 │ Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.
+Hint         │ Y, t I w t t v o t s o d, I w f n e: f t a w m; t r a t s t c m.
+Info           Psalm 23 · KJV
+GUID           bm1:golden:kjv:PSA.23.4:0
+
+── 5. Psalm 23:5 ───────────────────────────────────────────────────────
+Lead-in    4 │ Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.
+Answer     5 │ Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over.
+Hint         │ T p a t b m i t p o m e: t a m h w o; m c r o.
+Info           Psalm 23 · KJV
+GUID           bm1:golden:kjv:PSA.23.5:0
+
+── 6. Psalm 23:6 ───────────────────────────────────────────────────────
+Lead-in    5 │ Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over.
+Answer     6 │ Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever.
+Hint         │ S g a m s f m a t d o m l: a I w d i t h o t L f e.
+Info           Psalm 23 · KJV
+GUID           bm1:golden:kjv:PSA.23.6:0

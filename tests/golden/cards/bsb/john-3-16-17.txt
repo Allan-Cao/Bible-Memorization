@@ -1,0 +1,15 @@
+John 3:16-17 (BSB)
+
+── 1. John 3:16 ────────────────────────────────────────────────────────
+Lead-in        (none)
+Answer    16 │ For God so loved the world that He gave His one and only Son, that everyone who believes in Him shall not perish but have eternal life.
+Hint         │ F G s l t w t H g H o a o S, t e w b i H s n p b h e l.
+Info           John 3:16-17 · BSB
+GUID           bm1:golden:bsb:JHN.3.16:0
+
+── 2. John 3:17 ────────────────────────────────────────────────────────
+Lead-in   16 │ For God so loved the world that He gave His one and only Son, that everyone who believes in Him shall not perish but have eternal life.
+Answer    17 │ For God did not send His Son into the world to condemn the world, but to save the world through Him.
+Hint         │ F G d n s H S i t w t c t w, b t s t w t H.
+Info           John 3:16-17 · BSB
+GUID           bm1:golden:bsb:JHN.3.17:0

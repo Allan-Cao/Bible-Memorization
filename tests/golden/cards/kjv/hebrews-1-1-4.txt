@@ -1,0 +1,36 @@
+Hebrews 1:1-4 (KJV)
+
+── 1. Hebrews 1:1 ──────────────────────────────────────────────────────
+Lead-in        (none)
+Answer     1 │ God, who at sundry times and in divers manners spake in time past unto the fathers by the prophets,
+Hint         │ G, w a s t a i d m s i t p u t f b t p,
+Info           Hebrews 1:1-4 · KJV
+GUID           bm1:golden:kjv:HEB.1.1:0
+
+── 2. Hebrews 1:2 ──────────────────────────────────────────────────────
+Lead-in    1 │ God, who at sundry times and in divers manners spake in time past unto the fathers by the prophets,
+Answer     2 │ Hath in these last days spoken unto us by his Son, whom he hath appointed heir of all things, by whom also he made the worlds;
+Hint         │ H i t l d s u u b h S, w h h a h o a t, b w a h m t w;
+Info           Hebrews 1:1-4 · KJV
+GUID           bm1:golden:kjv:HEB.1.2:0
+
+── 3. Hebrews 1:3 (1/2) ────────────────────────────────────────────────
+Lead-in    2 │ Hath in these last days spoken unto us by his Son, whom he hath appointed heir of all things, by whom also he made the worlds;
+Answer     3 │ Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power,
+Hint         │ W b t b o h g, a t e i o h p, a u a t b t w o h p,
+Info           Hebrews 1:1-4 · KJV
+GUID           bm1:golden:kjv:HEB.1.3:0
+
+── 4. Hebrews 1:3 (2/2) ────────────────────────────────────────────────
+Lead-in    3 │ Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power,
+Answer       │ when he had by himself purged our sins, sat down on the right hand of the Majesty on high;
+Hint         │ w h h b h p o s, s d o t r h o t M o h;
+Info           Hebrews 1:1-4 · KJV
+GUID           bm1:golden:kjv:HEB.1.3:1
+
+── 5. Hebrews 1:4 ──────────────────────────────────────────────────────
+Lead-in      │ when he had by himself purged our sins, sat down on the right hand of the Majesty on high;
+Answer     4 │ Being made so much better than the angels, as he hath by inheritance obtained a more excellent name than they.
+Hint         │ B m s m b t t a, a h h b i o a m e n t t.
+Info           Hebrews 1:1-4 · KJV
+GUID           bm1:golden:kjv:HEB.1.4:0
