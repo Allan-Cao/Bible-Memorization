@@ -66,11 +66,11 @@ The note type id and its field list (`Reference, Context, Answer, Hint, Info`) m
 
 ## Deploying
 
-The site is static files. `wrangler.jsonc` serves `build/` from Cloudflare Workers as static assets, with no Worker script:
+The site is static files. `wrangler.toml` serves `build/` from Cloudflare Workers as static assets, with no Worker script. Both commands build first:
 
 ```bash
-npm run build
-npx wrangler deploy
+npm run deploy:preview  # bible-memorization.allancao.workers.dev
+npm run deploy          # manna.cards (production)
 ```
 
 Any static host works if it serves `404.html` for unknown paths and `/deck/*` (see `static/_redirects`).

@@ -17,7 +17,7 @@ Scripts in `scripts/` run with `npx tsx scripts/<name>.ts`.
 
 adapter-static builds into `build/` with the app shell as `404.html`. Client-only routes (`/deck/[id]`) are served from it: `static/_redirects` rewrites `/deck/*` to it with status 200, and any other unknown path gets it with status 404.
 
-Hosting is Cloudflare Workers static assets (`wrangler.jsonc`, no Worker script, so it costs nothing). `static/_headers` caches the hashed files under `/_app/immutable/`. Deploy with `npm run build && npx wrangler deploy`.
+Hosting is Cloudflare Workers static assets (`wrangler.toml`, no Worker script, so it costs nothing). `static/_headers` caches the hashed files under `/_app/immutable/`. `npm run deploy` ships prod (the `manna-cards` Worker on manna.cards); `npm run deploy:preview` ships the top-level `bible-memorization` Worker on workers.dev.
 
 ## Conventions
 
