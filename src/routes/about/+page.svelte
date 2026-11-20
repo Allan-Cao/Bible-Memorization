@@ -2,15 +2,13 @@
 	import { link, muted } from '#lib/ui/styles.ts';
 </script>
 
-<svelte:head><title>About · Bible Memorization</title></svelte:head>
+<svelte:head><title>About · manna.cards</title></svelte:head>
 
 <main class="mx-auto max-w-2xl space-y-10 px-4 py-10 leading-relaxed">
 	<section>
 		<h1 class="font-serif text-3xl font-semibold tracking-tight">About</h1>
 		<p class="mt-4">
-			Bible Memorization makes flash cards for <a class={link} href="https://apps.ankiweb.net/"
-				>Anki</a
-			>
+			manna.cards makes flash cards for <a class={link} href="https://apps.ankiweb.net/">Anki</a>
 			from a list of passages. Each card shows a verse's reference and the verse before it, and asks you
 			to recite the verse; long verses are split into two or three cards. It runs entirely in your browser:
 			there is no account, and your decks stay on this device unless you share them.

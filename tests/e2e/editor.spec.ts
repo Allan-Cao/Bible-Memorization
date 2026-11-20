@@ -160,9 +160,9 @@ test('a deck page loads directly, and an unknown address says so', async ({ page
 	await page.reload();
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Editor deck');
 	await expect(page.getByText('1 passage · 1 verse · 1 card')).toBeVisible();
-	await expect(page).toHaveTitle('Editor deck · Bible Memorization');
+	await expect(page).toHaveTitle('Editor deck · manna.cards');
 	await page.getByLabel('Name').fill('Renamed deck');
-	await expect(page).toHaveTitle('Renamed deck · Bible Memorization');
+	await expect(page).toHaveTitle('Renamed deck · manna.cards');
 
 	const response = await page.goto('/no-such-page');
 	expect(response?.status()).toBe(404);

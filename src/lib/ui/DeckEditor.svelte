@@ -145,7 +145,7 @@
 	let shareOpen = $state(false);
 </script>
 
-<svelte:head><title>{cleanDeckName(def.name)} · Bible Memorization</title></svelte:head>
+<svelte:head><title>{cleanDeckName(def.name)} · manna.cards</title></svelte:head>
 
 <main class="mx-auto max-w-6xl px-4 py-8">
 	<div class="flex flex-wrap items-start justify-between gap-4">

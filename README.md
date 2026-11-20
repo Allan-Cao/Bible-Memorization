@@ -1,4 +1,4 @@
-# Bible Memorization
+# manna.cards
 
 A website that makes [Anki](https://apps.ankiweb.net/) flash cards for memorizing Scripture. You type a list of passages, it builds a deck file (`.apkg`), and you import that into Anki. When you change the list later and import again, Anki updates the cards you already have and keeps your progress.
 

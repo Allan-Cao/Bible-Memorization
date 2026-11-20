@@ -48,8 +48,8 @@ describe('cleanDeckName', () => {
 	});
 
 	it('falls back when empty', () => {
-		expect(cleanDeckName('   ')).toBe('Bible Memorization');
-		expect(cleanDeckName('')).toBe('Bible Memorization');
+		expect(cleanDeckName('   ')).toBe('manna.cards');
+		expect(cleanDeckName('')).toBe('manna.cards');
 	});
 });
 

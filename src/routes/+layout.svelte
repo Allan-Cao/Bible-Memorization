@@ -10,7 +10,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Bible Memorization</title>
+	<title>manna.cards</title>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col">
@@ -23,7 +23,7 @@
 				href={resolve('/')}
 				class="rounded font-serif text-lg font-semibold tracking-tight {focus}"
 			>
-				Bible Memorization
+				manna.cards
 			</a>
 			<a href={resolve('/about')} class="text-sm {link}">About</a>
 		</nav>

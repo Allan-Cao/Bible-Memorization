@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Bible Memorization is a static web app that builds Anki decks (`.apkg`) for memorizing Scripture. Each card asks for one verse (long verses are split into parts), with the previous verse shown as a lead-in. All logic runs in the browser. There are no server routes.
+manna.cards is a static web app that builds Anki decks (`.apkg`) for memorizing Scripture. Each card asks for one verse (long verses are split into parts), with the previous verse shown as a lead-in. All logic runs in the browser. There are no server routes.
 
 Scripts in `scripts/` run with `npx tsx scripts/<name>.ts`.
 

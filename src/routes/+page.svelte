@@ -121,8 +121,11 @@
 	<section aria-labelledby="examples-heading">
 		<h2 id="examples-heading" class="text-xl font-semibold">Start from an example</h2>
 		<p class="mt-2 {muted}">
-			These are the Old and New Testament verses on the <a class={link} href="https://billygrahamlibrary.org/decision-card/" target="_blank">decision card Billy Graham was given when he
-			came to faith.</a> The translation chosen above is used.
+			These are the Old and New Testament verses on the <a
+				class={link}
+				href="https://billygrahamlibrary.org/decision-card/"
+				target="_blank">decision card Billy Graham was given when he came to faith.</a
+			> The translation chosen above is used.
 		</p>
 		<div class="mt-3 flex flex-wrap gap-2">
 			<button

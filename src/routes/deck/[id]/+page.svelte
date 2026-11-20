@@ -10,7 +10,7 @@
 
 <!-- The editor sets the title from the deck name as it is edited. -->
 <svelte:head>
-	{#if !def}<title>Bible Memorization</title>{/if}
+	{#if !def}<title>manna.cards</title>{/if}
 </svelte:head>
 
 {#if def}

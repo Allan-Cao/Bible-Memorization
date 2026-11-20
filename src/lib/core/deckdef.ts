@@ -8,7 +8,7 @@
 import type { Break, DeckDefinition, TranslationId } from './model.ts';
 import { TRANSLATIONS } from './translations.ts';
 
-const DEFAULT_NAME = 'Bible Memorization';
+const DEFAULT_NAME = 'manna.cards';
 /** A share link never unpacks to more than this many bytes of JSON, however small the link. */
 export const MAX_SHARE_BYTES = 1_000_000;
 const ID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789';
