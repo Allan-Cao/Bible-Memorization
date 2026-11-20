@@ -1,0 +1,22 @@
+# Cloudflare Workers static assets: the site is files only, with no Worker script.
+#
+#   npm run deploy:preview  ->  bible-memorization.allancao.workers.dev
+#   npm run deploy          ->  manna.cards
+#
+# The top level is the preview Worker, so a bare `wrangler deploy` never touches prod.
+
+name = "bible-memorization"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[assets]
+directory = "./build"
+# Unknown paths get build/404.html (the app shell, which shows "Not found").
+# Deck pages are rewritten to it with status 200 by static/_redirects.
+not_found_handling = "404-page"
+
+# Production: a separate Worker served only on the custom domain.
+[env.production]
+name = "manna-cards"
+workers_dev = false
+routes = [{ pattern = "manna.cards", custom_domain = true }]

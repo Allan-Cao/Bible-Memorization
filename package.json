@@ -10,6 +10,8 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"deploy": "npm run build && npx wrangler deploy --env production",
+		"deploy:preview": "npm run build && npx wrangler deploy --env=\"\"",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
